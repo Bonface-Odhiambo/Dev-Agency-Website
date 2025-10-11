@@ -179,7 +179,6 @@ const ParticleSystem = () => {
   return (
     <points
       ref={particlesRef}
-      position={[2, 0, 0]}
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
     >
