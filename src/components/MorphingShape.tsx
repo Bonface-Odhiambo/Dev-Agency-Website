@@ -196,7 +196,7 @@ const ParticleSystem = () => {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.07}
+        size={0.1}
         vertexColors
         transparent
         opacity={0.9}
@@ -210,12 +210,8 @@ const ParticleSystem = () => {
 const MorphingShape = () => {
   return (
     <section className="relative min-h-screen bg-background flex items-center justify-center overflow-hidden">
-      <div className="absolute top-8 left-8 z-10 pointer-events-none">
-        <div className="text-2xl font-bold text-primary mb-2">SPHERE</div>
-        <div className="text-sm text-muted-foreground">Hover to morph shapes</div>
-      </div>
       <Canvas
-        camera={{ position: [0, 0, 6], fov: 75 }}
+        camera={{ position: [0, 0, 4.5], fov: 75 }}
         gl={{ antialias: true }}
         className="w-full h-full"
       >
