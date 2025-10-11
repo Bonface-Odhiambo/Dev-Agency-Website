@@ -22,14 +22,14 @@ const ParticleSystem = () => {
       // SPHERE - 3D sphere
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
-      const radius = 2.5;
+      const radius = 3.2;
       const sphereX = radius * Math.sin(phi) * Math.cos(theta);
       const sphereY = radius * Math.sin(phi) * Math.sin(theta);
       const sphereZ = radius * Math.cos(phi);
 
       // CIRCLE - 3D torus (donut)
-      const torusMajorRadius = 2.0;
-      const torusMinorRadius = 0.8;
+      const torusMajorRadius = 2.6;
+      const torusMinorRadius = 1.0;
       const torusAngle1 = Math.random() * Math.PI * 2;
       const torusAngle2 = Math.random() * Math.PI * 2;
       const circleX = (torusMajorRadius + torusMinorRadius * Math.cos(torusAngle2)) * Math.cos(torusAngle1);
@@ -37,7 +37,7 @@ const ParticleSystem = () => {
       const circleZ = torusMinorRadius * Math.sin(torusAngle2);
 
       // SQUARE - 3D cube
-      const cubeSize = 3.0;
+      const cubeSize = 3.8;
       const cubeX = (Math.random() - 0.5) * cubeSize;
       const cubeY = (Math.random() - 0.5) * cubeSize;
       const cubeZ = (Math.random() - 0.5) * cubeSize;
@@ -49,9 +49,9 @@ const ParticleSystem = () => {
       const squareZ = Math.abs(cubeZ) === maxAxis ? Math.sign(cubeZ) * cubeSize / 2 : cubeZ;
 
       // RECTANGLE - 3D rectangular prism (box)
-      const rectWidth = 4.0;
-      const rectHeight = 2.5;
-      const rectDepth = 2.0;
+      const rectWidth = 5.0;
+      const rectHeight = 3.2;
+      const rectDepth = 2.6;
       const rectX = (Math.random() - 0.5) * rectWidth;
       const rectY = (Math.random() - 0.5) * rectHeight;
       const rectZ = (Math.random() - 0.5) * rectDepth;
@@ -179,6 +179,7 @@ const ParticleSystem = () => {
   return (
     <points
       ref={particlesRef}
+      position={[2, 0, 0]}
       onPointerEnter={() => setIsHovering(true)}
       onPointerLeave={() => setIsHovering(false)}
     >
