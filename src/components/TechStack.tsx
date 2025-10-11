@@ -128,7 +128,7 @@ const TechStack = () => {
                       <img 
                         src={tech.icon} 
                         alt={tech.name}
-                        className="w-full h-full object-contain filter brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-300"
+                        className="w-full h-full object-contain transition-all duration-300"
                       />
                     </div>
                     <span className="text-xs text-center text-foreground/80 group-hover:text-foreground transition-colors">
