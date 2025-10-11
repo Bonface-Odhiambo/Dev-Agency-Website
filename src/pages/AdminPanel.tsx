@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, FileText, TrendingUp, Clock } from "lucide-react";
+import { Users, FileText, TrendingUp, Clock, Search, Bell, User, Code, Eye, Edit, CheckCircle, AlertCircle, XCircle, Download, DollarSign } from "lucide-react";
 
 const AdminPanel = () => {
+  const [activeTab, setActiveTab] = useState('overview');
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRequest, setSelectedRequest] = useState<any>(null);
 
   // Mock data for service requests
   const serviceRequests = [
@@ -56,164 +52,359 @@ const AdminPanel = () => {
 
   // Mock data for users
   const users = [
-    { id: 1, name: "John Doe", email: "john@example.com", joined: "2025-01-15", requests: 3, status: "active" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", joined: "2025-01-10", requests: 2, status: "active" },
-    { id: 3, name: "Mike Johnson", email: "mike@example.com", joined: "2024-12-20", requests: 5, status: "active" },
-    { id: 4, name: "Sarah Williams", email: "sarah@example.com", joined: "2025-01-12", requests: 1, status: "active" },
-    { id: 5, name: "Tom Brown", email: "tom@example.com", joined: "2024-11-05", requests: 4, status: "inactive" },
+    { id: 1, name: "John Doe", email: "john@example.com", joined: "2025-01-15", requests: 3, status: "active", totalSpent: 15000 },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", joined: "2025-01-10", requests: 2, status: "active", totalSpent: 25000 },
+    { id: 3, name: "Mike Johnson", email: "mike@example.com", joined: "2024-12-20", requests: 5, status: "active", totalSpent: 50000 },
+    { id: 4, name: "Sarah Williams", email: "sarah@example.com", joined: "2025-01-12", requests: 1, status: "active", totalSpent: 8000 },
+    { id: 5, name: "Tom Brown", email: "tom@example.com", joined: "2024-11-05", requests: 4, status: "inactive", totalSpent: 32000 },
   ];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending": return "bg-yellow-500";
-      case "in-progress": return "bg-blue-500";
-      case "completed": return "bg-green-500";
-      case "active": return "bg-green-500";
-      case "inactive": return "bg-gray-500";
-      default: return "bg-gray-500";
-    }
-  };
 
   const stats = [
-    { title: "Total Users", value: users.length, icon: Users, color: "text-blue-500" },
-    { title: "Total Requests", value: serviceRequests.length, icon: FileText, color: "text-green-500" },
-    { title: "Pending", value: serviceRequests.filter(r => r.status === "pending").length, icon: Clock, color: "text-yellow-500" },
-    { title: "Completed", value: serviceRequests.filter(r => r.status === "completed").length, icon: TrendingUp, color: "text-purple-500" },
+    { label: 'Total Users', value: users.length.toString(), trend: '+2', icon: Users, color: 'text-blue-500' },
+    { label: 'Total Requests', value: serviceRequests.length.toString(), trend: '+4', icon: FileText, color: 'text-green-500' },
+    { label: 'Pending', value: serviceRequests.filter(r => r.status === "pending").length.toString(), trend: '=', icon: Clock, color: 'text-yellow-500' },
+    { label: 'Completed', value: serviceRequests.filter(r => r.status === "completed").length.toString(), trend: '+1', icon: CheckCircle, color: 'text-purple-500' },
   ];
 
-  return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Admin Panel</h1>
-          <p className="text-muted-foreground">Manage service requests and user accounts</p>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-4 mb-8">
-          {stats.map((stat) => (
-            <Card key={stat.title}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                <stat.icon className={`h-4 w-4 ${stat.color}`} />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Search */}
-        <div className="mb-6">
-          <Input 
-            placeholder="Search by user name, email, or service type..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-md"
-          />
-        </div>
-
-        {/* Tabs */}
-        <Tabs defaultValue="requests" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="requests">Service Requests</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-          </TabsList>
-
-          {/* Service Requests Tab */}
-          <TabsContent value="requests">
-            <Card>
-              <CardHeader>
-                <CardTitle>Service Requests</CardTitle>
-                <CardDescription>View and manage all service requests from users</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>User</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Service Type</TableHead>
-                      <TableHead>Budget</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {serviceRequests.map((request) => (
-                      <TableRow key={request.id}>
-                        <TableCell className="font-medium">{request.user}</TableCell>
-                        <TableCell>{request.email}</TableCell>
-                        <TableCell>{request.service}</TableCell>
-                        <TableCell>{request.budget}</TableCell>
-                        <TableCell>
-                          <Badge className={getStatusColor(request.status)}>
-                            {request.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{request.date}</TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button variant="ghost" size="sm">View</Button>
-                            <Button variant="ghost" size="sm">Edit</Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Users Tab */}
-          <TabsContent value="users">
-            <Card>
-              <CardHeader>
-                <CardTitle>User Management</CardTitle>
-                <CardDescription>View and manage registered users</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Joined Date</TableHead>
-                      <TableHead>Total Requests</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {users.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell className="font-medium">{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.joined}</TableCell>
-                        <TableCell>{user.requests}</TableCell>
-                        <TableCell>
-                          <Badge className={getStatusColor(user.status)}>
-                            {user.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button variant="ghost" size="sm">View</Button>
-                            <Button variant="ghost" size="sm">Edit</Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+  const renderOverview = () => (
+    <div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, idx) => {
+          const StatIcon = stat.icon;
+          return (
+            <div key={idx} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <StatIcon className={`w-8 h-8 ${stat.color}`} />
+                <span className="text-xs text-green-400 font-medium">{stat.trend}</span>
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-1">{stat.value}</h3>
+              <p className="text-sm text-gray-400">{stat.label}</p>
+            </div>
+          );
+        })}
       </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+          <h3 className="text-xl font-bold text-white mb-4">Recent Activity</h3>
+          <div className="space-y-3">
+            {serviceRequests.slice(0, 3).map((request) => (
+              <div key={request.id} className="flex items-center justify-between p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
+                <div>
+                  <p className="text-sm font-medium text-white">{request.user}</p>
+                  <p className="text-xs text-gray-400">{request.service}</p>
+                </div>
+                <span className={`text-xs px-3 py-1 rounded-full ${
+                  request.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300' :
+                  request.status === 'in-progress' ? 'bg-blue-500/20 text-blue-300' :
+                  'bg-green-500/20 text-green-300'
+                }`}>
+                  {request.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+          <h3 className="text-xl font-bold text-white mb-4">Top Clients</h3>
+          <div className="space-y-3">
+            {users.slice(0, 3).map((user) => (
+              <div key={user.id} className="flex items-center justify-between p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
+                <div>
+                  <p className="text-sm font-medium text-white">{user.name}</p>
+                  <p className="text-xs text-gray-400">{user.requests} projects</p>
+                </div>
+                <p className="text-sm font-bold text-purple-400">${user.totalSpent.toLocaleString()}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderRequests = () => (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-white">Service Requests</h2>
+        <button className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition-all flex items-center space-x-2">
+          <Download className="w-4 h-4" />
+          <span>Export</span>
+        </button>
+      </div>
+
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-white/5">
+              <tr>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">User</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Email</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Service</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Budget</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Status</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Date</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/10">
+              {serviceRequests.map((request) => (
+                <tr key={request.id} className="hover:bg-white/5 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{request.user}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{request.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{request.service}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{request.budget}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-3 py-1 text-xs rounded-full font-medium ${
+                      request.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300' :
+                      request.status === 'in-progress' ? 'bg-blue-500/20 text-blue-300' :
+                      'bg-green-500/20 text-green-300'
+                    }`}>
+                      {request.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{request.date}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={() => setSelectedRequest(request)}
+                        className="text-purple-400 hover:text-pink-400 transition-colors flex items-center space-x-1"
+                      >
+                        <Eye className="w-4 h-4" />
+                        <span>View</span>
+                      </button>
+                      <button className="text-blue-400 hover:text-blue-300 transition-colors flex items-center space-x-1">
+                        <Edit className="w-4 h-4" />
+                        <span>Edit</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderUsers = () => (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-white">User Management</h2>
+        <button className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition-all flex items-center space-x-2">
+          <Download className="w-4 h-4" />
+          <span>Export</span>
+        </button>
+      </div>
+
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-white/5">
+              <tr>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Name</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Email</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Joined</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Requests</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Total Spent</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Status</th>
+                <th className="text-left text-xs font-medium text-gray-400 uppercase tracking-wider px-6 py-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/10">
+              {users.map((user) => (
+                <tr key={user.id} className="hover:bg-white/5 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{user.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{user.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{user.joined}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{user.requests}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-purple-400">
+                    ${user.totalSpent.toLocaleString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-3 py-1 text-xs rounded-full font-medium ${
+                      user.status === 'active' ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-300'
+                    }`}>
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <div className="flex items-center space-x-2">
+                      <button className="text-purple-400 hover:text-pink-400 transition-colors flex items-center space-x-1">
+                        <Eye className="w-4 h-4" />
+                        <span>View</span>
+                      </button>
+                      <button className="text-blue-400 hover:text-blue-300 transition-colors flex items-center space-x-1">
+                        <Edit className="w-4 h-4" />
+                        <span>Edit</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Header */}
+      <header className="bg-black/30 backdrop-blur-xl border-b border-white/10 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <Code className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">DevFlow Agency</h1>
+                <p className="text-xs text-gray-400">Admin Panel</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative hidden md:block">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input 
+                  type="text" 
+                  placeholder="Search users, requests..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                <User className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Navigation Tabs */}
+      <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 sticky top-[73px] z-30">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex space-x-1">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-6 py-3 text-sm font-medium transition-all ${
+                activeTab === 'overview'
+                  ? 'text-white border-b-2 border-purple-500'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('requests')}
+              className={`px-6 py-3 text-sm font-medium transition-all ${
+                activeTab === 'requests'
+                  ? 'text-white border-b-2 border-purple-500'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Service Requests
+            </button>
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`px-6 py-3 text-sm font-medium transition-all ${
+                activeTab === 'users'
+                  ? 'text-white border-b-2 border-purple-500'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Users
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {activeTab === 'overview' && renderOverview()}
+        {activeTab === 'requests' && renderRequests()}
+        {activeTab === 'users' && renderUsers()}
+      </div>
+
+      {/* Request Detail Modal */}
+      {selectedRequest && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setSelectedRequest(null)}>
+          <div className="bg-slate-900 border border-white/20 rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-1">Request Details</h3>
+                <p className="text-gray-400 text-sm">#{selectedRequest.id.toString().padStart(4, '0')}</p>
+              </div>
+              <button 
+                onClick={() => setSelectedRequest(null)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p className="text-xs text-gray-400 mb-1">Client</p>
+                <p className="text-lg font-semibold text-white">{selectedRequest.user}</p>
+                <p className="text-sm text-gray-400">{selectedRequest.email}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                  <p className="text-xs text-gray-400 mb-1">Service Type</p>
+                  <p className="text-sm font-semibold text-white">{selectedRequest.service}</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                  <p className="text-xs text-gray-400 mb-1">Budget</p>
+                  <p className="text-sm font-semibold text-white">{selectedRequest.budget}</p>
+                </div>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p className="text-xs text-gray-400 mb-1">Description</p>
+                <p className="text-sm text-white">{selectedRequest.description}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                  <p className="text-xs text-gray-400 mb-1">Status</p>
+                  <span className={`inline-block px-3 py-1 text-xs rounded-full font-medium ${
+                    selectedRequest.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300' :
+                    selectedRequest.status === 'in-progress' ? 'bg-blue-500/20 text-blue-300' :
+                    'bg-green-500/20 text-green-300'
+                  }`}>
+                    {selectedRequest.status}
+                  </span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                  <p className="text-xs text-gray-400 mb-1">Date Submitted</p>
+                  <p className="text-sm font-semibold text-white">{selectedRequest.date}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 mt-6">
+              <button className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all duration-300">
+                Update Status
+              </button>
+              <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300">
+                Assign Team
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
