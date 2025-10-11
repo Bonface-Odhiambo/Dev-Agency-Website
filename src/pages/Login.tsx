@@ -36,7 +36,7 @@ const Login = () => {
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Code2 className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">DevAgency</span>
+            <span className="text-2xl font-bold">Function Call</span>
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
           <CardDescription className="text-center">
