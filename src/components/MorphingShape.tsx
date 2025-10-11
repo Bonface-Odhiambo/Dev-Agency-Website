@@ -27,13 +27,14 @@ const ParticleSystem = () => {
       const sphereY = radius * Math.sin(phi) * Math.sin(theta);
       const sphereZ = radius * Math.cos(phi);
 
-      // CIRCLE - Flat 2D circle on XY plane (Z = 0)
-      const circleAngle = Math.random() * Math.PI * 2;
-      const circleRadius = 2.5;
-      const circleR = Math.sqrt(Math.random()) * circleRadius;
-      const circleX = circleR * Math.cos(circleAngle);
-      const circleY = circleR * Math.sin(circleAngle);
-      const circleZ = 0;
+      // CIRCLE - 3D torus (donut)
+      const torusMajorRadius = 2.0;
+      const torusMinorRadius = 0.8;
+      const torusAngle1 = Math.random() * Math.PI * 2;
+      const torusAngle2 = Math.random() * Math.PI * 2;
+      const circleX = (torusMajorRadius + torusMinorRadius * Math.cos(torusAngle2)) * Math.cos(torusAngle1);
+      const circleY = (torusMajorRadius + torusMinorRadius * Math.cos(torusAngle2)) * Math.sin(torusAngle1);
+      const circleZ = torusMinorRadius * Math.sin(torusAngle2);
 
       // SQUARE - 3D cube
       const cubeSize = 3.0;
