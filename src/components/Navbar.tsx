@@ -10,8 +10,10 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="DevAgency Logo" className="h-8 w-8 rounded-lg" />
-            <span className="text-xl font-bold">DevAgency</span>
+            <img src={logo} alt="Function Call Logo" className="h-8 w-8 rounded-lg" />
+            <span className="text-xl font-bold bg-gradient-to-r from-primary via-neon-purple to-neon-pink bg-clip-text text-transparent">
+              Function Call
+            </span>
           </Link>
           
           <div className="hidden md:flex items-center gap-6">
@@ -22,6 +24,14 @@ const Navbar = () => {
               }`}
             >
               Home
+            </Link>
+            <Link 
+              to="/about"
+              className={`text-sm font-medium hover:text-primary transition-colors ${
+                location.pathname === "/about" ? "text-primary" : ""
+              }`}
+            >
+              About
             </Link>
             <Link 
               to="/services"
