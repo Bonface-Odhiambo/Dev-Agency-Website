@@ -2,7 +2,7 @@ import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const ParticleSystem = () => {
+const ParticleSystemWithCallback = ({ setDisplayShape }: { setDisplayShape: (shape: string) => void }) => {
   const particlesRef = useRef<THREE.Points>(null);
   const [currentShape, setCurrentShape] = useState('sphere');
   const [targetShape, setTargetShape] = useState('sphere');
@@ -106,13 +106,6 @@ const ParticleSystem = () => {
     const currentIndex = shapes.indexOf(currentShape);
     const nextIndex = (currentIndex + 1) % shapes.length;
     setTargetShape(shapes[nextIndex]);
-
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-    }
-    hoverTimerRef.current = setTimeout(() => {
-      startMorphing();
-    }, 2000);
   };
 
   useEffect(() => {
@@ -146,6 +139,11 @@ const ParticleSystem = () => {
         if (next >= 1) {
           setMorphing(false);
           setCurrentShape(targetShape);
+          setDisplayShape(targetShape.toUpperCase());
+          // Continue morphing if still hovering
+          if (isHovering) {
+            setTimeout(() => startMorphing(), 100);
+          }
           return 1;
         }
         return next;
@@ -177,49 +175,83 @@ const ParticleSystem = () => {
   });
 
   return (
-    <points
-      ref={particlesRef}
-      onPointerEnter={() => setIsHovering(true)}
-      onPointerLeave={() => setIsHovering(false)}
-    >
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={positions.length / 3}
-          array={positions}
-          itemSize={3}
+    <>
+      <points
+        ref={particlesRef}
+        onPointerEnter={() => setIsHovering(true)}
+        onPointerLeave={() => setIsHovering(false)}
+      >
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={positions.length / 3}
+            array={positions}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={colors.length / 3}
+            array={colors}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.1}
+          vertexColors
+          transparent
+          opacity={0.9}
+          blending={THREE.AdditiveBlending}
+          sizeAttenuation
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={colors.length / 3}
-          array={colors}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.1}
-        vertexColors
-        transparent
-        opacity={0.9}
-        blending={THREE.AdditiveBlending}
-        sizeAttenuation
-      />
-    </points>
+      </points>
+      
+      {/* Wireframe shapes visible on hover */}
+      {isHovering && (
+        <group rotation={particlesRef.current?.rotation || [0, 0, 0]}>
+          {currentShape === 'sphere' && (
+            <mesh>
+              <sphereGeometry args={[2.5, 32, 32]} />
+              <meshBasicMaterial color="#ff3344" wireframe opacity={0.3} transparent />
+            </mesh>
+          )}
+          {currentShape === 'circle' && (
+            <mesh>
+              <torusGeometry args={[2.0, 0.8, 16, 32]} />
+              <meshBasicMaterial color="#ff3344" wireframe opacity={0.3} transparent />
+            </mesh>
+          )}
+          {currentShape === 'square' && (
+            <mesh>
+              <boxGeometry args={[3.0, 3.0, 3.0]} />
+              <meshBasicMaterial color="#ff3344" wireframe opacity={0.3} transparent />
+            </mesh>
+          )}
+          {currentShape === 'rectangle' && (
+            <mesh>
+              <boxGeometry args={[4.0, 2.5, 2.0]} />
+              <meshBasicMaterial color="#ff3344" wireframe opacity={0.3} transparent />
+            </mesh>
+          )}
+        </group>
+      )}
+    </>
   );
 };
 
 const MorphingShape = () => {
+  const [displayShape, setDisplayShape] = useState('SPHERE');
+
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden" style={{ background: '#0a0a0a' }}>
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden" style={{ background: '#0a0a0a' }}>
       <Canvas
-        camera={{ position: [3, 0, 3.5], fov: 75 }}
+        camera={{ position: [0, 0, 6], fov: 75 }}
         gl={{ antialias: true }}
         style={{ width: '100%', height: '100%' }}
       >
         <color attach="background" args={['#0a0a0a']} />
-        <ParticleSystem />
+        <ParticleSystemWithCallback setDisplayShape={setDisplayShape} />
       </Canvas>
-    </section>
+    </div>
   );
 };
 
