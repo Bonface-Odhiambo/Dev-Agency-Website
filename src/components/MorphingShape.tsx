@@ -209,17 +209,15 @@ const ParticleSystem = () => {
 
 const MorphingShape = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-end overflow-hidden" style={{ background: '#0a0a0a' }}>
-      <div className="w-full md:w-1/2 h-full">
-        <Canvas
-          camera={{ position: [0, 0, 3.5], fov: 75 }}
-          gl={{ antialias: true }}
-          className="w-full h-full"
-        >
-          <color attach="background" args={['#0a0a0a']} />
-          <ParticleSystem />
-        </Canvas>
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: '#0a0a0a' }}>
+      <Canvas
+        camera={{ position: [3, 0, 3.5], fov: 75 }}
+        gl={{ antialias: true }}
+        className="w-full h-full"
+      >
+        <color attach="background" args={['#0a0a0a']} />
+        <ParticleSystem />
+      </Canvas>
     </section>
   );
 };
