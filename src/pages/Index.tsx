@@ -36,7 +36,7 @@ const Index = () => {
               Innovation in Motion
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Experience the future of interactive design. Hover to explore our dynamic visualizations.
+              Experience the future of properly crafted solutions.Permit us to solve your problems.
             </p>
           </div>
         </div>
