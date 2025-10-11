@@ -7,6 +7,7 @@ import TechStack from "@/components/TechStack";
 import OurApproach from "@/components/OurApproach";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <OurApproach />
       <ContactForm />
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 };
