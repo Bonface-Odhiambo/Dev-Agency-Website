@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import MorphingShape from "@/components/MorphingShape";
 import Projects from "@/components/Projects";
 import InnovativeApproach from "@/components/InnovativeApproach";
 import Expertise from "@/components/Expertise";
@@ -14,6 +15,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      <MorphingShape />
       <Projects />
       <InnovativeApproach />
       <Expertise />
