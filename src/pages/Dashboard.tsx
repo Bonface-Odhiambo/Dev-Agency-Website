@@ -1,327 +1,307 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Rocket, CheckCircle2, Clock, XCircle, ArrowRight, Sparkles, TrendingUp, Package, Calendar } from "lucide-react";
+import { Code, Globe, Smartphone, Database, Cloud, Zap, Plus, Search, Bell, User, TrendingUp, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [selectedService, setSelectedService] = useState<any>(null);
+  const [projectName, setProjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [budget, setBudget] = useState("$5,000 - $10,000");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    setTimeout(() => {
-      toast({
-        title: "Request Submitted",
-        description: "Your service request has been submitted successfully.",
-      });
-      setLoading(false);
-      e.currentTarget.reset();
-    }, 1000);
-  };
+  const services = [
+    { 
+      id: 1, 
+      icon: Globe, 
+      title: 'Web Development', 
+      description: 'Custom websites & web applications',
+      color: 'from-blue-500 to-cyan-500',
+      projects: 12
+    },
+    { 
+      id: 2, 
+      icon: Smartphone, 
+      title: 'Mobile Apps', 
+      description: 'iOS & Android native apps',
+      color: 'from-purple-500 to-pink-500',
+      projects: 8
+    },
+    { 
+      id: 3, 
+      icon: Database, 
+      title: 'Backend Systems', 
+      description: 'Scalable server infrastructure',
+      color: 'from-green-500 to-emerald-500',
+      projects: 15
+    },
+    { 
+      id: 4, 
+      icon: Cloud, 
+      title: 'Cloud Solutions', 
+      description: 'AWS, Azure & GCP deployment',
+      color: 'from-orange-500 to-red-500',
+      projects: 10
+    },
+    { 
+      id: 5, 
+      icon: Code, 
+      title: 'API Development', 
+      description: 'RESTful & GraphQL APIs',
+      color: 'from-indigo-500 to-blue-500',
+      projects: 20
+    },
+    { 
+      id: 6, 
+      icon: Zap, 
+      title: 'Performance Optimization', 
+      description: 'Speed & efficiency improvements',
+      color: 'from-yellow-500 to-orange-500',
+      projects: 6
+    }
+  ];
 
-  const userRequests = [
-    { id: 1, service: "Web Application", budget: "$5,000 - $10,000", status: "pending", date: "2025-01-15", progress: 20 },
-    { id: 2, service: "Mobile App", budget: "$10,000 - $20,000", status: "in-progress", date: "2025-01-10", progress: 65 },
-    { id: 3, service: "E-commerce Platform", budget: "$20,000+", status: "completed", date: "2024-12-20", progress: 100 },
+  const activeRequests = [
+    { id: 1, service: 'Web Development', status: 'in-progress', date: '2025-10-05', progress: 65 },
+    { id: 2, service: 'Mobile Apps', status: 'review', date: '2025-10-08', progress: 90 },
+    { id: 3, service: 'Backend Systems', status: 'pending', date: '2025-10-10', progress: 20 }
   ];
 
   const stats = [
-    { title: "Total Projects", value: "12", icon: Package, gradient: "from-blue-500 to-cyan-500", change: "+2 this month" },
-    { title: "In Progress", value: "3", icon: Clock, gradient: "from-purple-500 to-pink-500", change: "Active now" },
-    { title: "Completed", value: "8", icon: CheckCircle2, gradient: "from-green-500 to-emerald-500", change: "Success rate 100%" },
-    { title: "Total Invested", value: "$85K", icon: TrendingUp, gradient: "from-orange-500 to-red-500", change: "+12% growth" },
+    { label: 'Active Projects', value: '12', trend: '+3', icon: TrendingUp, color: 'text-green-500' },
+    { label: 'Completed', value: '48', trend: '+8', icon: CheckCircle, color: 'text-blue-500' },
+    { label: 'Pending Review', value: '5', trend: '=', icon: Clock, color: 'text-yellow-500' },
+    { label: 'Total Requests', value: '65', trend: '+11', icon: AlertCircle, color: 'text-purple-500' }
   ];
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "pending": return <Clock className="w-4 h-4" />;
-      case "in-progress": return <Rocket className="w-4 h-4" />;
-      case "completed": return <CheckCircle2 className="w-4 h-4" />;
-      default: return <XCircle className="w-4 h-4" />;
+  const handleSubmit = () => {
+    if (!projectName || !description) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive"
+      });
+      return;
     }
-  };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-      case "in-progress": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "completed": return "bg-green-500/10 text-green-500 border-green-500/20";
-      default: return "bg-gray-500/10 text-gray-500 border-gray-500/20";
-    }
+    toast({
+      title: "Request Submitted",
+      description: "Your service request has been submitted successfully.",
+    });
+    
+    setShowRequestModal(false);
+    setProjectName("");
+    setDescription("");
+    setSelectedService(null);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <Navbar />
       
-      <main className="flex-1 container mx-auto px-4 py-8 mt-16">
-        {/* Hero Section */}
-        <div className="mb-12 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 blur-3xl -z-10" />
-          <div className="flex items-start justify-between">
-            <div className="animate-fade-in">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent mb-3">
-                Welcome Back!
-              </h1>
-              <p className="text-xl text-muted-foreground flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-yellow-500" />
-                Let's build something amazing today
-              </p>
+      {/* Header */}
+      <header className="bg-black/30 backdrop-blur-xl border-b border-white/10 mt-16">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <Code className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">DevFlow Agency</h1>
+                <p className="text-xs text-gray-400">Client Portal</p>
+              </div>
             </div>
-            <Button size="lg" className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 shadow-lg hover-scale">
-              <Rocket className="w-5 h-5" />
-              New Project
-            </Button>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative hidden md:block">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input 
+                  type="text" 
+                  placeholder="Search projects..."
+                  className="bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                <User className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
+      </header>
 
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12 animate-fade-in">
-          {stats.map((stat, index) => (
-            <Card key={stat.title} className="relative overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover-scale transition-all duration-300 hover:shadow-xl" style={{ animationDelay: `${index * 100}ms` }}>
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-5`} />
-              <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, idx) => {
+            const StatIcon = stat.icon;
+            return (
+              <div key={idx} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${idx * 100}ms` }}>
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient}`}>
-                    <stat.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                  <StatIcon className={`w-8 h-8 ${stat.color}`} />
+                  <span className="text-xs text-green-400 font-medium">{stat.trend}</span>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
-                  <p className="text-3xl font-bold bg-gradient-to-br bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to bottom right, var(--foreground), var(--muted-foreground))` }}>
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2">{stat.change}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                <h3 className="text-3xl font-bold text-white mb-1">{stat.value}</h3>
+                <p className="text-sm text-gray-400">{stat.label}</p>
+              </div>
+            );
+          })}
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3 mb-8">
-          {/* New Service Request */}
-          <Card className="lg:col-span-2 border-0 shadow-xl bg-card/80 backdrop-blur-sm animate-fade-in">
-            <CardHeader className="border-b border-border/50">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-purple-600">
-                  <Rocket className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl">Start New Project</CardTitle>
-                  <CardDescription>Tell us about your next big idea</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="service-type" className="text-sm font-medium">Service Type</Label>
-                    <Select required>
-                      <SelectTrigger id="service-type" className="bg-background/50">
-                        <SelectValue placeholder="Choose a service" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-border">
-                        <SelectItem value="web-app">🌐 Web Application</SelectItem>
-                        <SelectItem value="mobile-app">📱 Mobile App</SelectItem>
-                        <SelectItem value="ecommerce">🛒 E-commerce Platform</SelectItem>
-                        <SelectItem value="custom">⚡ Custom Solution</SelectItem>
-                        <SelectItem value="consulting">💡 Consulting</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="budget" className="text-sm font-medium">Budget Range</Label>
-                    <Select required>
-                      <SelectTrigger id="budget" className="bg-background/50">
-                        <SelectValue placeholder="Select budget" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-border">
-                        <SelectItem value="small">💰 Under $5,000</SelectItem>
-                        <SelectItem value="medium">💎 $5,000 - $10,000</SelectItem>
-                        <SelectItem value="large">🚀 $10,000 - $20,000</SelectItem>
-                        <SelectItem value="enterprise">⭐ $20,000+</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="project-name" className="text-sm font-medium">Project Name</Label>
-                  <Input id="project-name" placeholder="Give your project a name" className="bg-background/50" required />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description" className="text-sm font-medium">Project Description</Label>
-                  <Textarea 
-                    id="description" 
-                    placeholder="Describe your vision, goals, and key features..."
-                    rows={4}
-                    className="bg-background/50 resize-none"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="timeline" className="text-sm font-medium">Expected Timeline</Label>
-                  <Input id="timeline" placeholder="e.g., 2-3 months" className="bg-background/50" required />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 shadow-lg text-base h-12"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Clock className="animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <Rocket />
-                      Submit Request
-                    </>
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Account Overview */}
-          <Card className="border-0 shadow-xl bg-gradient-to-br from-card/80 to-primary/5 backdrop-blur-sm animate-fade-in">
-            <CardHeader className="border-b border-border/50">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600">
-                  <Sparkles className="w-4 h-4 text-white" />
-                </div>
-                Your Profile
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              <div className="flex items-center gap-4 p-4 rounded-xl bg-background/50">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
-                  JD
-                </div>
-                <div>
-                  <p className="font-semibold text-lg">John Doe</p>
-                  <p className="text-sm text-muted-foreground">Premium Member</p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-background/50 space-y-1">
-                  <Label className="text-xs text-muted-foreground">Email</Label>
-                  <p className="font-medium">john.doe@example.com</p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-background/50 space-y-1">
-                  <Label className="text-xs text-muted-foreground flex items-center gap-2">
-                    <Calendar className="w-3 h-3" />
-                    Member Since
-                  </Label>
-                  <p className="font-medium">January 2025</p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-purple-500/10 border border-primary/20">
-                  <Label className="text-xs text-muted-foreground">Total Requests</Label>
-                  <p className="font-bold text-3xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                    {userRequests.length}
-                  </p>
-                </div>
-              </div>
-
-              <Button variant="outline" className="w-full hover-scale">
-                Edit Profile
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Active Projects */}
-        <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm animate-fade-in">
-          <CardHeader className="border-b border-border/50">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600">
-                  <Package className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl">Your Projects</CardTitle>
-                  <CardDescription>Track progress and milestones</CardDescription>
-                </div>
-              </div>
-              <Button variant="outline" className="hover-scale">
-                View All
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Services Section */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white">Request a Service</h2>
+              <button 
+                onClick={() => setShowRequestModal(true)}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2.5 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 flex items-center space-x-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span>New Request</span>
+              </button>
             </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              {userRequests.map((request, index) => (
-                <div 
-                  key={request.id} 
-                  className="p-5 rounded-xl bg-background/50 border border-border/50 hover:border-primary/50 transition-all hover-scale group"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-lg">{request.service}</h3>
-                        <Badge className={`${getStatusColor(request.status)} border`}>
-                          {getStatusIcon(request.status)}
-                          {request.status}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {request.date}
-                        </span>
-                        <span className="font-medium text-foreground">{request.budget}</span>
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      View Details
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </div>
 
-                  {/* Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">Progress</span>
-                      <span className="font-medium">{request.progress}%</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {services.map((service) => {
+                const ServiceIcon = service.icon;
+                return (
+                  <div 
+                    key={service.id}
+                    onClick={() => {
+                      setSelectedService(service);
+                      setShowRequestModal(true);
+                    }}
+                    className="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:scale-105 transition-all duration-300 cursor-pointer animate-fade-in"
+                  >
+                    <div className={`w-14 h-14 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <ServiceIcon className="w-7 h-7 text-white" />
                     </div>
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-primary to-purple-600 transition-all duration-500 rounded-full"
-                        style={{ width: `${request.progress}%` }}
-                      />
+                    <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{service.description}</p>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-500">{service.projects} projects completed</span>
+                      <span className="text-purple-400 group-hover:text-pink-400 transition-colors">Request →</span>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Active Requests Sidebar */}
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-6">Active Requests</h2>
+            <div className="space-y-4">
+              {activeRequests.map((request, idx) => (
+                <div key={request.id} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${idx * 100}ms` }}>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-white">{request.service}</h3>
+                    <span className={`text-xs px-2 py-1 rounded-full ${
+                      request.status === 'in-progress' ? 'bg-blue-500/20 text-blue-300' :
+                      request.status === 'review' ? 'bg-yellow-500/20 text-yellow-300' :
+                      'bg-gray-500/20 text-gray-300'
+                    }`}>
+                      {request.status}
+                    </span>
+                  </div>
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+                      <span>Progress</span>
+                      <span>{request.progress}%</span>
+                    </div>
+                    <div className="w-full bg-white/10 rounded-full h-2">
+                      <div 
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500"
+                        style={{ width: `${request.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500">Started: {request.date}</p>
                 </div>
               ))}
+              
+              <button className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-all duration-300">
+                View All Requests →
+              </button>
             </div>
-          </CardContent>
-        </Card>
-      </main>
+          </div>
+        </div>
+      </div>
+
+      {/* Request Modal */}
+      {showRequestModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowRequestModal(false)}>
+          <div className="bg-slate-900 border border-white/20 rounded-3xl p-8 max-w-md w-full animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {selectedService ? selectedService.title : 'New Service Request'}
+            </h3>
+            <p className="text-gray-400 text-sm mb-6">
+              {selectedService ? selectedService.description : 'Select a service to get started'}
+            </p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Project Name</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g., E-commerce Platform"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Description</label>
+                <textarea 
+                  placeholder="Tell us about your project..."
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                ></textarea>
+              </div>
+              
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Budget Range</label>
+                <select 
+                  value={budget}
+                  onChange={(e) => setBudget(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                  <option>$5,000 - $10,000</option>
+                  <option>$10,000 - $25,000</option>
+                  <option>$25,000 - $50,000</option>
+                  <option>$50,000+</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="flex space-x-3 mt-6">
+              <button 
+                onClick={() => setShowRequestModal(false)}
+                className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all duration-300"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleSubmit}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300"
+              >
+                Submit Request
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
