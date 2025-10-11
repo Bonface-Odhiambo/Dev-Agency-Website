@@ -211,11 +211,11 @@ const ParticleSystem = () => {
 
 const MorphingShape = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: '#0a0a0a' }}>
+    <section className="relative h-screen flex items-center justify-center overflow-hidden" style={{ background: '#0a0a0a' }}>
       <Canvas
         camera={{ position: [3, 0, 3.5], fov: 75 }}
         gl={{ antialias: true }}
-        className="w-full h-full"
+        style={{ width: '100%', height: '100%' }}
       >
         <color attach="background" args={['#0a0a0a']} />
         <ParticleSystem />
