@@ -95,13 +95,13 @@ const About = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
-              <Card key={index} className="bg-card/40 backdrop-blur-sm border-neon-purple/30 hover:border-neon-pink/50 transition-all duration-300">
+              <Card key={index} className="bg-card/20 backdrop-blur-sm border-neon-purple/30 hover:border-neon-pink/50 transition-all duration-300">
                 <CardContent className="p-6 text-center">
                   <stat.icon className="w-8 h-8 mx-auto mb-3 text-neon-pink" />
                   <div className="text-3xl font-bold bg-gradient-to-r from-neon-purple to-neon-pink bg-clip-text text-transparent mb-2">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-sm text-gray-300 font-medium">{stat.label}</div>
                 </CardContent>
               </Card>
             ))}
@@ -158,7 +158,7 @@ const About = () => {
             {values.map((value, index) => (
               <Card 
                 key={index}
-                className="bg-card/40 backdrop-blur-sm border-neon-purple/30 hover:border-neon-pink/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-pink/20 group"
+                className="bg-card/20 backdrop-blur-sm border-neon-purple/30 hover:border-neon-pink/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-pink/20 group"
               >
                 <CardContent className="p-8">
                   <div className="flex items-start gap-4">
@@ -166,8 +166,8 @@ const About = () => {
                       <value.icon className="w-6 h-6 text-neon-pink" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold mb-2 text-foreground">{value.title}</h3>
-                      <p className="text-muted-foreground">{value.description}</p>
+                      <h3 className="text-xl font-bold mb-2 text-white">{value.title}</h3>
+                      <p className="text-gray-300">{value.description}</p>
                     </div>
                   </div>
                 </CardContent>
