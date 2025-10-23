@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -69,15 +69,37 @@ const ContactForm = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors">
-                  <div className="p-3 bg-primary/10 rounded-lg">
-                    <Phone className="h-6 w-6 text-primary" />
+                <a 
+                  href="tel:+17542427030"
+                  className="block hover:no-underline"
+                >
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors">
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <Phone className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold mb-1">Phone</h3>
+                      <p className="text-muted-foreground">+1 (754) 242-7030</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">Phone</h3>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                </a>
+
+                <a
+                  href="https://wa.me/17542427030"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:no-underline"
+                >
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors">
+                    <div className="p-3 bg-[#25D366]/10 rounded-lg">
+                      <MessageCircle className="h-6 w-6 text-[#25D366]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold mb-1">WhatsApp</h3>
+                      <p className="text-muted-foreground">+1 (754) 242-7030</p>
+                    </div>
                   </div>
-                </div>
+                </a>
 
                 <div className="flex items-start gap-4 p-4 rounded-lg bg-accent/50 hover:bg-accent transition-colors">
                   <div className="p-3 bg-primary/10 rounded-lg">
