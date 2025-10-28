@@ -1,63 +1,64 @@
-import { useState } from "react";
-import { Users, FileText, TrendingUp, Clock, Search, Bell, User, Code, Eye, Edit, CheckCircle, AlertCircle, XCircle, Download, DollarSign } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Users, FileText, TrendingUp, Clock, Search, Bell, User, Code, Eye, Edit, CheckCircle, AlertCircle, XCircle, Download, DollarSign, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { serviceRequestsApi } from "@/services/api";
+import { useToast } from "@/hooks/use-toast";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-const AdminPanel = () => {
+const AdminPanelContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
+  const [serviceRequests, setServiceRequests] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  // Mock data for service requests
-  const serviceRequests = [
-    { 
-      id: 1, 
-      user: "John Doe", 
-      email: "john@example.com",
-      service: "Web Application", 
-      budget: "$5,000 - $10,000", 
-      status: "pending", 
-      date: "2025-01-15",
-      description: "E-commerce platform with payment integration"
-    },
-    { 
-      id: 2, 
-      user: "Jane Smith", 
-      email: "jane@example.com",
-      service: "Mobile App", 
-      budget: "$10,000 - $20,000", 
-      status: "in-progress", 
-      date: "2025-01-10",
-      description: "Fitness tracking mobile application"
-    },
-    { 
-      id: 3, 
-      user: "Mike Johnson", 
-      email: "mike@example.com",
-      service: "E-commerce Platform", 
-      budget: "$20,000+", 
-      status: "completed", 
-      date: "2024-12-20",
-      description: "Multi-vendor marketplace platform"
-    },
-    { 
-      id: 4, 
-      user: "Sarah Williams", 
-      email: "sarah@example.com",
-      service: "Custom Solution", 
-      budget: "$5,000 - $10,000", 
-      status: "pending", 
-      date: "2025-01-12",
-      description: "CRM system for small business"
-    },
-  ];
+  // Fetch service requests from backend
+  useEffect(() => {
+    fetchServiceRequests();
+  }, []);
 
-  // Mock data for users
-  const users = [
-    { id: 1, name: "John Doe", email: "john@example.com", joined: "2025-01-15", requests: 3, status: "active", totalSpent: 15000 },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", joined: "2025-01-10", requests: 2, status: "active", totalSpent: 25000 },
-    { id: 3, name: "Mike Johnson", email: "mike@example.com", joined: "2024-12-20", requests: 5, status: "active", totalSpent: 50000 },
-    { id: 4, name: "Sarah Williams", email: "sarah@example.com", joined: "2025-01-12", requests: 1, status: "active", totalSpent: 8000 },
-    { id: 5, name: "Tom Brown", email: "tom@example.com", joined: "2024-11-05", requests: 4, status: "inactive", totalSpent: 32000 },
-  ];
+  const fetchServiceRequests = async () => {
+    setLoading(true);
+    try {
+      const response = await serviceRequestsApi.getAll();
+      
+      if (response.success && response.data) {
+        // Transform data to match component expectations
+        const transformedRequests = response.data.map((req: any) => ({
+          id: req.id,
+          user: req.User?.name || 'Unknown User',
+          email: req.User?.email || 'N/A',
+          service: req.service_type,
+          budget: req.budget_range || 'Not specified',
+          status: req.status,
+          date: new Date(req.createdAt).toISOString().split('T')[0],
+          description: req.description,
+          projectName: req.project_name,
+          progress: req.progress || 0,
+        }));
+        setServiceRequests(transformedRequests);
+      }
+    } catch (error) {
+      console.error('Error fetching service requests:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load service requests',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   const stats = [
     { label: 'Total Users', value: users.length.toString(), trend: '+2', icon: Users, color: 'text-blue-500' },
@@ -265,7 +266,7 @@ const AdminPanel = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">DevFlow Agency</h1>
-                <p className="text-xs text-gray-400">Admin Panel</p>
+                <p className="text-xs text-gray-400">Admin Panel - {user?.name}</p>
               </div>
             </div>
             
@@ -284,9 +285,19 @@ const AdminPanel = () => {
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <User className="w-5 h-5" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <div className="text-right hidden md:block">
+                  <p className="text-sm text-white font-medium">{user?.name}</p>
+                  <p className="text-xs text-gray-400">{user?.role}</p>
+                </div>
+                <button 
+                  onClick={handleLogout}
+                  className="p-2 text-gray-400 hover:text-white transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -406,6 +417,14 @@ const AdminPanel = () => {
         </div>
       )}
     </div>
+  );
+};
+
+const AdminPanel = () => {
+  return (
+    <ProtectedRoute requireAdmin={true}>
+      <AdminPanelContent />
+    </ProtectedRoute>
   );
 };
 
