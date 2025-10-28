@@ -1,0 +1,176 @@
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Create reusable transporter
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT),
+    secure: process.env.EMAIL_SECURE === 'true',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD
+    }
+  });
+};
+
+// Send contact form notification to admin
+export const sendContactNotification = async (contactData) => {
+  try {
+    const transporter = createTransporter();
+    
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: process.env.CONTACT_EMAIL,
+      subject: `New Contact Form Submission from ${contactData.name}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+            .content { background: #f9f9f9; padding: 20px; border-radius: 0 0 8px 8px; }
+            .field { margin-bottom: 15px; }
+            .label { font-weight: bold; color: #667eea; }
+            .value { margin-top: 5px; padding: 10px; background: white; border-radius: 4px; }
+            .footer { margin-top: 20px; text-align: center; color: #666; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h2>🎉 New Contact Form Submission</h2>
+            </div>
+            <div class="content">
+              <div class="field">
+                <div class="label">Name:</div>
+                <div class="value">${contactData.name}</div>
+              </div>
+              
+              <div class="field">
+                <div class="label">Email:</div>
+                <div class="value"><a href="mailto:${contactData.email}">${contactData.email}</a></div>
+              </div>
+              
+              ${contactData.phone ? `
+              <div class="field">
+                <div class="label">Phone:</div>
+                <div class="value">${contactData.phone}</div>
+              </div>
+              ` : ''}
+              
+              ${contactData.company ? `
+              <div class="field">
+                <div class="label">Company:</div>
+                <div class="value">${contactData.company}</div>
+              </div>
+              ` : ''}
+              
+              <div class="field">
+                <div class="label">Message:</div>
+                <div class="value">${contactData.message}</div>
+              </div>
+              
+              <div class="field">
+                <div class="label">Submitted:</div>
+                <div class="value">${new Date().toLocaleString()}</div>
+              </div>
+            </div>
+            <div class="footer">
+              <p>This is an automated notification from your Dev Agency website contact form.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+    
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Contact notification email sent:', info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('❌ Error sending contact notification:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Send auto-reply to contact form submitter
+export const sendAutoReply = async (contactData) => {
+  try {
+    const transporter = createTransporter();
+    
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: contactData.email,
+      subject: 'Thank you for contacting Dev Agency',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center; }
+            .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+            .message { background: white; padding: 20px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #667eea; }
+            .footer { margin-top: 20px; text-align: center; color: #666; font-size: 12px; }
+            .button { display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 4px; margin-top: 20px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Dev Agency</h1>
+              <p>Thank you for reaching out!</p>
+            </div>
+            <div class="content">
+              <p>Hi ${contactData.name},</p>
+              
+              <p>Thank you for contacting Dev Agency. We've received your message and will get back to you within 24 hours.</p>
+              
+              <div class="message">
+                <strong>Your message:</strong>
+                <p>${contactData.message}</p>
+              </div>
+              
+              <p>In the meantime, feel free to:</p>
+              <ul>
+                <li>Check out our portfolio of projects</li>
+                <li>Learn more about our services</li>
+                <li>Connect with us on social media</li>
+              </ul>
+              
+              <p>For urgent matters, you can reach us at:</p>
+              <ul>
+                <li>📞 Phone: +1 (754) 242-7030</li>
+                <li>💬 WhatsApp: +1 (754) 242-7030</li>
+              </ul>
+              
+              <p>Best regards,<br><strong>The Dev Agency Team</strong></p>
+            </div>
+            <div class="footer">
+              <p>© ${new Date().getFullYear()} Dev Agency. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+    
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Auto-reply email sent:', info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('❌ Error sending auto-reply:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export default {
+  sendContactNotification,
+  sendAutoReply
+};

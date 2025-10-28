@@ -1,73 +1,210 @@
-# Welcome to your Lovable project
+# 🚀 Dev Agency Website
 
-## Project info
+A modern, full-stack web development agency website with a powerful Node.js backend and beautiful React frontend.
 
-**URL**: https://lovable.dev/projects/45cd03b8-2c7d-4a8e-bea5-dd805a71e5ec
+![Dev Agency](https://img.shields.io/badge/Status-Production%20Ready-success)
+![Node.js](https://img.shields.io/badge/Node.js-v16+-green)
+![React](https://img.shields.io/badge/React-18.3-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-12+-blue)
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+### Frontend
+- 🎨 Modern, responsive design with Tailwind CSS
+- 🌓 Dark/Light mode support
+- 📱 Mobile-first approach
+- ⚡ Fast performance with Vite
+- 🎭 Beautiful UI components with shadcn/ui
+- 🎬 Smooth animations and transitions
+- 📧 Functional contact form with backend integration
 
-**Use Lovable**
+### Backend
+- 🔒 Secure REST API with Express.js
+- 🗄️ PostgreSQL database with Sequelize ORM
+- 📧 Email notifications with Nodemailer
+- 🛡️ Security features (Helmet, CORS, Rate Limiting)
+- ✅ Input validation with express-validator
+- 📊 Health check endpoints
+- 🔍 Comprehensive error handling
+- 📝 Detailed logging
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/45cd03b8-2c7d-4a8e-bea5-dd805a71e5ec) and start prompting.
+## 🚀 Quick Start
 
-Changes made via Lovable will be committed automatically to this repo.
+**Get started in 5 minutes!** See [QUICK_START.md](./QUICK_START.md)
 
-**Use your preferred IDE**
+```bash
+# 1. Install backend dependencies
+cd backend && npm install
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# 2. Configure your database
+cp .env.example .env
+# Edit .env and add your DATABASE_URL
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# 3. Setup database
+npm run setup-db
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Start backend
 npm run dev
+
+# 5. In a new terminal, start frontend
+cd .. && npm install && npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Visit `http://localhost:8080` 🎉
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📚 Documentation
 
-**Use GitHub Codespaces**
+- **[Quick Start Guide](./QUICK_START.md)** - Get running in 5 minutes
+- **[Setup Guide](./SETUP_GUIDE.md)** - Detailed setup instructions
+- **[Backend README](./backend/README.md)** - API documentation
+- **[Database Schema](./backend/database/schema.sql)** - Database structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🛠️ Technology Stack
 
-## What technologies are used for this project?
+### Frontend
+- **Framework**: React 18.3 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React
+- **3D Graphics**: Three.js with React Three Fiber
+- **State Management**: React Hooks
+- **Form Handling**: React Hook Form with Zod validation
 
-This project is built with:
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: PostgreSQL
+- **ORM**: Sequelize
+- **Email**: Nodemailer
+- **Security**: Helmet, CORS, Rate Limiting
+- **Validation**: Express Validator
+- **Authentication**: JWT (ready for implementation)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📁 Project Structure
 
-## How can I deploy this project?
+```
+Dev-Agency-Website/
+├── backend/                    # Backend API
+│   ├── config/
+│   │   └── database.js        # Database configuration
+│   ├── models/
+│   │   ├── Contact.js         # Contact model
+│   │   └── Project.js         # Project model
+│   ├── routes/
+│   │   ├── health.js          # Health check
+│   │   ├── contact.js         # Contact routes
+│   │   └── projects.js        # Project routes
+│   ├── services/
+│   │   └── emailService.js    # Email service
+│   ├── database/
+│   │   └── schema.sql         # Database schema
+│   ├── scripts/
+│   │   └── setup-database.js  # Database setup script
+│   ├── .env.example           # Environment template
+│   ├── package.json           # Backend dependencies
+│   └── server.js              # Main server file
+├── src/                       # Frontend source
+│   ├── components/
+│   │   ├── ContactForm.tsx    # Contact form
+│   │   ├── Hero.tsx           # Hero section
+│   │   ├── Projects.tsx       # Projects showcase
+│   │   ├── Navbar.tsx         # Navigation
+│   │   └── ...                # Other components
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utilities
+│   └── App.tsx                # Main app component
+├── public/                    # Static assets
+├── .env.example               # Frontend env template
+├── QUICK_START.md             # Quick start guide
+├── SETUP_GUIDE.md             # Detailed setup guide
+└── README.md                  # This file
+```
 
-Simply open [Lovable](https://lovable.dev/projects/45cd03b8-2c7d-4a8e-bea5-dd805a71e5ec) and click on Share -> Publish.
+## 🔌 API Endpoints
 
-## Can I connect a custom domain to my Lovable project?
+### Health Check
+- `GET /api/health` - Check API and database status
 
-Yes, you can!
+### Contact Form
+- `POST /api/contact` - Submit contact form
+- `GET /api/contact` - Get all contacts (admin)
+- `GET /api/contact/:id` - Get single contact
+- `PATCH /api/contact/:id/status` - Update status
+- `DELETE /api/contact/:id` - Delete contact
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Projects
+- `GET /api/projects` - Get all projects
+- `GET /api/projects/featured` - Get featured projects
+- `GET /api/projects/:id` - Get single project
+- `POST /api/projects` - Create project (admin)
+- `PUT /api/projects/:id` - Update project (admin)
+- `DELETE /api/projects/:id` - Delete project (admin)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🔐 Environment Variables
+
+### Backend (`backend/.env`)
+```env
+PORT=3001
+NODE_ENV=development
+DATABASE_URL=your_postgresql_connection_string
+JWT_SECRET=your_secret_key
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+FRONTEND_URL=http://localhost:8080
+```
+
+### Frontend (`.env`)
+```env
+VITE_API_URL=http://localhost:3001
+```
+
+## 🧪 Testing
+
+```bash
+# Test backend health
+curl http://localhost:3001/api/health
+
+# Test contact form submission
+curl -X POST http://localhost:3001/api/contact \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@example.com","message":"Hello!"}'
+```
+
+## 🚀 Deployment
+
+### Backend
+- **Railway** (Recommended) - Automatic PostgreSQL
+- **Heroku** - With Postgres add-on
+- **DigitalOcean** - App Platform
+- **Render** - Free PostgreSQL included
+
+### Frontend
+- **Vercel** (Recommended for Vite/React)
+- **Netlify**
+- **Cloudflare Pages**
+- **Lovable** - [Deploy here](https://lovable.dev/projects/45cd03b8-2c7d-4a8e-bea5-dd805a71e5ec)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+ISC
+
+## 🆘 Support
+
+- Check [QUICK_START.md](./QUICK_START.md) for common issues
+- See [SETUP_GUIDE.md](./SETUP_GUIDE.md) for detailed instructions
+- Review [backend/README.md](./backend/README.md) for API docs
+
+## 🎨 Original Project
+
+This project was initially created with [Lovable](https://lovable.dev/projects/45cd03b8-2c7d-4a8e-bea5-dd805a71e5ec) and enhanced with a full-featured Node.js backend.
+
+---
+
+**Built with ❤️ by Dev Agency**
