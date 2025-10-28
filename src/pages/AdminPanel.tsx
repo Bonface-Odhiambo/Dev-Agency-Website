@@ -140,6 +140,22 @@ const AdminPanelContent = () => {
     navigate('/login');
   };
 
+  // Filter data based on search term
+  const filteredRequests = serviceRequests.filter(request => 
+    searchTerm === '' || 
+    request.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredUsers = users.filter(user =>
+    searchTerm === '' ||
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const stats = [
     { label: 'Total Users', value: users.length.toString(), trend: '+2', icon: Users, color: 'text-blue-500' },
     { label: 'Total Requests', value: serviceRequests.length.toString(), trend: '+4', icon: FileText, color: 'text-green-500' },
@@ -235,7 +251,7 @@ const AdminPanelContent = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
-              {serviceRequests.map((request) => (
+              {filteredRequests.map((request) => (
                 <tr key={request.id} className="hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{request.user}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{request.email}</td>
@@ -303,7 +319,7 @@ const AdminPanelContent = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{user.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{user.email}</td>
