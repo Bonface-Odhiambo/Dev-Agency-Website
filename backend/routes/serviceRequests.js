@@ -2,7 +2,9 @@ import express from 'express';
 import { body, validationResult } from 'express-validator';
 import ServiceRequest from '../models/ServiceRequest.js';
 import User from '../models/User.js';
+import Notification from '../models/Notification.js';
 import { authenticate, authorize } from '../middleware/auth.js';
+import { sendTeamAssignmentEmail } from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -360,15 +362,30 @@ router.patch('/:id/assign', authenticate, authorize('admin', 'super_admin'), asy
       relatedType: 'service_request'
     });
 
-    // TODO: Send email notification to client
-    // You can implement email sending here using your email service
-    // Example:
-    // await sendEmail({
-    //   to: serviceRequest.user.email,
-    //   subject: 'Team Assigned to Your Project',
-    //   html: `<p>Hi ${serviceRequest.user.name},</p>
-    //          <p>${teamMember.name} has been assigned to work on your project: ${serviceRequest.projectName}</p>`
-    // });
+    // Send email notification to client
+    try {
+      await sendTeamAssignmentEmail(
+        {
+          name: serviceRequest.user.name,
+          email: serviceRequest.user.email
+        },
+        {
+          name: teamMember.name,
+          email: teamMember.email,
+          role: teamMember.role
+        },
+        {
+          projectName: serviceRequest.projectName,
+          serviceType: serviceRequest.serviceType,
+          budgetRange: serviceRequest.budgetRange,
+          expectedTimeline: serviceRequest.expectedTimeline
+        }
+      );
+      console.log('✅ Team assignment email sent successfully');
+    } catch (emailError) {
+      console.error('⚠️ Failed to send email, but assignment was successful:', emailError);
+      // Don't fail the request if email fails
+    }
 
     res.json({
       success: true,
