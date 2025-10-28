@@ -1,7 +1,7 @@
 -- Migration 003: Create Service Requests Table
 -- Run this after creating users table
 
--- Create service_requests table
+-- Create service_requests table (Sequelize naming convention)
 CREATE TABLE IF NOT EXISTS service_requests (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -16,17 +16,17 @@ CREATE TABLE IF NOT EXISTS service_requests (
     estimated_completion DATE,
     actual_completion DATE,
     notes TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- Create indexes for service_requests table
 CREATE INDEX IF NOT EXISTS idx_service_requests_user_id ON service_requests(user_id);
 CREATE INDEX IF NOT EXISTS idx_service_requests_status ON service_requests(status);
 CREATE INDEX IF NOT EXISTS idx_service_requests_assigned_to ON service_requests(assigned_to);
-CREATE INDEX IF NOT EXISTS idx_service_requests_created_at ON service_requests(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_service_requests_created_at ON service_requests("createdAt" DESC);
 
--- Add trigger for updated_at
+-- Add trigger for updatedAt
 DROP TRIGGER IF EXISTS update_service_requests_updated_at ON service_requests;
 CREATE TRIGGER update_service_requests_updated_at
     BEFORE UPDATE ON service_requests

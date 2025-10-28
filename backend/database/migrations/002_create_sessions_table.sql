@@ -1,7 +1,7 @@
 -- Migration 002: Create Sessions Table
 -- Run this after creating users table
 
--- Create sessions table
+-- Create sessions table (Sequelize naming convention)
 CREATE TABLE IF NOT EXISTS sessions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     ip_address VARCHAR(45),
     user_agent TEXT,
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- Create indexes for sessions table

@@ -1,7 +1,7 @@
 -- Migration 006: Create Database Views
 -- Run this after all tables are created
 
--- View for user statistics
+-- View for user statistics (using Sequelize column names)
 CREATE OR REPLACE VIEW user_stats AS
 SELECT 
     COUNT(*) as total_users,
@@ -9,8 +9,8 @@ SELECT
     COUNT(*) FILTER (WHERE role = 'admin') as total_admins,
     COUNT(*) FILTER (WHERE status = 'active') as active_users,
     COUNT(*) FILTER (WHERE status = 'inactive') as inactive_users,
-    COUNT(*) FILTER (WHERE created_at >= CURRENT_DATE - INTERVAL '7 days') as new_users_last_7_days,
-    COUNT(*) FILTER (WHERE created_at >= CURRENT_DATE - INTERVAL '30 days') as new_users_last_30_days
+    COUNT(*) FILTER (WHERE "createdAt" >= CURRENT_DATE - INTERVAL '7 days') as new_users_last_7_days,
+    COUNT(*) FILTER (WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days') as new_users_last_30_days
 FROM users;
 
 -- View for service request statistics
@@ -22,8 +22,8 @@ SELECT
     COUNT(*) FILTER (WHERE status = 'review') as review_requests,
     COUNT(*) FILTER (WHERE status = 'completed') as completed_requests,
     COUNT(*) FILTER (WHERE status = 'cancelled') as cancelled_requests,
-    COUNT(*) FILTER (WHERE created_at >= CURRENT_DATE - INTERVAL '7 days') as requests_last_7_days,
-    COUNT(*) FILTER (WHERE created_at >= CURRENT_DATE - INTERVAL '30 days') as requests_last_30_days,
+    COUNT(*) FILTER (WHERE "createdAt" >= CURRENT_DATE - INTERVAL '7 days') as requests_last_7_days,
+    COUNT(*) FILTER (WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days') as requests_last_30_days,
     AVG(progress) as average_progress
 FROM service_requests;
 
@@ -53,8 +53,8 @@ SELECT
     (SELECT COUNT(*) FROM service_requests WHERE status = 'in-progress') as in_progress_requests,
     (SELECT COUNT(*) FROM service_requests WHERE status = 'completed') as completed_requests,
     (SELECT COUNT(*) FROM contacts WHERE status = 'new') as new_contacts,
-    (SELECT COUNT(*) FROM users WHERE created_at >= CURRENT_DATE - INTERVAL '30 days') as new_users_this_month,
-    (SELECT COUNT(*) FROM service_requests WHERE created_at >= CURRENT_DATE - INTERVAL '30 days') as new_requests_this_month;
+    (SELECT COUNT(*) FROM users WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days') as new_users_this_month,
+    (SELECT COUNT(*) FROM service_requests WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days') as new_requests_this_month;
 
 -- View for recent activity
 CREATE OR REPLACE VIEW recent_activity AS
@@ -62,10 +62,10 @@ SELECT
     al.id,
     al.action,
     al.description,
-    al.created_at,
+    al."createdAt" as created_at,
     u.name as user_name,
     u.email as user_email
 FROM activity_logs al
 LEFT JOIN users u ON al.user_id = u.id
-ORDER BY al.created_at DESC
+ORDER BY al."createdAt" DESC
 LIMIT 50;

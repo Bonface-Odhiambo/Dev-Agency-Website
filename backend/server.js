@@ -10,9 +10,36 @@ import rateLimit from 'express-rate-limit';
 import contactRoutes from './routes/contact.js';
 import projectRoutes from './routes/projects.js';
 import healthRoutes from './routes/health.js';
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/users.js';
+import serviceRequestRoutes from './routes/serviceRequests.js';
+import notificationRoutes from './routes/notifications.js';
 
 // Import database
 import sequelize from './config/database.js';
+
+// Import models to set up associations
+import User from './models/User.js';
+import Session from './models/Session.js';
+import ServiceRequest from './models/ServiceRequest.js';
+import Notification from './models/Notification.js';
+import ActivityLog from './models/ActivityLog.js';
+import Contact from './models/Contact.js';
+import Project from './models/Project.js';
+
+// Set up model associations
+User.hasMany(Session, { foreignKey: 'userId', as: 'sessions' });
+Session.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(ServiceRequest, { foreignKey: 'userId', as: 'serviceRequests' });
+ServiceRequest.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+ServiceRequest.belongsTo(User, { foreignKey: 'assignedTo', as: 'assignedUser' });
+
+User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
+Notification.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(ActivityLog, { foreignKey: 'userId', as: 'activityLogs' });
+ActivityLog.belongsTo(User, { foreignKey: 'userId' });
 
 // Load environment variables
 dotenv.config();
@@ -57,6 +84,10 @@ app.use('/api/', limiter);
 app.use('/api/health', healthRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/service-requests', serviceRequestRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Root route
 app.get('/', (req, res) => {
