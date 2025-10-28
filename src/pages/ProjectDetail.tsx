@@ -30,7 +30,7 @@ const projectsData = {
       { name: "Authentication", tech: "JWT, OAuth" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop"
     ]
