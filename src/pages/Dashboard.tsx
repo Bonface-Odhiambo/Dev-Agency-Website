@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
-import { Code, Globe, Smartphone, Database, Cloud, Zap, Plus, Search, Bell, User, TrendingUp, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { useAuth } from "@/contexts/AuthContext";
+import { serviceRequestsApi } from "@/services/api";
+import { Code, Globe, Smartphone, Database, Cloud, Zap, Plus, Search, Bell, User, TrendingUp, Clock, CheckCircle, AlertCircle, LogOut } from 'lucide-react';
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-const Dashboard = () => {
+const DashboardContent = () => {
   const { toast } = useToast();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [projectName, setProjectName] = useState("");
@@ -76,7 +82,7 @@ const Dashboard = () => {
     { label: 'Total Requests', value: '65', trend: '+11', icon: AlertCircle, color: 'text-purple-500' }
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!projectName || !description) {
       toast({
         title: "Error",
@@ -86,15 +92,43 @@ const Dashboard = () => {
       return;
     }
 
-    toast({
-      title: "Request Submitted",
-      description: "Your service request has been submitted successfully.",
-    });
-    
-    setShowRequestModal(false);
-    setProjectName("");
-    setDescription("");
-    setSelectedService(null);
+    try {
+      const response = await serviceRequestsApi.create({
+        project_name: projectName,
+        service_type: selectedService?.title || 'General',
+        description: description,
+        budget_range: budget,
+      });
+
+      if (response.success) {
+        toast({
+          title: "Request Submitted",
+          description: "Your service request has been submitted successfully.",
+        });
+        
+        setShowRequestModal(false);
+        setProjectName("");
+        setDescription("");
+        setSelectedService(null);
+      } else {
+        toast({
+          title: "Submission Failed",
+          description: response.error || "Could not submit request",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
   };
 
   return (
@@ -111,7 +145,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">DevFlow Agency</h1>
-                <p className="text-xs text-gray-400">Client Portal</p>
+                <p className="text-xs text-gray-400">Welcome, {user?.name || 'Client'}</p>
               </div>
             </div>
             
@@ -128,9 +162,19 @@ const Dashboard = () => {
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <User className="w-5 h-5" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <div className="text-right hidden md:block">
+                  <p className="text-sm text-white font-medium">{user?.name}</p>
+                  <p className="text-xs text-gray-400">{user?.email}</p>
+                </div>
+                <button 
+                  onClick={handleLogout}
+                  className="p-2 text-gray-400 hover:text-white transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -305,6 +349,14 @@ const Dashboard = () => {
 
       <Footer />
     </div>
+  );
+};
+
+const Dashboard = () => {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   );
 };
 
