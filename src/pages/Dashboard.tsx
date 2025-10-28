@@ -302,8 +302,8 @@ const DashboardContent = () => {
                   <div key={request.id} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-white mb-1">{request.project_name}</h3>
-                        <p className="text-xs text-gray-400">{request.service_type}</p>
+                        <h3 className="text-sm font-semibold text-white mb-1">{request.projectName}</h3>
+                        <p className="text-xs text-gray-400">{request.serviceType}</p>
                       </div>
                       <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${
                         request.status === 'completed' ? 'bg-green-500/20 text-green-300' :

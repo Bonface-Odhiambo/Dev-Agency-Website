@@ -263,4 +263,83 @@ router.get('/stats/overview', authenticate, authorize('admin', 'super_admin'), a
   }
 });
 
+// GET /api/users/export/excel - Export users and requests to Excel (admin only)
+router.get('/export/excel', authenticate, authorize('admin', 'super_admin'), async (req, res) => {
+  try {
+    // Get all users with their service requests
+    const users = await User.findAll({
+      attributes: { exclude: ['passwordHash'] },
+      include: [
+        {
+          model: ServiceRequest,
+          as: 'serviceRequests',
+          required: false
+        }
+      ],
+      order: [['createdAt', 'DESC']]
+    });
+
+    // Prepare data for Excel
+    const exportData = [];
+    
+    users.forEach(user => {
+      const userRequests = user.serviceRequests || [];
+      
+      if (userRequests.length === 0) {
+        // User with no requests
+        exportData.push({
+          'User ID': user.id,
+          'Name': user.name,
+          'Email': user.email,
+          'Phone': user.phone || 'N/A',
+          'Role': user.role,
+          'Status': user.status,
+          'Email Verified': user.emailVerified ? 'Yes' : 'No',
+          'Joined Date': user.createdAt.toISOString().split('T')[0],
+          'Request ID': 'N/A',
+          'Project Name': 'N/A',
+          'Service Type': 'N/A',
+          'Budget Range': 'N/A',
+          'Expected Timeline': 'N/A',
+          'Request Status': 'N/A',
+          'Request Date': 'N/A'
+        });
+      } else {
+        // User with requests
+        userRequests.forEach(request => {
+          exportData.push({
+            'User ID': user.id,
+            'Name': user.name,
+            'Email': user.email,
+            'Phone': user.phone || 'N/A',
+            'Role': user.role,
+            'Status': user.status,
+            'Email Verified': user.emailVerified ? 'Yes' : 'No',
+            'Joined Date': user.createdAt.toISOString().split('T')[0],
+            'Request ID': request.id,
+            'Project Name': request.projectName,
+            'Service Type': request.serviceType,
+            'Budget Range': request.budgetRange || 'N/A',
+            'Expected Timeline': request.expectedTimeline || 'N/A',
+            'Request Status': request.status,
+            'Request Date': request.createdAt.toISOString().split('T')[0]
+          });
+        });
+      }
+    });
+
+    res.json({
+      success: true,
+      data: exportData,
+      filename: `users-and-requests-${new Date().toISOString().split('T')[0]}.xlsx`
+    });
+  } catch (error) {
+    console.error('Export users error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to export users'
+    });
+  }
+});
+
 export default router;

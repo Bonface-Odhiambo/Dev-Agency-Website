@@ -21,6 +21,9 @@ const serviceRequestValidation = [
     .isLength({ min: 10 }).withMessage('Description must be at least 10 characters'),
   body('budgetRange')
     .optional()
+    .trim(),
+  body('expectedTimeline')
+    .optional()
     .trim()
 ];
 
@@ -36,7 +39,7 @@ router.post('/', authenticate, serviceRequestValidation, async (req, res) => {
       });
     }
 
-    const { projectName, serviceType, description, budgetRange } = req.body;
+    const { projectName, serviceType, description, budgetRange, expectedTimeline } = req.body;
 
     const serviceRequest = await ServiceRequest.create({
       userId: req.user.id,
@@ -44,6 +47,7 @@ router.post('/', authenticate, serviceRequestValidation, async (req, res) => {
       serviceType,
       description,
       budgetRange,
+      expectedTimeline,
       status: 'pending',
       priority: 'normal',
       progress: 0

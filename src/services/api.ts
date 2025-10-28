@@ -118,11 +118,11 @@ export const authApi = {
 // Service Requests API
 export const serviceRequestsApi = {
   create: async (requestData: {
-    project_name: string;
-    service_type: string;
+    projectName: string;
+    serviceType: string;
     description: string;
-    budget_range?: string;
-    expected_timeline?: string;
+    budgetRange?: string;
+    expectedTimeline?: string;
   }) => {
     return apiRequest('/api/service-requests', {
       method: 'POST',
@@ -222,6 +222,41 @@ export const projectsApi = {
   },
 };
 
+// Users API (Admin only)
+export const usersApi = {
+  getAll: async (params?: { role?: string; status?: string; page?: number; limit?: number }) => {
+    const queryString = params ? '?' + new URLSearchParams(params as any).toString() : '';
+    return apiRequest(`/api/users${queryString}`, {
+      method: 'GET',
+    });
+  },
+
+  getById: async (id: string) => {
+    return apiRequest(`/api/users/${id}`, {
+      method: 'GET',
+    });
+  },
+
+  update: async (id: string, data: any) => {
+    return apiRequest(`/api/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  },
+
+  delete: async (id: string) => {
+    return apiRequest(`/api/users/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
+  exportExcel: async () => {
+    return apiRequest('/api/users/export/excel', {
+      method: 'GET',
+    });
+  },
+};
+
 // Health check
 export const healthCheck = async () => {
   return apiRequest('/api/health', {
@@ -235,5 +270,6 @@ export default {
   notifications: notificationsApi,
   contact: contactApi,
   projects: projectsApi,
+  users: usersApi,
   healthCheck,
 };

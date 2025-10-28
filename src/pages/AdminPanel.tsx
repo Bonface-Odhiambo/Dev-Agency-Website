@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Users, FileText, TrendingUp, Clock, Search, Bell, User, Code, Eye, Edit, CheckCircle, AlertCircle, XCircle, Download, DollarSign, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { serviceRequestsApi } from "@/services/api";
+import { serviceRequestsApi, usersApi } from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
@@ -17,9 +17,10 @@ const AdminPanelContent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Fetch service requests from backend
+  // Fetch service requests and users from backend
   useEffect(() => {
     fetchServiceRequests();
+    fetchUsers();
   }, []);
 
   const fetchServiceRequests = async () => {
@@ -31,14 +32,14 @@ const AdminPanelContent = () => {
         // Transform data to match component expectations
         const transformedRequests = response.data.map((req: any) => ({
           id: req.id,
-          user: req.User?.name || 'Unknown User',
-          email: req.User?.email || 'N/A',
-          service: req.service_type,
-          budget: req.budget_range || 'Not specified',
+          user: req.user?.name || 'Unknown User',
+          email: req.user?.email || 'N/A',
+          service: req.serviceType,
+          budget: req.budgetRange || 'Not specified',
           status: req.status,
           date: new Date(req.createdAt).toISOString().split('T')[0],
           description: req.description,
-          projectName: req.project_name,
+          projectName: req.projectName,
           progress: req.progress || 0,
         }));
         setServiceRequests(transformedRequests);
@@ -52,6 +53,85 @@ const AdminPanelContent = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await usersApi.getAll({ limit: 100 });
+      
+      if (response.success && response.data) {
+        const transformedUsers = response.data.map((u: any) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          joined: new Date(u.createdAt).toISOString().split('T')[0],
+          requests: 0, // Will be calculated
+          status: u.status,
+          role: u.role,
+          phone: u.phone,
+          totalSpent: 0
+        }));
+        setUsers(transformedUsers);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      toast({
+        title: 'Exporting...',
+        description: 'Preparing Excel file...',
+      });
+
+      const response = await usersApi.exportExcel();
+      
+      if (response.success && response.data) {
+        // Convert JSON to Excel using SheetJS approach
+        const data = response.data;
+        const filename = (response as any).filename || 'export.xlsx';
+        
+        // Create CSV content
+        const headers = Object.keys(data[0]);
+        const csvContent = [
+          headers.join(','),
+          ...data.map((row: any) => 
+            headers.map(header => {
+              const value = row[header];
+              // Escape commas and quotes
+              return typeof value === 'string' && (value.includes(',') || value.includes('"'))
+                ? `"${value.replace(/"/g, '""')}"`
+                : value;
+            }).join(',')
+          )
+        ].join('\n');
+
+        // Create blob and download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename.replace('.xlsx', '.csv'));
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        toast({
+          title: 'Export Successful',
+          description: 'Data has been exported to CSV file',
+        });
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+      toast({
+        title: 'Export Failed',
+        description: 'Failed to export data',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -131,7 +211,10 @@ const AdminPanelContent = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-white">Service Requests</h2>
-        <button className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition-all flex items-center space-x-2">
+        <button 
+          onClick={handleExport}
+          className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition-all flex items-center space-x-2"
+        >
           <Download className="w-4 h-4" />
           <span>Export</span>
         </button>
@@ -196,7 +279,10 @@ const AdminPanelContent = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-white">User Management</h2>
-        <button className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition-all flex items-center space-x-2">
+        <button 
+          onClick={handleExport}
+          className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition-all flex items-center space-x-2"
+        >
           <Download className="w-4 h-4" />
           <span>Export</span>
         </button>
