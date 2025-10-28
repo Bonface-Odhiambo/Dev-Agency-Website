@@ -1,50 +1,48 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const projects = [
   {
-    title: "FitTrack App",
-    description: "A fitness tracking app that helps you monitor your daily activities and health goals.",
-    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&auto=format&fit=crop"
+    id: "linktree-clone",
+    title: "LinkTree Clone",
+    description: "A customizable bio link platform that allows creators to showcase all their important links in one beautiful page. Perfect for social media profiles.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop",
+    tags: ["Social Media", "Creator Tools", "Landing Page"]
   },
   {
-    title: "DataViz Dashboard",
-    description: "An analytics dashboard for visualizing complex data in a user-friendly interface.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop"
+    id: "youtube-patreon-clone",
+    title: "YouTube / Patreon Clone",
+    description: "A complete video streaming and creator monetization platform with subscriptions, memberships, and exclusive content features.",
+    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&auto=format&fit=crop",
+    tags: ["Video Streaming", "Monetization", "Subscriptions"]
   },
   {
-    title: "TeamSync Platform",
-    description: "An innovative platform that enhances team collaboration and project management efficiency.",
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&auto=format&fit=crop"
+    id: "onlyfans-clone",
+    title: "OnlyFans Clone",
+    description: "A premium content subscription platform enabling creators to monetize exclusive content with tiered memberships and pay-per-view features.",
+    image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&auto=format&fit=crop",
+    tags: ["Content Platform", "Subscriptions", "Creator Economy"]
   },
   {
-    title: "VR Adventure",
-    description: "A groundbreaking virtual reality game that takes players on an immersive journey through fantastical worlds.",
-    image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=800&auto=format&fit=crop"
+    id: "celebrity-website",
+    title: "Celebrity Website",
+    description: "A stunning portfolio website for celebrities featuring image galleries, social links, booking system, event calendar, and fan engagement tools.",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop",
+    tags: ["Portfolio", "Booking", "Events"]
   },
   {
-    title: "AR Shopping Experience",
-    description: "Revolutionary shopping app using augmented reality for a unique customer experience.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop"
+    id: "amazon-whatnot-clone",
+    title: "Amazon / Whatnot Clone",
+    description: "A full-featured e-commerce and live shopping platform with product listings, live auctions, seller dashboards, and integrated payment processing.",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop",
+    tags: ["E-commerce", "Live Shopping", "Marketplace"]
   },
   {
-    title: "EduLearn Portal",
-    description: "A comprehensive learning portal offering interactive and resourceful courses for students.",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&auto=format&fit=crop"
-  },
-  {
-    title: "Wellness Tracker",
-    description: "Track your wellness journey with personalized insights and health tracking features.",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop"
-  },
-  {
-    title: "RemoteWork Hub",
-    description: "A comprehensive platform for remote work, focusing on task management and team collaboration.",
-    image: "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=800&auto=format&fit=crop"
-  },
-  {
+    id: "ai-assistant",
     title: "AI Assistant",
     description: "An AI-powered personal assistant app that helps manage daily tasks with ease and efficiency.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
+    tags: ["AI", "Productivity", "Automation"]
   }
 ];
 
@@ -55,19 +53,32 @@ const Projects = () => {
         <h2 className="text-4xl font-bold mb-12">Our Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <Card 
-              key={index}
-              className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden border-border/50"
-            >
-              <div className="aspect-video overflow-hidden">
+            <Link key={index} to={`/project/${project.id}`}>
+              <Card 
+                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden border-border/50 cursor-pointer h-full"
+              >
+              <div className="aspect-video overflow-hidden relative">
                 <img 
                   src={project.image} 
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
+                <div className="absolute top-3 right-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  Clone
+                </div>
               </div>
               <CardHeader>
                 <CardTitle className="text-xl">{project.title}</CardTitle>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {project.tags.map((tag, tagIndex) => (
+                    <span 
+                      key={tagIndex}
+                      className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-muted-foreground">
@@ -75,6 +86,7 @@ const Projects = () => {
                 </CardDescription>
               </CardContent>
             </Card>
+            </Link>
           ))}
         </div>
       </div>

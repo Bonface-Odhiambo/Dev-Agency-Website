@@ -54,7 +54,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-darker-bg via-dark-bg to-darker-bg p-4">
       <div className="absolute inset-0 bg-gradient-to-tr from-neon-purple/10 via-transparent to-neon-pink/10"></div>
       
-      <Card className="w-full max-w-md relative z-10 bg-card/80 backdrop-blur-sm border-border/50">
+      <Card className="w-full max-w-lg relative z-10 bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Code2 className="h-8 w-8 text-primary" />
@@ -66,8 +66,8 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -78,7 +78,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -101,14 +101,14 @@ const Login = () => {
             </Button>
           </form>
 
-          <div className="relative my-6">
+          <div className="relative my-4">
             <Separator />
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
               Or continue with
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <Button
               variant="outline"
               onClick={() => handleSocialLogin("Google")}
@@ -150,7 +150,7 @@ const Login = () => {
             </Button>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-3">
+          <div className="mt-2 grid grid-cols-2 gap-2">
             <Button
               variant="outline"
               onClick={() => handleSocialLogin("Apple")}
@@ -163,7 +163,7 @@ const Login = () => {
             </Button>
           </div>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
+          <p className="mt-4 text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
             <Link to="/signup" className="text-primary hover:underline font-medium">
               Sign up
