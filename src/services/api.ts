@@ -122,6 +122,7 @@ export const serviceRequestsApi = {
     service_type: string;
     description: string;
     budget_range?: string;
+    expected_timeline?: string;
   }) => {
     return apiRequest('/api/service-requests', {
       method: 'POST',

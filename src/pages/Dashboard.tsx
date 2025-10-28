@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { serviceRequestsApi } from "@/services/api";
 import { Code, Globe, Smartphone, Database, Cloud, Zap, Plus, Search, Bell, User, TrendingUp, Clock, CheckCircle, AlertCircle, LogOut } from 'lucide-react';
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Footer from "@/components/Footer";
 
 const DashboardContent = () => {
   const { toast } = useToast();
@@ -16,7 +15,8 @@ const DashboardContent = () => {
   const [selectedService, setSelectedService] = useState<any>(null);
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
-  const [budget, setBudget] = useState("$5,000 - $10,000");
+  const [budget, setBudget] = useState("$500 - $1,000");
+  const [timeline, setTimeline] = useState("");
 
   const services = [
     { 
@@ -69,24 +69,65 @@ const DashboardContent = () => {
     }
   ];
 
-  const activeRequests = [
-    { id: 1, service: 'Web Development', status: 'in-progress', date: '2025-10-05', progress: 65 },
-    { id: 2, service: 'Mobile Apps', status: 'review', date: '2025-10-08', progress: 90 },
-    { id: 3, service: 'Backend Systems', status: 'pending', date: '2025-10-10', progress: 20 }
-  ];
+  const [myRequests, setMyRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch user's service requests
+  useEffect(() => {
+    fetchMyRequests();
+  }, []);
+
+  const fetchMyRequests = async () => {
+    setLoading(true);
+    try {
+      const response = await serviceRequestsApi.getAll();
+      if (response.success && response.data) {
+        setMyRequests(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Calculate stats from real data
   const stats = [
-    { label: 'Active Projects', value: '12', trend: '+3', icon: TrendingUp, color: 'text-green-500' },
-    { label: 'Completed', value: '48', trend: '+8', icon: CheckCircle, color: 'text-blue-500' },
-    { label: 'Pending Review', value: '5', trend: '=', icon: Clock, color: 'text-yellow-500' },
-    { label: 'Total Requests', value: '65', trend: '+11', icon: AlertCircle, color: 'text-purple-500' }
+    { 
+      label: 'Total Requests', 
+      value: myRequests.length.toString(), 
+      icon: AlertCircle, 
+      color: 'text-purple-500',
+      bgColor: 'from-purple-500/20 to-pink-500/20'
+    },
+    { 
+      label: 'In Progress', 
+      value: myRequests.filter(r => r.status === 'in-progress').length.toString(), 
+      icon: TrendingUp, 
+      color: 'text-blue-500',
+      bgColor: 'from-blue-500/20 to-cyan-500/20'
+    },
+    { 
+      label: 'Pending', 
+      value: myRequests.filter(r => r.status === 'pending').length.toString(), 
+      icon: Clock, 
+      color: 'text-yellow-500',
+      bgColor: 'from-yellow-500/20 to-orange-500/20'
+    },
+    { 
+      label: 'Completed', 
+      value: myRequests.filter(r => r.status === 'completed').length.toString(), 
+      icon: CheckCircle, 
+      color: 'text-green-500',
+      bgColor: 'from-green-500/20 to-emerald-500/20'
+    }
   ];
 
   const handleSubmit = async () => {
-    if (!projectName || !description) {
+    if (!projectName || !description || !timeline) {
       toast({
         title: "Error",
-        description: "Please fill in all fields",
+        description: "Please fill in all required fields",
         variant: "destructive"
       });
       return;
@@ -94,10 +135,11 @@ const DashboardContent = () => {
 
     try {
       const response = await serviceRequestsApi.create({
-        project_name: projectName,
-        service_type: selectedService?.title || 'General',
+        projectName: projectName,
+        serviceType: selectedService?.title || 'General',
         description: description,
-        budget_range: budget,
+        budgetRange: budget,
+        expectedTimeline: timeline,
       });
 
       if (response.success) {
@@ -109,7 +151,11 @@ const DashboardContent = () => {
         setShowRequestModal(false);
         setProjectName("");
         setDescription("");
+        setTimeline("");
         setSelectedService(null);
+        
+        // Refresh the requests list
+        fetchMyRequests();
       } else {
         toast({
           title: "Submission Failed",
@@ -133,10 +179,9 @@ const DashboardContent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <Navbar />
       
       {/* Header */}
-      <header className="bg-black/30 backdrop-blur-xl border-b border-white/10 mt-16">
+      <header className="bg-black/30 backdrop-blur-xl border-b border-white/10 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -144,7 +189,7 @@ const DashboardContent = () => {
                 <Code className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">DevFlow Agency</h1>
+                <h1 className="text-xl font-bold text-white">Function Call</h1>
                 <p className="text-xs text-gray-400">Welcome, {user?.name || 'Client'}</p>
               </div>
             </div>
@@ -182,17 +227,18 @@ const DashboardContent = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {stats.map((stat, idx) => {
             const StatIcon = stat.icon;
             return (
-              <div key={idx} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${idx * 100}ms` }}>
-                <div className="flex items-center justify-between mb-4">
-                  <StatIcon className={`w-8 h-8 ${stat.color}`} />
-                  <span className="text-xs text-green-400 font-medium">{stat.trend}</span>
+              <div key={idx} className={`bg-gradient-to-br ${stat.bgColor} backdrop-blur-xl border border-white/10 rounded-xl p-5 hover:scale-105 transition-all duration-300`}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 bg-white/10 rounded-lg">
+                    <StatIcon className={`w-5 h-5 ${stat.color}`} />
+                  </div>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{stat.value}</h3>
-                <p className="text-sm text-gray-400">{stat.label}</p>
+                <h3 className="text-2xl font-bold text-white mb-1">{stat.value}</h3>
+                <p className="text-xs text-gray-300">{stat.label}</p>
               </div>
             );
           })}
@@ -202,16 +248,7 @@ const DashboardContent = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Services Section */}
           <div className="lg:col-span-2">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Request a Service</h2>
-              <button 
-                onClick={() => setShowRequestModal(true)}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2.5 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 flex items-center space-x-2"
-              >
-                <Plus className="w-4 h-4" />
-                <span>New Request</span>
-              </button>
-            </div>
+            <h2 className="text-2xl font-bold text-white mb-6">Request a Service</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {services.map((service) => {
@@ -240,41 +277,66 @@ const DashboardContent = () => {
             </div>
           </div>
 
-          {/* Active Requests Sidebar */}
+          {/* My Requests Sidebar */}
           <div>
-            <h2 className="text-2xl font-bold text-white mb-6">Active Requests</h2>
-            <div className="space-y-4">
-              {activeRequests.map((request, idx) => (
-                <div key={request.id} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${idx * 100}ms` }}>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-semibold text-white">{request.service}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      request.status === 'in-progress' ? 'bg-blue-500/20 text-blue-300' :
-                      request.status === 'review' ? 'bg-yellow-500/20 text-yellow-300' :
-                      'bg-gray-500/20 text-gray-300'
-                    }`}>
-                      {request.status}
-                    </span>
-                  </div>
-                  <div className="mb-3">
-                    <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-                      <span>Progress</span>
-                      <span>{request.progress}%</span>
-                    </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${request.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500">Started: {request.date}</p>
+            {/* New Request Button */}
+            <button 
+              onClick={() => setShowRequestModal(true)}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center space-x-2 mb-6"
+            >
+              <Plus className="w-5 h-5" />
+              <span>New Request</span>
+            </button>
+
+            <h2 className="text-xl font-bold text-white mb-4">My Requests</h2>
+            <div className="space-y-3">
+              {loading ? (
+                <div className="text-center py-8 text-gray-400">Loading...</div>
+              ) : myRequests.length === 0 ? (
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 text-center">
+                  <p className="text-gray-400 text-sm mb-2">No requests yet</p>
+                  <p className="text-gray-500 text-xs">Click on a service to get started</p>
                 </div>
-              ))}
+              ) : (
+                myRequests.slice(0, 5).map((request) => (
+                  <div key={request.id} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h3 className="text-sm font-semibold text-white mb-1">{request.project_name}</h3>
+                        <p className="text-xs text-gray-400">{request.service_type}</p>
+                      </div>
+                      <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${
+                        request.status === 'completed' ? 'bg-green-500/20 text-green-300' :
+                        request.status === 'in-progress' ? 'bg-blue-500/20 text-blue-300' :
+                        request.status === 'review' ? 'bg-yellow-500/20 text-yellow-300' :
+                        request.status === 'cancelled' ? 'bg-red-500/20 text-red-300' :
+                        'bg-gray-500/20 text-gray-300'
+                      }`}>
+                        {request.status}
+                      </span>
+                    </div>
+                    {request.progress !== undefined && request.progress !== null && (
+                      <div className="mb-2">
+                        <div className="w-full bg-white/10 rounded-full h-1.5">
+                          <div 
+                            className="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full transition-all duration-500"
+                            style={{ width: `${request.progress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+                    <p className="text-xs text-gray-500">
+                      {new Date(request.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))
+              )}
               
-              <button className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-all duration-300">
-                View All Requests →
-              </button>
+              {myRequests.length > 5 && (
+                <button className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-all duration-300">
+                  View All ({myRequests.length}) →
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -283,15 +345,15 @@ const DashboardContent = () => {
       {/* Request Modal */}
       {showRequestModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowRequestModal(false)}>
-          <div className="bg-slate-900 border border-white/20 rounded-3xl p-8 max-w-md w-full animate-scale-in" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-2xl font-bold text-white mb-2">
+          <div className="bg-slate-900 border border-white/20 rounded-3xl p-8 max-w-2xl w-full animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold text-white mb-1">
               {selectedService ? selectedService.title : 'New Service Request'}
             </h3>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-gray-400 text-sm mb-4">
               {selectedService ? selectedService.description : 'Select a service to get started'}
             </p>
             
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div>
                 <label className="text-sm text-gray-400 block mb-2">Project Name</label>
                 <input 
@@ -307,10 +369,10 @@ const DashboardContent = () => {
                 <label className="text-sm text-gray-400 block mb-2">Description</label>
                 <textarea 
                   placeholder="Tell us about your project..."
-                  rows={4}
+                  rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 ></textarea>
               </div>
               
@@ -319,17 +381,31 @@ const DashboardContent = () => {
                 <select 
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
                 >
-                  <option>$5,000 - $10,000</option>
-                  <option>$10,000 - $25,000</option>
-                  <option>$25,000 - $50,000</option>
-                  <option>$50,000+</option>
+                  <option className="bg-slate-800 text-white">$500 - $1,000</option>
+                  <option className="bg-slate-800 text-white">$1,000 - $2,500</option>
+                  <option className="bg-slate-800 text-white">$2,500 - $5,000</option>
+                  <option className="bg-slate-800 text-white">$5,000 - $10,000</option>
+                  <option className="bg-slate-800 text-white">$10,000 - $25,000</option>
+                  <option className="bg-slate-800 text-white">$25,000 - $50,000</option>
+                  <option className="bg-slate-800 text-white">$50,000+</option>
                 </select>
+              </div>
+              
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Expected Timeline</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g., 2-3 weeks, 1 month, 3 months"
+                  value={timeline}
+                  onChange={(e) => setTimeline(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
               </div>
             </div>
             
-            <div className="flex space-x-3 mt-6">
+            <div className="flex space-x-3 mt-5">
               <button 
                 onClick={() => setShowRequestModal(false)}
                 className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all duration-300"

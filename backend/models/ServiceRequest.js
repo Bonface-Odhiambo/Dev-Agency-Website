@@ -45,6 +45,11 @@ const ServiceRequest = sequelize.define('ServiceRequest', {
     allowNull: true,
     field: 'budget_range'
   },
+  expectedTimeline: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+    field: 'expected_timeline'
+  },
   status: {
     type: DataTypes.ENUM('pending', 'in-progress', 'review', 'completed', 'cancelled'),
     defaultValue: 'pending'

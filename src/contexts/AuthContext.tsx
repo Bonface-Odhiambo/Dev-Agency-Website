@@ -18,7 +18,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<User | null>;
   register: (name: string, email: string, password: string, phone?: string) => Promise<boolean>;
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<User | null> => {
     try {
       const response = await authApi.login({ email, password });
 
@@ -91,14 +91,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           description: `Logged in as ${userData.name}`,
         });
 
-        return true;
+        return userData;
       } else {
         toast({
           title: 'Login failed',
           description: response.error || 'Invalid credentials',
           variant: 'destructive',
         });
-        return false;
+        return null;
       }
     } catch (error) {
       toast({
@@ -106,7 +106,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         description: 'An unexpected error occurred',
         variant: 'destructive',
       });
-      return false;
+      return null;
     }
   };
 

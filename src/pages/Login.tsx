@@ -14,7 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,10 +22,15 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const success = await login(email, password);
+      const loggedInUser = await login(email, password);
       
-      if (success) {
-        navigate('/dashboard');
+      if (loggedInUser) {
+        // Redirect based on user role
+        if (loggedInUser.role === 'admin' || loggedInUser.role === 'super_admin') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       }
     } catch (error) {
       toast({
