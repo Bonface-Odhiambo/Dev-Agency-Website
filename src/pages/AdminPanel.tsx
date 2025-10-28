@@ -13,6 +13,8 @@ const AdminPanelContent = () => {
   const [serviceRequests, setServiceRequests] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [newStatus, setNewStatus] = useState('');
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -133,6 +135,47 @@ const AdminPanelContent = () => {
         variant: 'destructive',
       });
     }
+  };
+
+  const handleUpdateStatus = async () => {
+    if (!selectedRequest || !newStatus) {
+      toast({
+        title: 'Error',
+        description: 'Please select a status',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const response = await serviceRequestsApi.updateStatus(selectedRequest.id, newStatus);
+      
+      if (response.success) {
+        toast({
+          title: 'Success',
+          description: 'Status updated successfully',
+        });
+        
+        // Refresh data
+        fetchServiceRequests();
+        setShowStatusModal(false);
+        setSelectedRequest(null);
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update status',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleAssignTeam = async () => {
+    // For now, just show a toast. You can implement team selection later
+    toast({
+      title: 'Coming Soon',
+      description: 'Team assignment feature will be available soon',
+    });
   };
 
   const handleLogout = async () => {
@@ -508,11 +551,61 @@ const AdminPanelContent = () => {
             </div>
 
             <div className="flex space-x-3 mt-6">
-              <button className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all duration-300">
+              <button 
+                onClick={() => {
+                  setNewStatus(selectedRequest.status);
+                  setShowStatusModal(true);
+                }}
+                className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all duration-300"
+              >
                 Update Status
               </button>
-              <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300">
+              <button 
+                onClick={handleAssignTeam}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300"
+              >
                 Assign Team
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Status Update Modal */}
+      {showStatusModal && selectedRequest && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowStatusModal(false)}>
+          <div className="bg-slate-900 border border-white/20 rounded-3xl p-8 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-white mb-4">Update Status</h3>
+            <p className="text-gray-400 text-sm mb-6">Change the status of this service request</p>
+            
+            <div className="space-y-3 mb-6">
+              {['pending', 'in-progress', 'review', 'completed', 'cancelled'].map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setNewStatus(status)}
+                  className={`w-full text-left px-4 py-3 rounded-xl border transition-all ${
+                    newStatus === status
+                      ? 'bg-purple-500/20 border-purple-500 text-white'
+                      : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="capitalize">{status}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowStatusModal(false)}
+                className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdateStatus}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+              >
+                Update
               </button>
             </div>
           </div>

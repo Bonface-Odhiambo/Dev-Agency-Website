@@ -156,6 +156,20 @@ export const serviceRequestsApi = {
     });
   },
 
+  updateStatus: async (id: string, status: string) => {
+    return apiRequest(`/api/service-requests/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+  },
+
+  assignTeam: async (id: string, assignedTo: string) => {
+    return apiRequest(`/api/service-requests/${id}/assign`, {
+      method: 'PATCH',
+      body: JSON.stringify({ assignedTo }),
+    });
+  },
+
   getStats: async () => {
     return apiRequest('/api/service-requests/stats/overview', {
       method: 'GET',

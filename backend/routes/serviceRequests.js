@@ -257,12 +257,11 @@ router.delete('/:id', authenticate, async (req, res) => {
 router.get('/stats/overview', authenticate, authorize('admin', 'super_admin'), async (req, res) => {
   try {
     const stats = {
-      total: await ServiceRequest.count(),
-      pending: await ServiceRequest.count({ where: { status: 'pending' } }),
-      inProgress: await ServiceRequest.count({ where: { status: 'in-progress' } }),
-      review: await ServiceRequest.count({ where: { status: 'review' } }),
-      completed: await ServiceRequest.count({ where: { status: 'completed' } }),
-      cancelled: await ServiceRequest.count({ where: { status: 'cancelled' } })
+      totalRequests: await ServiceRequest.count(),
+      pendingRequests: await ServiceRequest.count({ where: { status: 'pending' } }),
+      inProgressRequests: await ServiceRequest.count({ where: { status: 'in-progress' } }),
+      completedRequests: await ServiceRequest.count({ where: { status: 'completed' } }),
+      cancelledRequests: await ServiceRequest.count({ where: { status: 'cancelled' } })
     };
 
     res.json({
@@ -270,10 +269,79 @@ router.get('/stats/overview', authenticate, authorize('admin', 'super_admin'), a
       data: stats
     });
   } catch (error) {
-    console.error('Get stats error:', error);
+    console.error('Get service request stats error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch statistics'
+    });
+  }
+});
+
+// PATCH /api/service-requests/:id/status - Update request status (admin only)
+router.patch('/:id/status', authenticate, authorize('admin', 'super_admin'), async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: 'Status is required'
+      });
+    }
+
+    const serviceRequest = await ServiceRequest.findByPk(req.params.id);
+    
+    if (!serviceRequest) {
+      return res.status(404).json({
+        success: false,
+        message: 'Service request not found'
+      });
+    }
+
+    serviceRequest.status = status;
+    await serviceRequest.save();
+
+    res.json({
+      success: true,
+      message: 'Status updated successfully',
+      data: serviceRequest
+    });
+  } catch (error) {
+    console.error('Update status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update status'
+    });
+  }
+});
+
+// PATCH /api/service-requests/:id/assign - Assign team member (admin only)
+router.patch('/:id/assign', authenticate, authorize('admin', 'super_admin'), async (req, res) => {
+  try {
+    const { assignedTo } = req.body;
+    
+    const serviceRequest = await ServiceRequest.findByPk(req.params.id);
+    
+    if (!serviceRequest) {
+      return res.status(404).json({
+        success: false,
+        message: 'Service request not found'
+      });
+    }
+
+    serviceRequest.assignedTo = assignedTo || null;
+    await serviceRequest.save();
+
+    res.json({
+      success: true,
+      message: 'Team member assigned successfully',
+      data: serviceRequest
+    });
+  } catch (error) {
+    console.error('Assign team error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to assign team member'
     });
   }
 });
