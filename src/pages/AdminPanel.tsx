@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { serviceRequestsApi, usersApi } from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Footer from "@/components/Footer";
 
 const AdminPanelContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -14,7 +15,10 @@ const AdminPanelContent = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showStatusModal, setShowStatusModal] = useState(false);
+  const [showAssignModal, setShowAssignModal] = useState(false);
   const [newStatus, setNewStatus] = useState('');
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [selectedTeamMember, setSelectedTeamMember] = useState('');
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -75,6 +79,10 @@ const AdminPanelContent = () => {
           totalSpent: 0
         }));
         setUsers(transformedUsers);
+        
+        // Filter team members (admins who can be assigned)
+        const admins = response.data.filter((u: any) => u.role === 'admin' || u.role === 'super_admin');
+        setTeamMembers(admins);
       }
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -171,11 +179,37 @@ const AdminPanelContent = () => {
   };
 
   const handleAssignTeam = async () => {
-    // For now, just show a toast. You can implement team selection later
-    toast({
-      title: 'Coming Soon',
-      description: 'Team assignment feature will be available soon',
-    });
+    if (!selectedRequest || !selectedTeamMember) {
+      toast({
+        title: 'Error',
+        description: 'Please select a team member',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const response = await serviceRequestsApi.assignTeam(selectedRequest.id, selectedTeamMember);
+      
+      if (response.success) {
+        toast({
+          title: 'Success',
+          description: 'Team member assigned successfully. Client will be notified.',
+        });
+        
+        // Refresh data
+        fetchServiceRequests();
+        setShowAssignModal(false);
+        setSelectedRequest(null);
+        setSelectedTeamMember('');
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to assign team member',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleLogout = async () => {
@@ -561,7 +595,10 @@ const AdminPanelContent = () => {
                 Update Status
               </button>
               <button 
-                onClick={handleAssignTeam}
+                onClick={() => {
+                  setSelectedTeamMember('');
+                  setShowAssignModal(true);
+                }}
                 className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300"
               >
                 Assign Team
@@ -611,6 +648,61 @@ const AdminPanelContent = () => {
           </div>
         </div>
       )}
+
+      {/* Assign Team Modal */}
+      {showAssignModal && selectedRequest && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowAssignModal(false)}>
+          <div className="bg-slate-900 border border-white/20 rounded-3xl p-8 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-white mb-4">Assign Team Member</h3>
+            <p className="text-gray-400 text-sm mb-6">Select a team member to work on this project. The client will be notified via email and dashboard notification.</p>
+            
+            <div className="space-y-3 mb-6">
+              {teamMembers.length === 0 ? (
+                <p className="text-gray-400 text-sm">No team members available</p>
+              ) : (
+                teamMembers.map((member) => (
+                  <button
+                    key={member.id}
+                    onClick={() => setSelectedTeamMember(member.id)}
+                    className={`w-full text-left px-4 py-3 rounded-xl border transition-all ${
+                      selectedTeamMember === member.id
+                        ? 'bg-purple-500/20 border-purple-500 text-white'
+                        : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-white">{member.name}</p>
+                        <p className="text-xs text-gray-400">{member.email}</p>
+                      </div>
+                      <span className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300">
+                        {member.role}
+                      </span>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowAssignModal(false)}
+                className="flex-1 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-medium hover:bg-white/10 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAssignTeam}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+              >
+                Assign
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
     </div>
   );
 };

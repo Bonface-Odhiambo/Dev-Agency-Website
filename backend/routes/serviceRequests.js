@@ -320,7 +320,15 @@ router.patch('/:id/assign', authenticate, authorize('admin', 'super_admin'), asy
   try {
     const { assignedTo } = req.body;
     
-    const serviceRequest = await ServiceRequest.findByPk(req.params.id);
+    const serviceRequest = await ServiceRequest.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'name', 'email']
+        }
+      ]
+    });
     
     if (!serviceRequest) {
       return res.status(404).json({
@@ -329,12 +337,42 @@ router.patch('/:id/assign', authenticate, authorize('admin', 'super_admin'), asy
       });
     }
 
+    // Get assigned team member details
+    const teamMember = await User.findByPk(assignedTo);
+    
+    if (!teamMember) {
+      return res.status(404).json({
+        success: false,
+        message: 'Team member not found'
+      });
+    }
+
     serviceRequest.assignedTo = assignedTo || null;
     await serviceRequest.save();
 
+    // Create notification for the client
+    await Notification.create({
+      userId: serviceRequest.userId,
+      type: 'team_assigned',
+      title: 'Team Assigned to Your Project',
+      message: `${teamMember.name} has been assigned to work on your project: ${serviceRequest.projectName}`,
+      relatedId: serviceRequest.id,
+      relatedType: 'service_request'
+    });
+
+    // TODO: Send email notification to client
+    // You can implement email sending here using your email service
+    // Example:
+    // await sendEmail({
+    //   to: serviceRequest.user.email,
+    //   subject: 'Team Assigned to Your Project',
+    //   html: `<p>Hi ${serviceRequest.user.name},</p>
+    //          <p>${teamMember.name} has been assigned to work on your project: ${serviceRequest.projectName}</p>`
+    // });
+
     res.json({
       success: true,
-      message: 'Team member assigned successfully',
+      message: 'Team member assigned successfully. Client has been notified.',
       data: serviceRequest
     });
   } catch (error) {
