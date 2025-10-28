@@ -96,8 +96,10 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log('✅ Database connection established successfully.');
     
-    // Sync database models (use { force: false } in production)
-    await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
+    // Sync database models
+    // In development, we use { alter: false } to avoid index conflicts
+    // Tables will be created if they don't exist, but won't be altered
+    await sequelize.sync({ alter: false });
     console.log('✅ Database models synchronized.');
     
     // Start server
