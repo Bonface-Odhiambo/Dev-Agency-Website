@@ -17,6 +17,7 @@ const DashboardContent = () => {
   const [description, setDescription] = useState("");
   const [budget, setBudget] = useState("$500 - $1,000");
   const [timeline, setTimeline] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const services = [
     { 
@@ -133,6 +134,15 @@ const DashboardContent = () => {
       return;
     }
 
+    if (!agreedToTerms) {
+      toast({
+        title: "Error",
+        description: "Please agree to the Terms and Conditions to continue",
+        variant: "destructive"
+      });
+      return;
+    }
+
     try {
       const response = await serviceRequestsApi.create({
         projectName: projectName,
@@ -152,6 +162,7 @@ const DashboardContent = () => {
         setProjectName("");
         setDescription("");
         setTimeline("");
+        setAgreedToTerms(false);
         setSelectedService(null);
         
         // Refresh the requests list
@@ -402,6 +413,39 @@ const DashboardContent = () => {
                   onChange={(e) => setTimeline(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
+              </div>
+
+              {/* Terms and Conditions Checkbox */}
+              <div className="flex items-start space-x-3 pt-2">
+                <input 
+                  type="checkbox" 
+                  id="terms"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-purple-500 focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
+                />
+                <label htmlFor="terms" className="text-sm text-gray-400 cursor-pointer">
+                  I agree to the{' '}
+                  <a 
+                    href="/terms-of-service" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-purple-400 hover:text-purple-300 underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Terms of Service
+                  </a>
+                  {' '}and{' '}
+                  <a 
+                    href="/privacy-policy" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-purple-400 hover:text-purple-300 underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Privacy Policy
+                  </a>
+                </label>
               </div>
             </div>
             
