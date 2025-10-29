@@ -1,0 +1,50 @@
+========================================
+COPY THESE VALUES TO VERCEL DASHBOARD
+========================================
+
+Go to: https://vercel.com/bonfaces-projects/backend/settings/environment-variables
+
+Add these environment variables for PRODUCTION:
+
+1. DATABASE_URL
+postgresql://neondb_owner:npg_nRQxk9c2FlTX@ep-bitter-dawn-a4vhwtfa-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+2. NODE_ENV
+production
+
+3. JWT_SECRET
+9GrxS+9Cq29wAeybAKSqqnn7LATO2umiMtzJFgf4hNL/WHcYMlLrD+WwGquqBf+4plHg9vjaKlGNxx0GAJ/LHQ==
+
+4. EMAIL_HOST
+smtp.gmail.com
+
+5. EMAIL_PORT
+587
+
+6. EMAIL_USER
+principalresearcher138@gmail.com
+
+7. EMAIL_PASSWORD
+xdwjppsffhscsblw
+
+8. EMAIL_FROM
+principalresearcher138@gmail.com
+
+9. FRONTEND_URL
+https://dev-agency-frontend-huyiw93h3-bonfaces-projects.vercel.app
+
+10. RATE_LIMIT_WINDOW_MS
+900000
+
+11. RATE_LIMIT_MAX_REQUESTS
+100
+
+========================================
+AFTER ADDING ALL VARIABLES:
+========================================
+
+Click "Redeploy" button in Vercel dashboard
+OR
+Run: vercel --prod
+
+========================================
