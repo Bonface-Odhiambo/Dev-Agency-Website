@@ -14,16 +14,16 @@ const Footer = () => {
           </div>
           
           <div className="flex gap-6 text-sm">
-            <a href="/contact" className="hover:text-neon-pink transition-colors">
+            <a href="/contact" target="_blank" rel="noopener noreferrer" className="hover:text-neon-pink transition-colors">
               Contact Us
             </a>
-            <a href="/about" className="hover:text-neon-pink transition-colors">
+            <a href="/about" target="_blank" rel="noopener noreferrer" className="hover:text-neon-pink transition-colors">
               About Us
             </a>
-            <a href="#" className="hover:text-neon-pink transition-colors">
+            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-neon-pink transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-neon-pink transition-colors">
+            <a href="/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:text-neon-pink transition-colors">
               Terms of Service
             </a>
           </div>

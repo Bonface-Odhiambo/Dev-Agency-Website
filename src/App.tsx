@@ -10,6 +10,8 @@ import Services from "./pages/Services";
 import ProjectsPage from "./pages/ProjectsPage";
 import ProjectDetail from "./pages/ProjectDetail";
 import Contact from "./pages/Contact";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
@@ -32,6 +34,8 @@ const App = () => (
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/project/:projectId" element={<ProjectDetail />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
