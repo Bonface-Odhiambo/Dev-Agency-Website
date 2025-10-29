@@ -31,4 +31,5 @@ PRE_DEPLOYMENT_CHECKLIST.md
 # Scripts
 *.bat
 
-# DON'T ignore backend/ - we need it!
+# Backend (deployed separately)
+backend/
