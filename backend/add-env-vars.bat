@@ -1,0 +1,29 @@
+@echo off
+echo Adding remaining environment variables...
+
+echo Adding JWT_SECRET...
+vercel env add JWT_SECRET production
+
+echo Adding EMAIL_HOST...
+vercel env add EMAIL_HOST production
+
+echo Adding EMAIL_PORT...
+vercel env add EMAIL_PORT production
+
+echo Adding EMAIL_USER...
+vercel env add EMAIL_USER production
+
+echo Adding EMAIL_PASSWORD...
+vercel env add EMAIL_PASSWORD production
+
+echo Adding EMAIL_FROM...
+vercel env add EMAIL_FROM production
+
+echo Adding FRONTEND_URL...
+vercel env add FRONTEND_URL production
+
+echo Adding NODE_ENV...
+vercel env add NODE_ENV production
+
+echo All environment variables added!
+pause

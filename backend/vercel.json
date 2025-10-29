@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "function-call-api",
   "builds": [
     {
       "src": "server.js",
@@ -12,20 +11,5 @@
       "src": "/(.*)",
       "dest": "server.js"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "DB_HOST": "@db_host",
-    "DB_USER": "@db_user",
-    "DB_PASSWORD": "@db_password",
-    "DB_NAME": "@db_name",
-    "DB_PORT": "@db_port",
-    "JWT_SECRET": "@jwt_secret",
-    "EMAIL_HOST": "@email_host",
-    "EMAIL_PORT": "@email_port",
-    "EMAIL_USER": "@email_user",
-    "EMAIL_PASSWORD": "@email_password",
-    "EMAIL_FROM": "@email_from",
-    "FRONTEND_URL": "@frontend_url"
-  }
+  ]
 }
