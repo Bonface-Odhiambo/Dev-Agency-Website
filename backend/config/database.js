@@ -1,11 +1,15 @@
 import { Sequelize } from 'sequelize';
 
-// Don't use dotenv on Vercel - it doesn't work with serverless functions
-// Vercel injects env vars directly into process.env
+// Load dotenv only in development (not needed in Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  const dotenv = await import('dotenv');
+  dotenv.config();
+}
 
-const sequelize = new Sequelize(process.env.DATABASE_URL || '', {
+// Create Sequelize instance with connection string
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
-  logging: false,
+  logging: process.env.NODE_ENV === 'development' ? console.log : false,
   pool: {
     max: 5,
     min: 0,
@@ -13,17 +17,11 @@ const sequelize = new Sequelize(process.env.DATABASE_URL || '', {
     idle: 10000
   },
   dialectOptions: {
-    ssl: {
+    ssl: process.env.NODE_ENV === 'production' ? {
       require: true,
       rejectUnauthorized: false
-    }
+    } : false
   }
 });
-
-// Add error logging to help debug
-if (!process.env.DATABASE_URL) {
-  console.error('ERROR: DATABASE_URL is not defined!');
-  console.error('Available env vars:', Object.keys(process.env).filter(k => k.includes('DB')));
-}
 
 export default sequelize;
