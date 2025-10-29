@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroBackground from "@/assets/hero-background.jpg";
 
 const Hero = () => {
@@ -44,7 +45,7 @@ const Hero = () => {
           >
             Start Your Project
           </Button>
-          <a href="/about">
+          <Link to="/about">
             <Button 
               size="lg"
               variant="outline"
@@ -52,7 +53,7 @@ const Hero = () => {
             >
               Learn More
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
