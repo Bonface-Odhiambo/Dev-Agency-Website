@@ -1,4 +1,5 @@
-import { Code2, Twitter, Facebook, Linkedin } from "lucide-react";
+import { Twitter, Facebook, Linkedin } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
@@ -6,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <Code2 className="h-6 w-6 text-neon-pink" />
+            <img src={logo} alt="Function Call Logo" className="h-8 w-8 rounded-lg" />
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-neon-purple to-neon-pink bg-clip-text text-transparent">
               Function Call
             </span>
