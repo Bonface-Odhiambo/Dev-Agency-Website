@@ -1,18 +1,34 @@
+```
+# Dependencies
 node_modules
+
+# Environment files (these are set in Vercel dashboard)
 .env
 .env.local
 .env.*.local
-backend/
+
+# Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# OS files
 .DS_Store
+
+# Build info
 *.tsbuildinfo
+
+# Git files (Vercel ignores these automatically anyway)
 .git
-.gitignore
+
+# Documentation only
 README.md
 DEPLOYMENT_GUIDE.md
 PRE_DEPLOYMENT_CHECKLIST.md
-deploy-frontend.bat
+
+# Scripts
+*.bat
+
+# DON'T ignore backend/ - we need it!
