@@ -1,49 +1,91 @@
 # Backend Deployment Steps
 
-## 🚀 Quick Deployment to Vercel
+## 🚨 IMPORTANT: Fix for 404 NOT_FOUND Error
 
-Since your database is already deployed with Neon, follow these steps:
+If you're getting a **404 NOT_FOUND** error, the issue is likely **missing DATABASE_URL** environment variable.
 
-### 1. Deploy Backend
+**Quick Fix**:
+1. Get your DATABASE_URL from Neon (see `GET_DATABASE_URL.md`)
+2. Add it to Vercel environment variables
+3. Redeploy
+
+See `VERCEL_DEPLOYMENT_FIX.md` for detailed troubleshooting.
+
+---
+
+## 🚀 Deployment Steps
+
+### Step 0: Pre-Deployment Check
+
+Run the deployment checker:
+```bash
+cd backend
+check-deployment.bat
+```
+
+This will verify all required files exist before deploying.
+
+### Step 1: Get Your DATABASE_URL
+
+**CRITICAL**: You need your Neon database connection string.
+
+1. Go to [Neon Console](https://console.neon.tech)
+2. Select your project
+3. Copy the "Connection String" (looks like):
+   ```
+   postgresql://user:pass@ep-xxx.region.aws.neon.tech/neondb?sslmode=require
+   ```
+
+📖 **Detailed guide**: See `GET_DATABASE_URL.md`
+
+### Step 2: Set Environment Variables in Vercel
+
+**BEFORE deploying**, go to Vercel Dashboard and add these environment variables:
+
+#### ⚠️ CRITICAL Variables (Required):
+
+```env
+NODE_ENV=production
+DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
+JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
+```
+
+#### 📧 Email Configuration:
+
+```env
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-16-char-app-password
+EMAIL_FROM=Function Call <your-email@gmail.com>
+```
+
+#### 🔧 Optional Configuration:
+
+```env
+PORT=3000
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+FRONTEND_URL=https://dev-agency-website.vercel.app
+```
+
+**How to add in Vercel**:
+1. Vercel Dashboard → Your Backend Project
+2. Settings → Environment Variables
+3. Add each variable above
+4. Select "Production" environment
+5. Click "Save"
+
+### Step 3: Deploy Backend
 
 ```bash
 cd backend
 vercel --prod
 ```
 
-### 2. Set Environment Variables in Vercel
-
-After deployment, go to your backend project in Vercel Dashboard and add these environment variables:
-
-#### Required Environment Variables:
-
-```env
-NODE_ENV=production
-PORT=3000
-
-# Database (Your Neon Connection)
-DB_HOST=your-neon-host
-DB_USER=your-neon-user
-DB_PASSWORD=your-neon-password
-DB_NAME=your-neon-database
-DB_PORT=5432
-
-# JWT Secret (Generate a strong one)
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-
-# Email Configuration
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASSWORD=your-16-char-app-password
-EMAIL_FROM=Function Call <your-email@gmail.com>
-
-# Rate Limiting
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-
-# CORS Configuration
-FRONTEND_URL=https://dev-agency-website.vercel.app
+Or use the deployment script:
+```bash
+deploy-backend.bat
 ```
 
 ### 3. Update Frontend Environment Variable
