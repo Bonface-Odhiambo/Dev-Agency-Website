@@ -171,7 +171,7 @@ async function initializeDatabase() {
 }
 
 // Serverless function handler
-export default async function handler(req, res) {
+async function handler(req, res) {
   try {
     // Initialize database on first request
     await initializeDatabase();
@@ -186,3 +186,7 @@ export default async function handler(req, res) {
     });
   }
 }
+
+// Export for Vercel serverless
+export default handler;
+module.exports = handler;
