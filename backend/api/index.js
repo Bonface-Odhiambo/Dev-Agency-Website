@@ -191,4 +191,4 @@ async function handler(req, res) {
 
 // Export for Vercel serverless
 export default handler;
-module.exports = handler;
+
