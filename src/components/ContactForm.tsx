@@ -9,6 +9,9 @@ import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
 const ContactForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -37,6 +40,9 @@ const ContactForm = () => {
         body: JSON.stringify({
           name,
           email,
+          phone,
+          company,
+          subject,
           message
         })
       });
@@ -52,6 +58,9 @@ const ContactForm = () => {
         // Reset form
         setName("");
         setEmail("");
+        setPhone("");
+        setCompany("");
+        setSubject("");
         setMessage("");
       } else {
         throw new Error(data.message || 'Failed to send message');
@@ -191,6 +200,50 @@ const ContactForm = () => {
                     placeholder="john@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="text-sm font-medium">
+                      Phone
+                    </label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="+1 (555) 123-4567"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="company" className="text-sm font-medium">
+                      Company
+                    </label>
+                    <Input
+                      id="company"
+                      type="text"
+                      placeholder="Your Company"
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="subject" className="text-sm font-medium">
+                    Subject
+                  </label>
+                  <Input
+                    id="subject"
+                    type="text"
+                    placeholder="What's this about?"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
                     className="w-full"
                   />
                 </div>

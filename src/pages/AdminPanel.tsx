@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, FileText, TrendingUp, Clock, Search, Bell, User, Code, Eye, Edit, CheckCircle, AlertCircle, XCircle, Download, DollarSign, LogOut } from "lucide-react";
+import { Users, FileText, TrendingUp, Clock, Search, Bell, User, Code, Eye, Edit, CheckCircle, AlertCircle, XCircle, Download, DollarSign, LogOut, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { serviceRequestsApi, usersApi } from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Footer from "@/components/Footer";
+import AdminMessages from "./AdminMessages";
 
 const AdminPanelContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -516,6 +517,16 @@ const AdminPanelContent = () => {
             >
               Users
             </button>
+            <button
+              onClick={() => setActiveTab('messages')}
+              className={`px-6 py-3 text-sm font-medium transition-all ${
+                activeTab === 'messages'
+                  ? 'text-white border-b-2 border-purple-500'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Messages
+            </button>
           </div>
         </div>
       </div>
@@ -524,6 +535,7 @@ const AdminPanelContent = () => {
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'requests' && renderRequests()}
         {activeTab === 'users' && renderUsers()}
+        {activeTab === 'messages' && <AdminMessages />}
       </div>
 
       {/* Request Detail Modal */}
