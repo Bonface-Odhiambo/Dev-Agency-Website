@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveBid - Live Shopping & Auctions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .live-badge { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .stream-card:hover { transform: scale(1.02); }
+        .stream-card { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="bg-black border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-8">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-gavel text-purple-500 text-2xl"></i>
+                        <span class="text-2xl font-bold">LiveBid</span>
+                    </div>
+                    <nav class="hidden md:flex items-center gap-6">
+                        <a href="#" class="text-purple-400 font-semibold">Live Now</a>
+                        <a href="#" class="hover:text-purple-400">Upcoming</a>
+                        <a href="#" class="hover:text-purple-400">Categories</a>
+                        <a href="#" class="hover:text-purple-400">Sellers</a>
+                    </nav>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:block">
+                        <input type="text" placeholder="Search shows..." class="px-4 py-2 bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <button class="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-full font-semibold">
+                        Go Live
+                    </button>
+                    <button class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-r from-purple-600 to-pink-600 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-3">Live Shopping, Real Deals</h1>
+            <p class="text-xl mb-4">Watch, bid, and buy from live sellers in real-time</p>
+            <div class="flex justify-center gap-4">
+                <button class="px-6 py-3 bg-white text-purple-600 font-bold rounded-full hover:bg-gray-100">
+                    Browse Live Shows
+                </button>
+                <button class="px-6 py-3 border-2 border-white text-white font-bold rounded-full hover:bg-white/10">
+                    Become a Seller
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="bg-gray-800 border-b border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex gap-6 overflow-x-auto py-4">
+                <button class="px-4 py-2 bg-purple-600 rounded-full whitespace-nowrap font-semibold">All</button>
+                <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full whitespace-nowrap">Collectibles</button>
+                <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full whitespace-nowrap">Trading Cards</button>
+                <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full whitespace-nowrap">Sneakers</button>
+                <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full whitespace-nowrap">Electronics</button>
+                <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full whitespace-nowrap">Fashion</button>
+                <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full whitespace-nowrap">Toys</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Streams Grid -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold">Live Now</h2>
+            <span class="text-gray-400">1,234 sellers live</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="streamsGrid">
+            <!-- Streams will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Upcoming Shows -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold mb-6">Upcoming Shows</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="upcomingGrid">
+            <!-- Upcoming shows will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-gray-800 mt-12 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-bold mb-4">About LiveBid</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">How It Works</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">For Sellers</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Start Selling</a></li>
+                        <li><a href="#" class="hover:text-white">Seller Resources</a></li>
+                        <li><a href="#" class="hover:text-white">Fees & Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Support</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Safety</a></li>
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Follow Us</h3>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-2xl hover:text-purple-400"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-2xl hover:text-purple-400"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-2xl hover:text-purple-400"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-2xl hover:text-purple-400"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 LiveBid. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const liveStreams = [
+            { seller: "CardKing", title: "Pokemon Card Opening!", viewers: 1234, category: "Trading Cards", image: "https://images.unsplash.com/photo-1613771404721-1f92d799e49f?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop" },
+            { seller: "SneakerHead", title: "Rare Sneaker Drop 🔥", viewers: 856, category: "Sneakers", image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" },
+            { seller: "TechDeals", title: "Electronics Auction", viewers: 2341, category: "Electronics", image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop" },
+            { seller: "VintageVibes", title: "Retro Collectibles", viewers: 567, category: "Collectibles", image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop" },
+            { seller: "FashionFrenzy", title: "Designer Bags Live", viewers: 1789, category: "Fashion", image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop" },
+            { seller: "ToyCollector", title: "Action Figures Galore", viewers: 432, category: "Toys", image: "https://images.unsplash.com/photo-1560015534-cee980ba7e13?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=50&h=50&fit=crop" },
+            { seller: "ComicVault", title: "Rare Comics Auction", viewers: 923, category: "Collectibles", image: "https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop" },
+            { seller: "GamingGear", title: "Gaming Setup Sale", viewers: 1456, category: "Electronics", image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=400&h=300&fit=crop", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=50&h=50&fit=crop" },
+        ];
+
+        const upcomingShows = [
+            { seller: "WatchWizard", title: "Luxury Watches", time: "In 2 hours", image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&h=300&fit=crop" },
+            { seller: "ArtAuction", title: "Fine Art Collection", time: "In 4 hours", image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400&h=300&fit=crop" },
+            { seller: "JewelryBox", title: "Diamond Jewelry", time: "Tomorrow 8PM", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=300&fit=crop" },
+            { seller: "VinylVault", title: "Rare Vinyl Records", time: "Tomorrow 9PM", image: "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop" },
+        ];
+
+        const streamsGrid = document.getElementById('streamsGrid');
+        const upcomingGrid = document.getElementById('upcomingGrid');
+
+        liveStreams.forEach(stream => {
+            const card = document.createElement('div');
+            card.className = 'stream-card cursor-pointer';
+            card.innerHTML = `
+                <div class="relative rounded-xl overflow-hidden mb-3">
+                    <img src="${stream.image}" alt="${stream.title}" class="w-full aspect-video object-cover">
+                    <div class="absolute top-3 left-3 live-badge bg-red-600 px-3 py-1 rounded-full flex items-center gap-2 text-sm font-bold">
+                        <span class="w-2 h-2 bg-white rounded-full"></span>
+                        LIVE
+                    </div>
+                    <div class="absolute top-3 right-3 bg-black/70 px-2 py-1 rounded text-sm">
+                        <i class="fas fa-eye mr-1"></i>${stream.viewers.toLocaleString()}
+                    </div>
+                    <div class="absolute bottom-3 left-3 bg-purple-600 px-2 py-1 rounded text-xs">
+                        ${stream.category}
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <img src="${stream.avatar}" alt="${stream.seller}" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <h3 class="font-bold mb-1">${stream.title}</h3>
+                        <p class="text-sm text-gray-400">${stream.seller}</p>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => {
+                alert(`Joining ${stream.seller}'s live stream!\n\n"${stream.title}"\n\nIn a real application, this would open the live stream player with real-time bidding.`);
+            });
+            
+            streamsGrid.appendChild(card);
+        });
+
+        upcomingShows.forEach(show => {
+            const card = document.createElement('div');
+            card.className = 'bg-gray-800 rounded-xl overflow-hidden hover:bg-gray-750 cursor-pointer transition-all';
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${show.image}" alt="${show.title}" class="w-full aspect-video object-cover">
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="far fa-clock text-4xl mb-2"></i>
+                            <p class="font-bold">${show.time}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold mb-1">${show.title}</h3>
+                    <p class="text-sm text-gray-400">${show.seller}</p>
+                    <button class="w-full mt-3 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold">
+                        Set Reminder
+                    </button>
+                </div>
+            `;
+            
+            card.querySelector('button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                alert(`Reminder set for ${show.seller}'s show!\n\nYou'll be notified when "${show.title}" goes live.`);
+            });
+            
+            upcomingGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

@@ -10,7 +10,7 @@ const projectsData = {
     subtitle: "Bio Link Platform for Creators",
     description: "A fully customizable bio link platform that allows creators, influencers, and businesses to showcase all their important links in one beautiful, mobile-optimized page. Perfect for Instagram, TikTok, and other social media profiles.",
     image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop",
-    demoUrl: "#",
+    demoUrl: "/clones/linktree/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
     features: [
@@ -35,12 +35,12 @@ const projectsData = {
       "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop"
     ]
   },
-  "youtube-patreon-clone": {
-    title: "YouTube / Patreon Clone",
-    subtitle: "Video Streaming & Creator Monetization Platform",
-    description: "A comprehensive video streaming and creator monetization platform combining the best features of YouTube and Patreon. Enables creators to upload videos, build communities, and monetize content through subscriptions and memberships.",
+  "youtube-clone": {
+    title: "YouTube Clone",
+    subtitle: "Video Streaming Platform",
+    description: "A comprehensive video streaming platform with video uploads, subscriptions, comments, and personalized recommendations. Features a modern UI similar to YouTube with trending videos, categories, and user engagement.",
     image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=1200&auto=format&fit=crop",
-    demoUrl: "#",
+    demoUrl: "/clones/youtube/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "AWS S3", "Stripe", "WebRTC"],
     features: [
@@ -70,7 +70,7 @@ const projectsData = {
     subtitle: "Premium Content Subscription Platform",
     description: "A secure and feature-rich premium content subscription platform enabling creators to monetize exclusive content. Includes tiered memberships, pay-per-view content, direct messaging, and comprehensive creator tools.",
     image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=1200&auto=format&fit=crop",
-    demoUrl: "#",
+    demoUrl: "/clones/onlyfans/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "PostgreSQL", "Stripe", "AWS"],
     features: [
@@ -100,7 +100,7 @@ const projectsData = {
     subtitle: "Professional Portfolio & Booking Platform",
     description: "A stunning, fully-featured website for celebrities, artists, and public figures. Includes image galleries, social media integration, event calendar, booking system, merchandise store, and fan engagement tools.",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&auto=format&fit=crop",
-    demoUrl: "#",
+    demoUrl: "/clones/celebrity/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "Stripe", "Calendar API"],
     features: [
@@ -125,12 +125,12 @@ const projectsData = {
       "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&auto=format&fit=crop"
     ]
   },
-  "amazon-whatnot-clone": {
-    title: "Amazon / Whatnot Clone",
-    subtitle: "E-commerce & Live Shopping Platform",
-    description: "A comprehensive e-commerce and live shopping platform combining traditional marketplace features with live streaming auctions. Includes seller dashboards, product management, live bidding, and integrated payment processing.",
+  "amazon-clone": {
+    title: "Amazon Clone",
+    subtitle: "E-commerce Marketplace Platform",
+    description: "A comprehensive e-commerce platform with product listings, shopping cart, reviews, and integrated payment processing. Features include product search, categories, deals, and a complete shopping experience.",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&auto=format&fit=crop",
-    demoUrl: "#",
+    demoUrl: "/clones/amazon/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "PostgreSQL", "WebRTC", "Stripe"],
     features: [
@@ -155,12 +155,72 @@ const projectsData = {
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop"
     ]
   },
-  "ai-assistant": {
-    title: "AI Assistant",
-    subtitle: "Intelligent Task Management Platform",
-    description: "An AI-powered personal assistant application that helps users manage daily tasks, schedule appointments, set reminders, and automate workflows with natural language processing and machine learning.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop",
-    demoUrl: "#",
+  "patreon-clone": {
+    title: "Patreon Clone",
+    subtitle: "Creator Monetization Platform",
+    description: "A creator monetization platform with tiered memberships, exclusive content, and community features. Enables creators to build sustainable income through supporter subscriptions and exclusive perks.",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop",
+    demoUrl: "/clones/patreon/index.html",
+    githubUrl: "#",
+    tags: ["React", "Node.js", "Stripe", "PostgreSQL"],
+    features: [
+      "Tiered membership system",
+      "Exclusive content for patrons",
+      "Monthly subscription billing",
+      "Creator analytics dashboard",
+      "Community posts and updates",
+      "Direct messaging",
+      "Payment processing with Stripe",
+      "Automated payouts"
+    ],
+    techStack: [
+      { name: "Frontend", tech: "React, TypeScript, Tailwind CSS" },
+      { name: "Backend", tech: "Node.js, Express" },
+      { name: "Database", tech: "PostgreSQL" },
+      { name: "Payments", tech: "Stripe Connect" }
+    ],
+    screenshots: [
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop"
+    ]
+  },
+  "whatnot-clone": {
+    title: "Whatnot Clone",
+    subtitle: "Live Shopping & Auction Platform",
+    description: "A live shopping and auction platform where sellers can stream live shows and buyers can bid in real-time. Features live streaming, real-time bidding, seller dashboards, and integrated payments.",
+    image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&auto=format&fit=crop",
+    demoUrl: "/clones/whatnot/index.html",
+    githubUrl: "#",
+    tags: ["React", "Node.js", "WebRTC", "Socket.io"],
+    features: [
+      "Live streaming capabilities",
+      "Real-time bidding system",
+      "Seller dashboards",
+      "Category browsing",
+      "Upcoming show reminders",
+      "Live viewer count",
+      "Chat functionality",
+      "Payment processing"
+    ],
+    techStack: [
+      { name: "Frontend", tech: "React, WebRTC, Socket.io" },
+      { name: "Backend", tech: "Node.js, Express" },
+      { name: "Streaming", tech: "WebRTC, Media Servers" },
+      { name: "Payments", tech: "Stripe" }
+    ],
+    screenshots: [
+      "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop"
+    ]
+  },
+  "reseller-clone": {
+    title: "Reseller Clone",
+    subtitle: "Authenticated Resale Marketplace",
+    description: "A marketplace for buying and selling authenticated sneakers, streetwear, electronics, and collectibles. Features authentication verification, buyer protection, and secure transactions.",
+    image: "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=1200&auto=format&fit=crop",
+    demoUrl: "/clones/reseller/index.html",
     githubUrl: "#",
     tags: ["React", "Python", "OpenAI", "TensorFlow"],
     features: [
@@ -236,10 +296,12 @@ const ProjectDetail = () => {
               </div>
 
               <div className="flex gap-4">
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  View Demo
-                </Button>
+                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    View Live Demo
+                  </Button>
+                </a>
                 <Button variant="outline">
                   <Github className="w-4 h-4 mr-2" />
                   View Code

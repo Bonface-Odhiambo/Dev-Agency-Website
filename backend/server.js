@@ -120,29 +120,31 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start the server only if this file is run directly (for local development)
-if (import.meta.url.endsWith(process.argv[1])) {
-  const startServer = async () => {
-    try {
-      console.log('Connecting to database...');
-      await sequelize.authenticate();
-      console.log('✅ Database connection established.');
+// Database connection and server startup
+const startServer = async () => {
+  try {
+    // Test database connection
+    await sequelize.authenticate();
+    console.log('✅ Database connection established successfully.');
+    
+    // Sync database models
+    // In development, we use { alter: false } to avoid index conflicts
+    // Tables will be created if they don't exist, but won't be altered
+    await sequelize.sync({ alter: false });
+    console.log('✅ Database models synchronized.');
+    
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is running on port ${PORT}`);
+      console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🌐 API URL: http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Unable to start server:', error);
+    process.exit(1);
+  }
+};
 
-      // Sync models
-      await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-      console.log('✅ Database models synchronized.');
+startServer();
 
-      app.listen(PORT, () => {
-        console.log(`🚀 Server is running on http://localhost:${PORT}`);
-      });
-    } catch (error) {
-      console.error('❌ Unable to start server:', error);
-      process.exit(1);
-    }
-  };
-
-  startServer();
-}
-
-// Export the app for serverless environments and testing
 export default app;

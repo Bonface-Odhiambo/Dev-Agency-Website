@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreatorFund - Support Your Favorite Creators</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .tier-card { transition: all 0.3s ease; }
+        .popular-badge { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-heart text-red-500 text-2xl"></i>
+                    <span class="text-2xl font-bold text-gray-900">CreatorFund</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Explore</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">For Creators</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Pricing</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <button class="px-4 py-2 text-gray-700 hover:text-gray-900">Log in</button>
+                    <button class="px-6 py-2 bg-red-500 text-white rounded-full hover:bg-red-600">Sign up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Creator Header -->
+    <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+        <div class="container mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop" 
+                     alt="Creator" 
+                     class="w-32 h-32 rounded-full border-4 border-white shadow-xl">
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl font-bold mb-2">Sarah Johnson</h1>
+                    <p class="text-xl mb-4">Digital Artist & Content Creator</p>
+                    <div class="flex items-center gap-6 justify-center md:justify-start">
+                        <div>
+                            <span class="text-2xl font-bold">1,234</span>
+                            <p class="text-sm opacity-90">Patrons</p>
+                        </div>
+                        <div>
+                            <span class="text-2xl font-bold">$5,678</span>
+                            <p class="text-sm opacity-90">per month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- About Section -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-4">About</h2>
+                    <p class="text-gray-600 mb-4">
+                        Hi! I'm Sarah, a digital artist creating stunning illustrations, tutorials, and exclusive content for my patrons. 
+                        By supporting me, you'll get access to behind-the-scenes content, exclusive artwork, and early access to all my projects.
+                    </p>
+                    <p class="text-gray-600">
+                        Your support helps me continue creating art full-time and sharing my knowledge with the community. 
+                        Thank you for being part of this journey! ❤️
+                    </p>
+                </div>
+
+                <!-- Recent Posts -->
+                <div class="bg-white rounded-2xl shadow-sm p-8">
+                    <h2 class="text-2xl font-bold mb-6">Recent Posts</h2>
+                    <div class="space-y-6">
+                        <div class="border-b pb-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" 
+                                     class="w-10 h-10 rounded-full">
+                                <div>
+                                    <p class="font-semibold">Sarah Johnson</p>
+                                    <p class="text-sm text-gray-500">2 days ago</p>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">New Tutorial: Digital Painting Techniques</h3>
+                            <p class="text-gray-600 mb-3">Just released a comprehensive tutorial on advanced digital painting techniques...</p>
+                            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=400&fit=crop" 
+                                 class="w-full rounded-lg mb-3">
+                            <div class="flex items-center gap-4 text-gray-500">
+                                <button class="flex items-center gap-2 hover:text-red-500">
+                                    <i class="far fa-heart"></i> 234
+                                </button>
+                                <button class="flex items-center gap-2 hover:text-blue-500">
+                                    <i class="far fa-comment"></i> 45
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="border-b pb-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" 
+                                     class="w-10 h-10 rounded-full">
+                                <div>
+                                    <p class="font-semibold">Sarah Johnson</p>
+                                    <p class="text-sm text-gray-500">5 days ago</p>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Behind the Scenes: My Creative Process</h3>
+                            <p class="text-gray-600 mb-3">Here's a look at how I approach creating new artwork from concept to final piece...</p>
+                            <div class="flex items-center gap-4 text-gray-500">
+                                <button class="flex items-center gap-2 hover:text-red-500">
+                                    <i class="far fa-heart"></i> 189
+                                </button>
+                                <button class="flex items-center gap-2 hover:text-blue-500">
+                                    <i class="far fa-comment"></i> 32
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membership Tiers -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-20">
+                    <h2 class="text-2xl font-bold mb-6">Membership Tiers</h2>
+                    <div class="space-y-4">
+                        <!-- Basic Tier -->
+                        <div class="tier-card bg-white rounded-2xl shadow-sm p-6 border-2 border-transparent hover:border-purple-500">
+                            <h3 class="text-xl font-bold mb-2">Fan</h3>
+                            <div class="mb-4">
+                                <span class="text-3xl font-bold">$5</span>
+                                <span class="text-gray-500">/month</span>
+                            </div>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Access to patron-only posts</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Monthly wallpapers</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Discord access</span>
+                                </li>
+                            </ul>
+                            <button class="w-full py-3 bg-purple-500 text-white rounded-full hover:bg-purple-600 font-semibold">
+                                Join Tier
+                            </button>
+                        </div>
+
+                        <!-- Popular Tier -->
+                        <div class="tier-card bg-white rounded-2xl shadow-lg p-6 border-2 border-purple-500 relative">
+                            <div class="popular-badge absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                                MOST POPULAR
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Supporter</h3>
+                            <div class="mb-4">
+                                <span class="text-3xl font-bold">$15</span>
+                                <span class="text-gray-500">/month</span>
+                            </div>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Everything in Fan tier</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Early access to tutorials</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">PSD files & brushes</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Monthly Q&A sessions</span>
+                                </li>
+                            </ul>
+                            <button class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 font-semibold">
+                                Join Tier
+                            </button>
+                        </div>
+
+                        <!-- Premium Tier -->
+                        <div class="tier-card bg-white rounded-2xl shadow-sm p-6 border-2 border-transparent hover:border-purple-500">
+                            <h3 class="text-xl font-bold mb-2">VIP</h3>
+                            <div class="mb-4">
+                                <span class="text-3xl font-bold">$50</span>
+                                <span class="text-gray-500">/month</span>
+                            </div>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Everything in Supporter tier</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">1-on-1 mentorship session</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Custom artwork request</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check text-green-500 mt-1"></i>
+                                    <span class="text-gray-600">Credits in videos</span>
+                                </li>
+                            </ul>
+                            <button class="w-full py-3 bg-purple-500 text-white rounded-full hover:bg-purple-600 font-semibold">
+                                Join Tier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.textContent.includes('Join Tier')) {
+                btn.addEventListener('click', () => {
+                    const tier = btn.closest('.tier-card').querySelector('h3').textContent;
+                    alert(`Joining ${tier} tier!\n\nIn a real application, this would redirect to the payment page.`);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

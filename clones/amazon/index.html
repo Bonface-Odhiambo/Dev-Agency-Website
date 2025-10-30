@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopHub - Online Shopping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .product-card { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white sticky top-0 z-50">
+        <div class="bg-gray-800 py-2">
+            <div class="container mx-auto px-4 flex items-center justify-between text-sm">
+                <div class="flex items-center gap-4">
+                    <span><i class="fas fa-map-marker-alt mr-2"></i>Deliver to New York 10001</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="hover:underline">Customer Service</a>
+                    <a href="#" class="hover:underline">Today's Deals</a>
+                    <a href="#" class="hover:underline">Registry</a>
+                    <a href="#" class="hover:underline">Gift Cards</a>
+                    <a href="#" class="hover:underline">Sell</a>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-shopping-bag text-3xl text-orange-400"></i>
+                    <span class="text-2xl font-bold">ShopHub</span>
+                </div>
+                <div class="flex-1 max-w-3xl">
+                    <div class="flex">
+                        <select class="px-4 py-2 bg-gray-200 text-gray-900 rounded-l-md focus:outline-none">
+                            <option>All</option>
+                            <option>Electronics</option>
+                            <option>Fashion</option>
+                            <option>Home</option>
+                            <option>Books</option>
+                        </select>
+                        <input type="text" placeholder="Search ShopHub" class="flex-1 px-4 py-2 focus:outline-none">
+                        <button class="px-6 bg-orange-400 hover:bg-orange-500 rounded-r-md">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <button class="hover:text-orange-400">
+                        <i class="far fa-user text-xl"></i>
+                        <p class="text-xs">Account</p>
+                    </button>
+                    <button class="hover:text-orange-400">
+                        <i class="fas fa-redo text-xl"></i>
+                        <p class="text-xs">Returns</p>
+                    </button>
+                    <button class="hover:text-orange-400 relative">
+                        <i class="fas fa-shopping-cart text-2xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-orange-400 text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-800 py-2">
+            <div class="container mx-auto px-4 flex items-center gap-6 text-sm overflow-x-auto">
+                <button class="hover:text-orange-400 whitespace-nowrap"><i class="fas fa-bars mr-2"></i>All</button>
+                <a href="#" class="hover:text-orange-400 whitespace-nowrap">Today's Deals</a>
+                <a href="#" class="hover:text-orange-400 whitespace-nowrap">Customer Service</a>
+                <a href="#" class="hover:text-orange-400 whitespace-nowrap">Registry</a>
+                <a href="#" class="hover:text-orange-400 whitespace-nowrap">Gift Cards</a>
+                <a href="#" class="hover:text-orange-400 whitespace-nowrap">Sell</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-4">Holiday Deals are Here!</h1>
+            <p class="text-xl mb-6">Save up to 70% on thousands of items</p>
+            <button class="px-8 py-3 bg-orange-400 hover:bg-orange-500 text-white font-bold rounded-full">
+                Shop Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div class="bg-white p-6 rounded-lg text-center hover:shadow-lg cursor-pointer">
+                <i class="fas fa-laptop text-4xl text-blue-600 mb-3"></i>
+                <p class="font-semibold">Electronics</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg text-center hover:shadow-lg cursor-pointer">
+                <i class="fas fa-tshirt text-4xl text-pink-600 mb-3"></i>
+                <p class="font-semibold">Fashion</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg text-center hover:shadow-lg cursor-pointer">
+                <i class="fas fa-home text-4xl text-green-600 mb-3"></i>
+                <p class="font-semibold">Home & Kitchen</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg text-center hover:shadow-lg cursor-pointer">
+                <i class="fas fa-book text-4xl text-orange-600 mb-3"></i>
+                <p class="font-semibold">Books</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg text-center hover:shadow-lg cursor-pointer">
+                <i class="fas fa-dumbbell text-4xl text-red-600 mb-3"></i>
+                <p class="font-semibold">Sports</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg text-center hover:shadow-lg cursor-pointer">
+                <i class="fas fa-gamepad text-4xl text-purple-600 mb-3"></i>
+                <p class="font-semibold">Gaming</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Products -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold mb-6">Today's Deals</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" id="productsGrid">
+            <!-- Products will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Recommended Section -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold mb-6">Recommended for You</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" id="recommendedGrid">
+            <!-- Recommended products will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-12">
+        <div class="bg-gray-800 py-4 text-center">
+            <button class="hover:text-orange-400">Back to top</button>
+        </div>
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-bold mb-4">Get to Know Us</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Press Releases</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Sell on ShopHub</a></li>
+                        <li><a href="#" class="hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="hover:text-white">Advertise</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Payment Products</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">ShopHub Rewards</a></li>
+                        <li><a href="#" class="hover:text-white">Shop with Points</a></li>
+                        <li><a href="#" class="hover:text-white">Credit Card</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="hover:text-white">Your Orders</a></li>
+                        <li><a href="#" class="hover:text-white">Returns & Replacements</a></li>
+                        <li><a href="#" class="hover:text-white">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-950 py-6 text-center text-sm text-gray-400">
+            <p>&copy; 2024 ShopHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            { name: "Wireless Headphones", price: 79.99, oldPrice: 129.99, rating: 4.5, reviews: 1234, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop", badge: "Deal" },
+            { name: "Smart Watch", price: 199.99, oldPrice: 299.99, rating: 4.7, reviews: 856, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop", badge: "Best Seller" },
+            { name: "Laptop Stand", price: 34.99, oldPrice: 49.99, rating: 4.3, reviews: 432, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300&h=300&fit=crop", badge: "Deal" },
+            { name: "USB-C Hub", price: 45.99, oldPrice: 69.99, rating: 4.6, reviews: 678, image: "https://images.unsplash.com/photo-1625948515291-69613efd103f?w=300&h=300&fit=crop", badge: "Limited" },
+            { name: "Mechanical Keyboard", price: 89.99, oldPrice: 139.99, rating: 4.8, reviews: 923, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=300&h=300&fit=crop", badge: "Deal" },
+            { name: "Wireless Mouse", price: 29.99, oldPrice: 49.99, rating: 4.4, reviews: 567, image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=300&h=300&fit=crop", badge: "Best Seller" },
+            { name: "Monitor 27\"", price: 249.99, oldPrice: 399.99, rating: 4.7, reviews: 789, image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&h=300&fit=crop", badge: "Deal" },
+            { name: "Webcam HD", price: 59.99, oldPrice: 89.99, rating: 4.5, reviews: 345, image: "https://images.unsplash.com/photo-1614624532983-4ce03382d63d?w=300&h=300&fit=crop", badge: "Limited" },
+            { name: "Desk Lamp", price: 39.99, oldPrice: 59.99, rating: 4.6, reviews: 234, image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=300&h=300&fit=crop", badge: "Deal" },
+            { name: "Phone Stand", price: 19.99, oldPrice: 29.99, rating: 4.3, reviews: 456, image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=300&h=300&fit=crop", badge: "Best Seller" },
+        ];
+
+        const productsGrid = document.getElementById('productsGrid');
+        const recommendedGrid = document.getElementById('recommendedGrid');
+        
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card bg-white rounded-lg p-4 cursor-pointer';
+            
+            const discount = Math.round((1 - product.price / product.oldPrice) * 100);
+            
+            card.innerHTML = `
+                <div class="relative mb-3">
+                    <img src="${product.image}" alt="${product.name}" class="w-full aspect-square object-cover rounded-lg">
+                    <span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded">${discount}% OFF</span>
+                    ${product.badge ? `<span class="absolute top-2 right-2 bg-orange-400 text-white text-xs px-2 py-1 rounded">${product.badge}</span>` : ''}
+                </div>
+                <h3 class="font-semibold text-sm mb-2 line-clamp-2">${product.name}</h3>
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="flex text-yellow-400 text-sm">
+                        ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
+                    </div>
+                    <span class="text-xs text-gray-500">(${product.reviews})</span>
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-2xl font-bold text-red-600">$${product.price}</span>
+                    <span class="text-sm text-gray-500 line-through">$${product.oldPrice}</span>
+                </div>
+                <button class="w-full py-2 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-lg">
+                    Add to Cart
+                </button>
+            `;
+            
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('button')) {
+                    alert(`Viewing: ${product.name}\n\nIn a real application, this would open the product details page.`);
+                }
+            });
+            
+            card.querySelector('button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                alert(`Added "${product.name}" to cart!\n\nIn a real application, this would add the item to your shopping cart.`);
+            });
+            
+            productsGrid.appendChild(card);
+        });
+
+        // Add recommended products (simplified cards)
+        products.slice(0, 6).forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg p-3 cursor-pointer hover:shadow-lg transition-all';
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="w-full aspect-square object-cover rounded-lg mb-2">
+                <p class="text-sm font-semibold line-clamp-2 mb-1">${product.name}</p>
+                <p class="text-lg font-bold text-red-600">$${product.price}</p>
+            `;
+            recommendedGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

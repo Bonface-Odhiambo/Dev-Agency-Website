@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExclusiveContent - Premium Creator Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .content-card:hover { transform: scale(1.02); }
+        .content-card { transition: all 0.3s ease; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-crown text-yellow-400 text-2xl"></i>
+                    <span class="text-2xl font-bold">ExclusiveContent</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="#" class="hover:text-blue-400">Home</a>
+                    <a href="#" class="hover:text-blue-400">Explore</a>
+                    <a href="#" class="hover:text-blue-400">Messages</a>
+                    <a href="#" class="hover:text-blue-400">Notifications</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <button class="p-2 hover:bg-gray-700 rounded-full">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Creator Profile -->
+    <div class="gradient-bg">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop" 
+                         alt="Creator" 
+                         class="w-32 h-32 rounded-full border-4 border-white shadow-xl">
+                    <div class="absolute -bottom-2 -right-2 bg-green-500 w-8 h-8 rounded-full border-4 border-gray-900"></div>
+                </div>
+                <div class="text-center md:text-left flex-1">
+                    <div class="flex items-center gap-3 justify-center md:justify-start mb-2">
+                        <h1 class="text-3xl font-bold">@CreatorName</h1>
+                        <i class="fas fa-check-circle text-blue-400"></i>
+                    </div>
+                    <p class="text-lg mb-4 opacity-90">Premium Content Creator</p>
+                    <div class="flex items-center gap-6 justify-center md:justify-start mb-4">
+                        <div>
+                            <span class="text-xl font-bold">2.5K</span>
+                            <p class="text-sm opacity-75">Posts</p>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold">45.2K</span>
+                            <p class="text-sm opacity-75">Subscribers</p>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold">1.2M</span>
+                            <p class="text-sm opacity-75">Likes</p>
+                        </div>
+                    </div>
+                    <button class="px-8 py-3 bg-blue-500 hover:bg-blue-600 rounded-full font-bold text-lg">
+                        Subscribe for $19.99/month
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-gray-800 border-b border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex gap-8 overflow-x-auto">
+                <button class="py-4 border-b-2 border-blue-500 text-blue-500 font-semibold whitespace-nowrap">
+                    <i class="fas fa-th-large mr-2"></i>Posts
+                </button>
+                <button class="py-4 border-b-2 border-transparent hover:text-blue-400 whitespace-nowrap">
+                    <i class="fas fa-images mr-2"></i>Photos
+                </button>
+                <button class="py-4 border-b-2 border-transparent hover:text-blue-400 whitespace-nowrap">
+                    <i class="fas fa-video mr-2"></i>Videos
+                </button>
+                <button class="py-4 border-b-2 border-transparent hover:text-blue-400 whitespace-nowrap">
+                    <i class="fas fa-lock mr-2"></i>Exclusive
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Pinned Post -->
+        <div class="bg-gray-800 rounded-2xl p-6 mb-6 border border-yellow-500">
+            <div class="flex items-center gap-3 mb-4">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop" 
+                     class="w-12 h-12 rounded-full">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        <p class="font-bold">@CreatorName</p>
+                        <i class="fas fa-check-circle text-blue-400 text-sm"></i>
+                        <i class="fas fa-thumbtack text-yellow-500 text-sm"></i>
+                    </div>
+                    <p class="text-sm text-gray-400">2 hours ago</p>
+                </div>
+                <button class="text-gray-400 hover:text-white">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+            </div>
+            <p class="mb-4">Welcome to my exclusive page! 🎉 Subscribe to get access to all my premium content, behind-the-scenes footage, and exclusive photos. New content posted daily! 💕</p>
+            <div class="flex items-center gap-6 text-gray-400">
+                <button class="flex items-center gap-2 hover:text-red-500">
+                    <i class="far fa-heart"></i> 1.2K
+                </button>
+                <button class="flex items-center gap-2 hover:text-blue-500">
+                    <i class="far fa-comment"></i> 234
+                </button>
+                <button class="flex items-center gap-2 hover:text-green-500">
+                    <i class="fas fa-share"></i> Share
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contentGrid">
+            <!-- Content will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        const content = [
+            { type: 'photo', locked: false, likes: 456, comments: 23, price: null, image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=500&fit=crop" },
+            { type: 'video', locked: true, likes: 789, comments: 45, price: 9.99, image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=500&fit=crop" },
+            { type: 'photo', locked: false, likes: 234, comments: 12, price: null, image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=500&fit=crop" },
+            { type: 'photo', locked: true, likes: 567, comments: 34, price: 4.99, image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=500&fit=crop" },
+            { type: 'video', locked: false, likes: 890, comments: 56, price: null, image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=500&fit=crop" },
+            { type: 'photo', locked: false, likes: 345, comments: 18, price: null, image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&h=500&fit=crop" },
+        ];
+
+        const contentGrid = document.getElementById('contentGrid');
+        
+        content.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'content-card bg-gray-800 rounded-2xl overflow-hidden cursor-pointer relative group';
+            
+            const lockOverlay = item.locked ? `
+                <div class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center backdrop-blur-sm">
+                    <i class="fas fa-lock text-4xl mb-3"></i>
+                    <p class="text-lg font-bold">Unlock for $${item.price}</p>
+                    <button class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-600 rounded-full font-semibold">
+                        Unlock
+                    </button>
+                </div>
+            ` : '';
+            
+            const videoIcon = item.type === 'video' ? '<i class="fas fa-play-circle text-4xl text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"></i>' : '';
+            
+            card.innerHTML = `
+                <div class="relative aspect-[4/5] overflow-hidden">
+                    <img src="${item.image}" alt="Content" class="w-full h-full object-cover ${item.locked ? 'blur-lg' : ''}">
+                    ${videoIcon}
+                    ${lockOverlay}
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between text-gray-400">
+                        <button class="flex items-center gap-2 hover:text-red-500">
+                            <i class="far fa-heart"></i> ${item.likes}
+                        </button>
+                        <button class="flex items-center gap-2 hover:text-blue-500">
+                            <i class="far fa-comment"></i> ${item.comments}
+                        </button>
+                        <button class="hover:text-yellow-500">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => {
+                if (item.locked) {
+                    alert(`Unlock this ${item.type} for $${item.price}\n\nIn a real application, this would process the payment.`);
+                } else {
+                    alert(`Viewing ${item.type}\n\nIn a real application, this would open the full content.`);
+                }
+            });
+            
+            contentGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
