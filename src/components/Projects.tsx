@@ -6,7 +6,7 @@ const projects = [
     id: "linktree-clone",
     title: "LinkTree Clone",
     description: "A customizable bio link platform that allows creators to showcase all their important links in one beautiful page. Perfect for social media profiles.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop",
+    image: "https://cdn.dribbble.com/userupload/3007782/file/original-8f257cba713a7493c7fb30c5cbcb9e45.png",
     tags: ["Social Media", "Creator Tools", "Landing Page"],
     demoUrl: "/clones/linktree/index.html"
   },
@@ -14,7 +14,7 @@ const projects = [
     id: "youtube-clone",
     title: "YouTube Clone",
     description: "A complete video streaming platform with video uploads, subscriptions, comments, and personalized recommendations.",
-    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&auto=format&fit=crop",
+    image: "https://cdn.sologo.ai/2025/0305/20250305072449146.png",
     tags: ["Video Streaming", "Social Media", "Content Platform"],
     demoUrl: "/clones/youtube/index.html"
   },
@@ -22,7 +22,7 @@ const projects = [
     id: "patreon-clone",
     title: "Patreon Clone",
     description: "A creator monetization platform with tiered memberships, exclusive content, and community features for supporters.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=800&auto=format&fit=crop&q=80",
     tags: ["Monetization", "Subscriptions", "Creator Economy"],
     demoUrl: "/clones/patreon/index.html"
   },
@@ -30,7 +30,7 @@ const projects = [
     id: "onlyfans-clone",
     title: "OnlyFans Clone",
     description: "A premium content subscription platform enabling creators to monetize exclusive content with tiered memberships and pay-per-view features.",
-    image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&auto=format&fit=crop",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWpWMWyS3XTMW_PsTT1lFT_EYZ1boYGwrqZg&s",
     tags: ["Content Platform", "Subscriptions", "Creator Economy"],
     demoUrl: "/clones/onlyfans/index.html"
   },
@@ -38,7 +38,7 @@ const projects = [
     id: "celebrity-website",
     title: "Celebrity Website",
     description: "A stunning portfolio website for celebrities featuring image galleries, social links, booking system, event calendar, and fan engagement tools.",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&auto=format&fit=crop&q=80",
     tags: ["Portfolio", "Booking", "Events"],
     demoUrl: "/clones/celebrity/index.html"
   },
@@ -46,7 +46,7 @@ const projects = [
     id: "amazon-clone",
     title: "Amazon Clone",
     description: "A full-featured e-commerce platform with product listings, shopping cart, reviews, and integrated payment processing.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=800&auto=format&fit=crop&q=80",
     tags: ["E-commerce", "Shopping", "Marketplace"],
     demoUrl: "/clones/amazon/index.html"
   },
@@ -54,7 +54,7 @@ const projects = [
     id: "whatnot-clone",
     title: "Whatnot Clone",
     description: "A live shopping and auction platform where sellers can stream live shows and buyers can bid in real-time.",
-    image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&auto=format&fit=crop",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-DklitYffyGcF-FzrVnTOlMk8mFPgaP9Y5g&s",
     tags: ["Live Shopping", "Auctions", "Streaming"],
     demoUrl: "/clones/whatnot/index.html"
   },
@@ -62,7 +62,7 @@ const projects = [
     id: "reseller-clone",
     title: "Reseller Clone",
     description: "A marketplace for buying and selling authenticated sneakers, streetwear, electronics, and collectibles with buyer protection.",
-    image: "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&auto=format&fit=crop&q=80",
     tags: ["Resale", "Marketplace", "Authentication"],
     demoUrl: "/clones/reseller/index.html"
   }

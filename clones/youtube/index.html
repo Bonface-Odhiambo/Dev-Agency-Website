@@ -6,15 +6,23 @@
     <title>VidStream - Video Sharing Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Roboto', sans-serif; }
-        .sidebar { width: 240px; position: fixed; left: 0; top: 56px; bottom: 0; overflow-y: auto; }
-        .main-content { margin-left: 240px; margin-top: 56px; padding: 24px; }
+        .sidebar { width: 240px; position: fixed; left: 0; top: 56px; bottom: 0; overflow-y: auto; transition: transform 0.3s ease; z-index: 40; }
+        .sidebar.hidden { transform: translateX(-240px); }
+        .main-content { margin-left: 240px; margin-top: 56px; padding: 24px; transition: margin-left 0.3s ease; }
+        .main-content.expanded { margin-left: 0; }
         .video-card:hover { transform: translateY(-4px); }
-        .video-card { transition: all 0.3s ease; }
+        .video-card { transition: all 0.3s ease; cursor: pointer; }
+        .sidebar::-webkit-scrollbar { width: 8px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        .sidebar::-webkit-scrollbar-thumb:hover { background: #999; }
+        .notification-badge { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: #ff0000; border-radius: 50%; }
         @media (max-width: 768px) {
-            .sidebar { display: none; }
+            .sidebar { transform: translateX(-240px); }
+            .sidebar.visible { transform: translateX(0); box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
             .main-content { margin-left: 0; }
         }
     </style>
@@ -24,88 +32,112 @@
     <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 h-14">
         <div class="flex items-center justify-between px-4 h-full">
             <div class="flex items-center gap-4">
-                <button class="p-2 hover:bg-gray-100 rounded-full">
+                <button id="menuToggle" class="p-2 hover:bg-gray-100 rounded-full" title="Menu">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
                     <i class="fab fa-youtube text-red-600 text-3xl"></i>
-                    <span class="text-xl font-bold">VidStream</span>
+                    <span class="text-xl font-bold hidden sm:block">VidStream</span>
                 </div>
             </div>
             
-            <div class="flex-1 max-w-2xl mx-8">
+            <div class="flex-1 max-w-2xl mx-4 md:mx-8">
                 <div class="flex">
                     <input type="text" 
+                           id="searchInput"
                            placeholder="Search" 
                            class="flex-1 px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500">
-                    <button class="px-6 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">
+                    <button id="searchBtn" class="px-6 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200" title="Search">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4">
-                <button class="p-2 hover:bg-gray-100 rounded-full">
+            <div class="flex items-center gap-2 md:gap-4">
+                <button class="p-2 hover:bg-gray-100 rounded-full hidden md:block" title="Create">
                     <i class="fas fa-video text-xl"></i>
                 </button>
-                <button class="p-2 hover:bg-gray-100 rounded-full">
+                <button class="p-2 hover:bg-gray-100 rounded-full relative" title="Notifications">
                     <i class="fas fa-bell text-xl"></i>
+                    <span class="notification-badge"></span>
                 </button>
-                <button class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white">
-                    <i class="fas fa-user"></i>
+                <button class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700" title="Account">
+                    <i class="fas fa-user text-sm"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Sidebar -->
-    <aside class="sidebar bg-white border-r">
+    <aside id="sidebar" class="sidebar bg-white border-r">
         <nav class="py-2">
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100 bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100 bg-gray-100" data-section="home">
                 <i class="fas fa-home text-xl w-6"></i>
                 <span class="font-medium">Home</span>
             </a>
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100" data-section="trending">
                 <i class="fas fa-fire text-xl w-6"></i>
                 <span>Trending</span>
             </a>
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100" data-section="subscriptions">
                 <i class="fas fa-play-circle text-xl w-6"></i>
                 <span>Subscriptions</span>
             </a>
             
             <hr class="my-2">
             
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100" data-section="library">
                 <i class="fas fa-folder text-xl w-6"></i>
                 <span>Library</span>
             </a>
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100" data-section="history">
                 <i class="fas fa-history text-xl w-6"></i>
                 <span>History</span>
             </a>
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100" data-section="watch-later">
                 <i class="fas fa-clock text-xl w-6"></i>
                 <span>Watch Later</span>
             </a>
-            <a href="#" class="flex items-center gap-6 px-6 py-3 hover:bg-gray-100">
+            <a href="#" class="nav-item flex items-center gap-6 px-6 py-3 hover:bg-gray-100" data-section="liked">
                 <i class="fas fa-thumbs-up text-xl w-6"></i>
                 <span>Liked Videos</span>
+            </a>
+            
+            <hr class="my-2">
+            
+            <div class="px-6 py-2 text-sm font-semibold text-gray-600">SUBSCRIPTIONS</div>
+            <a href="#" class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100">
+                <div class="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold">T</div>
+                <span class="text-sm">Tech Academy</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100">
+                <div class="w-6 h-6 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-xs font-bold">N</div>
+                <span class="text-sm">Nature Plus</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100">
+                <div class="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">C</div>
+                <span class="text-sm">Chef's Kitchen</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100">
+                <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-xs font-bold">T</div>
+                <span class="text-sm">Travel Vlog</span>
             </a>
         </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main id="mainContent" class="main-content">
         <!-- Category Chips -->
-        <div class="flex gap-3 mb-6 overflow-x-auto pb-2">
-            <button class="px-4 py-2 bg-gray-900 text-white rounded-lg whitespace-nowrap">All</button>
-            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap">Music</button>
-            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap">Gaming</button>
-            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap">News</button>
-            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap">Live</button>
-            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap">Sports</button>
-            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap">Learning</button>
+        <div class="flex gap-3 mb-6 overflow-x-auto pb-2" id="categoryChips">
+            <button class="category-chip px-4 py-2 bg-gray-900 text-white rounded-lg whitespace-nowrap" data-category="all">All</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="music">Music</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="gaming">Gaming</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="news">News</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="live">Live</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="sports">Sports</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="learning">Learning</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="tech">Tech</button>
+            <button class="category-chip px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg whitespace-nowrap" data-category="cooking">Cooking</button>
         </div>
 
         <!-- Video Grid -->
@@ -115,44 +147,170 @@
     </main>
 
     <script>
-        const videos = [
-            { title: "Building a Full Stack App in 2024", channel: "Tech Academy", views: "1.2M", time: "2 days ago", duration: "15:30", thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=225&fit=crop" },
-            { title: "Amazing Nature Documentary", channel: "Nature Plus", views: "3.5M", time: "1 week ago", duration: "45:20", thumbnail: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=225&fit=crop" },
-            { title: "Cooking the Perfect Steak", channel: "Chef's Kitchen", views: "890K", time: "3 days ago", duration: "12:15", thumbnail: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=225&fit=crop" },
-            { title: "Top 10 Travel Destinations 2024", channel: "Travel Vlog", views: "2.1M", time: "5 days ago", duration: "18:45", thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=225&fit=crop" },
-            { title: "Fitness Workout for Beginners", channel: "Fit Life", views: "1.8M", time: "1 day ago", duration: "25:00", thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=225&fit=crop" },
-            { title: "Latest Tech News & Reviews", channel: "Tech Today", views: "950K", time: "4 hours ago", duration: "20:30", thumbnail: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=225&fit=crop" },
-            { title: "Music Production Tutorial", channel: "Beat Makers", views: "670K", time: "1 week ago", duration: "35:15", thumbnail: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=225&fit=crop" },
-            { title: "Gaming Highlights 2024", channel: "Pro Gamer", views: "4.2M", time: "2 days ago", duration: "28:40", thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=225&fit=crop" },
+        // Video Database with categories
+        const allVideos = [
+            { title: "Building a Full Stack App in 2024", channel: "Tech Academy", views: "1.2M", time: "2 days ago", duration: "15:30", thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=225&fit=crop", category: "tech" },
+            { title: "Amazing Nature Documentary", channel: "Nature Plus", views: "3.5M", time: "1 week ago", duration: "45:20", thumbnail: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=225&fit=crop", category: "learning" },
+            { title: "Cooking the Perfect Steak", channel: "Chef's Kitchen", views: "890K", time: "3 days ago", duration: "12:15", thumbnail: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=225&fit=crop", category: "cooking" },
+            { title: "Top 10 Travel Destinations 2024", channel: "Travel Vlog", views: "2.1M", time: "5 days ago", duration: "18:45", thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=225&fit=crop", category: "learning" },
+            { title: "Fitness Workout for Beginners", channel: "Fit Life", views: "1.8M", time: "1 day ago", duration: "25:00", thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=225&fit=crop", category: "sports" },
+            { title: "Latest Tech News & Reviews", channel: "Tech Today", views: "950K", time: "4 hours ago", duration: "20:30", thumbnail: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=225&fit=crop", category: "news" },
+            { title: "Music Production Tutorial", channel: "Beat Makers", views: "670K", time: "1 week ago", duration: "35:15", thumbnail: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=225&fit=crop", category: "music" },
+            { title: "Gaming Highlights 2024", channel: "Pro Gamer", views: "4.2M", time: "2 days ago", duration: "28:40", thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=225&fit=crop", category: "gaming" },
+            { title: "Live Concert Performance", channel: "Music Live", views: "5.2M", time: "3 hours ago", duration: "LIVE", thumbnail: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=225&fit=crop", category: "live" },
+            { title: "Breaking News Update", channel: "World News", views: "1.5M", time: "1 hour ago", duration: "8:45", thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=225&fit=crop", category: "news" },
+            { title: "JavaScript Advanced Concepts", channel: "Code Masters", views: "890K", time: "4 days ago", duration: "42:10", thumbnail: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=225&fit=crop", category: "tech" },
+            { title: "Top Gaming Moments", channel: "Epic Games", views: "3.1M", time: "1 day ago", duration: "15:22", thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=225&fit=crop", category: "gaming" },
         ];
 
+        let currentCategory = 'all';
+        let currentSection = 'home';
+        let searchQuery = '';
+
+        // DOM Elements
         const videoGrid = document.getElementById('videoGrid');
-        
-        videos.forEach(video => {
-            const videoCard = document.createElement('div');
-            videoCard.className = 'video-card cursor-pointer';
-            videoCard.innerHTML = `
-                <div class="relative mb-3">
-                    <img src="${video.thumbnail}" alt="${video.title}" class="w-full rounded-xl aspect-video object-cover">
-                    <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">${video.duration}</span>
-                </div>
-                <div class="flex gap-3">
-                    <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
-                        ${video.channel[0]}
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="font-medium text-sm line-clamp-2 mb-1">${video.title}</h3>
-                        <p class="text-gray-600 text-xs">${video.channel}</p>
-                        <p class="text-gray-600 text-xs">${video.views} views • ${video.time}</p>
-                    </div>
-                </div>
-            `;
-            
-            videoCard.addEventListener('click', () => {
-                alert(`Playing: ${video.title}\n\nIn a real application, this would open the video player.`);
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const menuToggle = document.getElementById('menuToggle');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const categoryChips = document.querySelectorAll('.category-chip');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        // Toggle Sidebar
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('visible');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Search Functionality
+        function performSearch() {
+            searchQuery = searchInput.value.trim().toLowerCase();
+            renderVideos();
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // Category Filtering
+        categoryChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Update active state
+                categoryChips.forEach(c => {
+                    c.classList.remove('bg-gray-900', 'text-white');
+                    c.classList.add('bg-gray-200', 'hover:bg-gray-300');
+                });
+                chip.classList.remove('bg-gray-200', 'hover:bg-gray-300');
+                chip.classList.add('bg-gray-900', 'text-white');
+                
+                // Filter videos
+                currentCategory = chip.dataset.category;
+                renderVideos();
             });
+        });
+
+        // Navigation
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Update active state
+                navItems.forEach(i => i.classList.remove('bg-gray-100'));
+                item.classList.add('bg-gray-100');
+                
+                currentSection = item.dataset.section;
+                renderVideos();
+                
+                // Close sidebar on mobile
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('visible');
+                    sidebar.classList.add('hidden');
+                }
+            });
+        });
+
+        // Render Videos
+        function renderVideos() {
+            videoGrid.innerHTML = '';
             
-            videoGrid.appendChild(videoCard);
+            let filteredVideos = allVideos;
+            
+            // Filter by category
+            if (currentCategory !== 'all') {
+                filteredVideos = filteredVideos.filter(v => v.category === currentCategory);
+            }
+            
+            // Filter by search
+            if (searchQuery) {
+                filteredVideos = filteredVideos.filter(v => 
+                    v.title.toLowerCase().includes(searchQuery) ||
+                    v.channel.toLowerCase().includes(searchQuery)
+                );
+            }
+            
+            // Filter by section
+            if (currentSection === 'trending') {
+                filteredVideos = [...filteredVideos].sort((a, b) => {
+                    const viewsA = parseFloat(a.views) * (a.views.includes('M') ? 1000000 : 1000);
+                    const viewsB = parseFloat(b.views) * (b.views.includes('M') ? 1000000 : 1000);
+                    return viewsB - viewsA;
+                });
+            }
+            
+            if (filteredVideos.length === 0) {
+                videoGrid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No videos found</div>';
+                return;
+            }
+            
+            filteredVideos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="relative mb-3">
+                        <img src="${video.thumbnail}" alt="${video.title}" class="w-full rounded-xl aspect-video object-cover">
+                        <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded font-semibold">
+                            ${video.duration}
+                        </span>
+                        ${video.duration === 'LIVE' ? '<span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded font-bold">🔴 LIVE</span>' : ''}
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                            ${video.channel[0]}
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-medium text-sm line-clamp-2 mb-1 hover:text-blue-600">${video.title}</h3>
+                            <p class="text-gray-600 text-xs hover:text-gray-900 cursor-pointer">${video.channel}</p>
+                            <p class="text-gray-600 text-xs">${video.views} views • ${video.time}</p>
+                        </div>
+                        <button class="text-gray-600 hover:text-gray-900 p-1" onclick="event.stopPropagation()">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                `;
+                
+                videoCard.addEventListener('click', () => {
+                    alert(`▶️ Now Playing: ${video.title}\n\nChannel: ${video.channel}\nViews: ${video.views}\nUploaded: ${video.time}\n\nIn a real application, this would open the video player with comments, recommendations, and full playback controls.`);
+                });
+                
+                videoGrid.appendChild(videoCard);
+            });
+        }
+
+        // Initial render
+        renderVideos();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('visible', 'hidden');
+                mainContent.classList.remove('expanded');
+            } else {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('visible');
+            }
         });
     </script>
 </body>

@@ -9,7 +9,7 @@ const projectsData = {
     title: "LinkTree Clone",
     subtitle: "Bio Link Platform for Creators",
     description: "A fully customizable bio link platform that allows creators, influencers, and businesses to showcase all their important links in one beautiful, mobile-optimized page. Perfect for Instagram, TikTok, and other social media profiles.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop",
+    image: "https://cdn.dribbble.com/userupload/3007782/file/original-8f257cba713a7493c7fb30c5cbcb9e45.png",
     demoUrl: "/clones/linktree/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
@@ -30,16 +30,16 @@ const projectsData = {
       { name: "Authentication", tech: "JWT, OAuth" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop"
+      "https://cdn.dribbble.com/userupload/3007782/file/original-8f257cba713a7493c7fb30c5cbcb9e45.png",
+      "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "youtube-clone": {
     title: "YouTube Clone",
     subtitle: "Video Streaming Platform",
     description: "A comprehensive video streaming platform with video uploads, subscriptions, comments, and personalized recommendations. Features a modern UI similar to YouTube with trending videos, categories, and user engagement.",
-    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=1200&auto=format&fit=crop",
+    image: "https://cdn.sologo.ai/2025/0305/20250305072449146.png",
     demoUrl: "/clones/youtube/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "AWS S3", "Stripe", "WebRTC"],
@@ -60,16 +60,16 @@ const projectsData = {
       { name: "Payments", tech: "Stripe Connect" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop"
+      "https://cdn.sologo.ai/2025/0305/20250305072449146.png",
+      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "onlyfans-clone": {
     title: "OnlyFans Clone",
     subtitle: "Premium Content Subscription Platform",
     description: "A secure and feature-rich premium content subscription platform enabling creators to monetize exclusive content. Includes tiered memberships, pay-per-view content, direct messaging, and comprehensive creator tools.",
-    image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=1200&auto=format&fit=crop",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWpWMWyS3XTMW_PsTT1lFT_EYZ1boYGwrqZg&s",
     demoUrl: "/clones/onlyfans/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "PostgreSQL", "Stripe", "AWS"],
@@ -90,16 +90,16 @@ const projectsData = {
       { name: "Payments", tech: "Stripe, PayPal" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&auto=format&fit=crop"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWpWMWyS3XTMW_PsTT1lFT_EYZ1boYGwrqZg&s",
+      "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "celebrity-website": {
     title: "Celebrity Website",
     subtitle: "Professional Portfolio & Booking Platform",
     description: "A stunning, fully-featured website for celebrities, artists, and public figures. Includes image galleries, social media integration, event calendar, booking system, merchandise store, and fan engagement tools.",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&auto=format&fit=crop&q=80",
     demoUrl: "/clones/celebrity/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "Stripe", "Calendar API"],
@@ -120,16 +120,16 @@ const projectsData = {
       { name: "E-commerce", tech: "Stripe, Shopify API" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "amazon-clone": {
     title: "Amazon Clone",
     subtitle: "E-commerce Marketplace Platform",
     description: "A comprehensive e-commerce platform with product listings, shopping cart, reviews, and integrated payment processing. Features include product search, categories, deals, and a complete shopping experience.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=1200&auto=format&fit=crop&q=80",
     demoUrl: "/clones/amazon/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "PostgreSQL", "WebRTC", "Stripe"],
@@ -150,16 +150,16 @@ const projectsData = {
       { name: "Payments", tech: "Stripe Connect" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "patreon-clone": {
     title: "Patreon Clone",
     subtitle: "Creator Monetization Platform",
     description: "A creator monetization platform with tiered memberships, exclusive content, and community features. Enables creators to build sustainable income through supporter subscriptions and exclusive perks.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=1200&auto=format&fit=crop&q=80",
     demoUrl: "/clones/patreon/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "Stripe", "PostgreSQL"],
@@ -180,16 +180,16 @@ const projectsData = {
       { name: "Payments", tech: "Stripe Connect" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "whatnot-clone": {
     title: "Whatnot Clone",
     subtitle: "Live Shopping & Auction Platform",
     description: "A live shopping and auction platform where sellers can stream live shows and buyers can bid in real-time. Features live streaming, real-time bidding, seller dashboards, and integrated payments.",
-    image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&auto=format&fit=crop",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-DklitYffyGcF-FzrVnTOlMk8mFPgaP9Y5g&s",
     demoUrl: "/clones/whatnot/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "WebRTC", "Socket.io"],
@@ -210,39 +210,39 @@ const projectsData = {
       { name: "Payments", tech: "Stripe" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-DklitYffyGcF-FzrVnTOlMk8mFPgaP9Y5g&s",
+      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80"
     ]
   },
   "reseller-clone": {
     title: "Reseller Clone",
     subtitle: "Authenticated Resale Marketplace",
     description: "A marketplace for buying and selling authenticated sneakers, streetwear, electronics, and collectibles. Features authentication verification, buyer protection, and secure transactions.",
-    image: "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=1200&auto=format&fit=crop&q=80",
     demoUrl: "/clones/reseller/index.html",
     githubUrl: "#",
-    tags: ["React", "Python", "OpenAI", "TensorFlow"],
+    tags: ["React", "Node.js", "PostgreSQL", "Stripe"],
     features: [
-      "Natural language processing",
-      "Smart task scheduling",
-      "Voice commands",
-      "Calendar integration",
-      "Email automation",
-      "Smart reminders",
-      "Workflow automation",
-      "Learning user preferences"
+      "Product authentication system",
+      "Buyer protection program",
+      "Secure escrow payments",
+      "Condition verification",
+      "Price tracking and alerts",
+      "Seller ratings and reviews",
+      "Shipping insurance",
+      "Market analytics"
     ],
     techStack: [
-      { name: "Frontend", tech: "React, TypeScript" },
-      { name: "Backend", tech: "Python, FastAPI" },
-      { name: "AI/ML", tech: "OpenAI GPT, TensorFlow" },
-      { name: "Database", tech: "PostgreSQL, Vector DB" }
+      { name: "Frontend", tech: "React, TypeScript, Tailwind CSS" },
+      { name: "Backend", tech: "Node.js, Express" },
+      { name: "Database", tech: "PostgreSQL, Redis" },
+      { name: "Payments", tech: "Stripe Connect, Escrow" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&auto=format&fit=crop&q=80"
     ]
   }
 };
@@ -302,10 +302,6 @@ const ProjectDetail = () => {
                     View Live Demo
                   </Button>
                 </a>
-                <Button variant="outline">
-                  <Github className="w-4 h-4 mr-2" />
-                  View Code
-                </Button>
               </div>
             </div>
 
