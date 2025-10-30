@@ -22,7 +22,7 @@ const projects = [
     id: "patreon-clone",
     title: "Patreon Clone",
     description: "A creator monetization platform with tiered memberships, exclusive content, and community features for supporters.",
-    image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=800&auto=format&fit=crop&q=80",
+    image: "https://logos-world.net/wp-content/uploads/2020/02/Patreon-Logo.jpg",
     tags: ["Monetization", "Subscriptions", "Creator Economy"],
     demoUrl: "/clones/patreon/index.html"
   },

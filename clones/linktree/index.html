@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LinkHub - Your Bio Link Platform</title>
+    <link rel="icon" type="image/png" href="https://cdn.dribbble.com/userupload/3007782/file/original-8f257cba713a7493c7fb30c5cbcb9e45.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,26 +14,88 @@
         }
         .link-card {
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .link-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .link-card:hover::before {
+            left: 100%;
+        }
         .profile-img {
             border: 5px solid white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .profile-img:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+        .click-count {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(180deg);
         }
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-palette text-white text-xl"></i>
+    </div>
+
     <div class="max-w-2xl w-full">
         <!-- Profile Section -->
         <div class="text-center mb-8 animate-fade-in">
             <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop" 
                  alt="Profile" 
-                 class="w-32 h-32 rounded-full mx-auto mb-4 profile-img">
+                 class="w-32 h-32 rounded-full mx-auto mb-4 profile-img" 
+                 id="profileImg">
             <h1 class="text-3xl font-bold text-white mb-2">@CreatorName</h1>
             <p class="text-white/90 text-lg">Content Creator | Entrepreneur | Influencer</p>
+            <p class="text-white/70 text-sm mt-2">👁️ <span id="totalViews">1,234</span> profile views</p>
         </div>
 
         <!-- Links Container -->
@@ -71,79 +134,202 @@
                 title: "🎥 Latest YouTube Video",
                 url: "#",
                 icon: "fab fa-youtube",
-                color: "from-red-500 to-red-600"
+                color: "from-red-500 to-red-600",
+                clicks: 342
             },
             {
                 title: "📸 Follow on Instagram",
                 url: "#",
                 icon: "fab fa-instagram",
-                color: "from-pink-500 to-purple-600"
+                color: "from-pink-500 to-purple-600",
+                clicks: 521
             },
             {
                 title: "🛍️ Shop My Store",
                 url: "#",
                 icon: "fas fa-shopping-bag",
-                color: "from-green-500 to-teal-600"
+                color: "from-green-500 to-teal-600",
+                clicks: 189
             },
             {
                 title: "💰 Support on Patreon",
                 url: "#",
                 icon: "fab fa-patreon",
-                color: "from-orange-500 to-red-600"
+                color: "from-orange-500 to-red-600",
+                clicks: 95
             },
             {
                 title: "📧 Subscribe to Newsletter",
                 url: "#",
                 icon: "fas fa-envelope",
-                color: "from-blue-500 to-indigo-600"
+                color: "from-blue-500 to-indigo-600",
+                clicks: 234
             },
             {
                 title: "🎵 Listen on Spotify",
                 url: "#",
                 icon: "fab fa-spotify",
-                color: "from-green-400 to-green-600"
+                color: "from-green-400 to-green-600",
+                clicks: 412
             },
             {
                 title: "📱 Download My App",
                 url: "#",
                 icon: "fas fa-mobile-alt",
-                color: "from-purple-500 to-pink-600"
+                color: "from-purple-500 to-pink-600",
+                clicks: 156
             },
             {
                 title: "📚 Read My Blog",
                 url: "#",
                 icon: "fas fa-blog",
-                color: "from-yellow-500 to-orange-600"
+                color: "from-yellow-500 to-orange-600",
+                clicks: 278
             }
         ];
 
+        const themes = [
+            { name: 'purple', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            { name: 'ocean', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            { name: 'sunset', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+            { name: 'forest', gradient: 'linear-gradient(135deg, #0ba360 0%, #3cba92 100%)' },
+            { name: 'fire', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }
+        ];
+
+        let currentThemeIndex = 0;
         const container = document.getElementById('linksContainer');
         
+        // Render links with animations
         links.forEach((link, index) => {
             const linkCard = document.createElement('a');
             linkCard.href = link.url;
-            linkCard.className = `link-card block bg-white rounded-2xl p-6 hover:shadow-2xl cursor-pointer bg-gradient-to-r ${link.color} text-white`;
+            linkCard.className = `link-card block bg-white rounded-2xl p-6 hover:shadow-2xl cursor-pointer bg-gradient-to-r ${link.color} text-white animate-fade-in-up`;
             linkCard.style.animationDelay = `${index * 0.1}s`;
+            linkCard.style.opacity = '0';
+            linkCard.dataset.clicks = link.clicks;
             
             linkCard.innerHTML = `
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 flex-1">
                         <i class="${link.icon} text-2xl"></i>
-                        <span class="text-lg font-semibold">${link.title}</span>
+                        <div class="flex-1">
+                            <div class="text-lg font-semibold">${link.title}</div>
+                            <div class="click-count">👆 ${link.clicks} clicks</div>
+                        </div>
                     </div>
                     <i class="fas fa-arrow-right text-xl"></i>
                 </div>
             `;
             
             container.appendChild(linkCard);
+            
+            // Trigger animation
+            setTimeout(() => {
+                linkCard.style.opacity = '1';
+            }, 50);
         });
 
-        // Add click tracking
+        // Theme toggle functionality
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            document.body.style.background = themes[currentThemeIndex].gradient;
+            
+            // Add ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.5);
+                transform: translate(-50%, -50%) scale(0);
+                animation: ripple 0.6s ease-out;
+                pointer-events: none;
+            `;
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: translate(-50%, -50%) scale(100);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Enhanced click tracking with animations
         document.querySelectorAll('.link-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
-                const title = card.querySelector('span').textContent;
-                alert(`Opening: ${title}\n\nIn a real application, this would track analytics and redirect to the actual URL.`);
+                const title = card.querySelector('.text-lg').textContent;
+                let clicks = parseInt(card.dataset.clicks);
+                clicks++;
+                card.dataset.clicks = clicks;
+                card.querySelector('.click-count').textContent = `👆 ${clicks} clicks`;
+                
+                // Add pulse animation
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 100);
+                
+                // Show toast notification
+                showToast(`Opening: ${title}`);
+            });
+        });
+
+        // Profile image click effect
+        document.getElementById('profileImg').addEventListener('click', () => {
+            const views = document.getElementById('totalViews');
+            let currentViews = parseInt(views.textContent.replace(',', ''));
+            currentViews++;
+            views.textContent = currentViews.toLocaleString();
+            showToast('Thanks for viewing! 👋');
+        });
+
+        // Toast notification function
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: rgba(0,0,0,0.8);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                font-size: 14px;
+                z-index: 1000;
+                transition: transform 0.3s ease;
+                backdrop-filter: blur(10px);
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Add social icons hover effect
+        document.querySelectorAll('.flex.justify-center a').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.preventDefault();
+                const platform = icon.querySelector('i').classList[1].replace('fa-', '');
+                showToast(`Opening ${platform.charAt(0).toUpperCase() + platform.slice(1)}...`);
             });
         });
     </script>

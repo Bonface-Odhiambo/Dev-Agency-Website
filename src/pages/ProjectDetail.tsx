@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Github, Star } from "lucide-react";
+import { ArrowLeft, ExternalLink, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -159,7 +159,7 @@ const projectsData = {
     title: "Patreon Clone",
     subtitle: "Creator Monetization Platform",
     description: "A creator monetization platform with tiered memberships, exclusive content, and community features. Enables creators to build sustainable income through supporter subscriptions and exclusive perks.",
-    image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=1200&auto=format&fit=crop&q=80",
+    image: "https://logos-world.net/wp-content/uploads/2020/02/Patreon-Logo.jpg",
     demoUrl: "/clones/patreon/index.html",
     githubUrl: "#",
     tags: ["React", "Node.js", "Stripe", "PostgreSQL"],
@@ -180,7 +180,7 @@ const projectsData = {
       { name: "Payments", tech: "Stripe Connect" }
     ],
     screenshots: [
-      "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=800&auto=format&fit=crop&q=80",
+      "https://logos-world.net/wp-content/uploads/2020/02/Patreon-Logo.jpg",
       "https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=80"
     ]

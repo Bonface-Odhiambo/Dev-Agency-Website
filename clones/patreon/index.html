@@ -11,6 +11,31 @@
         .tier-card { transition: all 0.3s ease; }
         .popular-badge { animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        
+        .post-card { transition: all 0.3s ease; }
+        .post-card:hover { transform: translateX(5px); }
+        
+        .tab-button { transition: all 0.3s ease; }
+        .tab-button.active { border-bottom: 3px solid #a855f7; color: #a855f7; }
+        
+        .liked { color: #ef4444 !important; }
+        .liked i { animation: heartbeat 0.3s ease; }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-slide-in { animation: slideIn 0.5s ease-out; }
+        
+        .tier-selected { border-color: #10b981 !important; background: #f0fdf4; }
+        
+        .comparison-mode .tier-card { cursor: pointer; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -65,22 +90,87 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- About Section -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-sm p-8 mb-8">
-                    <h2 class="text-2xl font-bold mb-4">About</h2>
+                <!-- Tabs -->
+                <div class="bg-white rounded-t-2xl shadow-sm">
+                    <div class="flex border-b overflow-x-auto">
+                        <button class="tab-button active px-6 py-4 font-semibold whitespace-nowrap" data-tab="posts">
+                            <i class="fas fa-newspaper mr-2"></i>Posts
+                        </button>
+                        <button class="tab-button px-6 py-4 font-semibold text-gray-600 whitespace-nowrap" data-tab="about">
+                            <i class="fas fa-info-circle mr-2"></i>About
+                        </button>
+                        <button class="tab-button px-6 py-4 font-semibold text-gray-600 whitespace-nowrap" data-tab="community">
+                            <i class="fas fa-users mr-2"></i>Community
+                        </button>
+                    </div>
+                </div>
+
+                <!-- About Tab Content -->
+                <div id="about-content" class="tab-content hidden bg-white rounded-b-2xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-4">About Sarah</h2>
                     <p class="text-gray-600 mb-4">
                         Hi! I'm Sarah, a digital artist creating stunning illustrations, tutorials, and exclusive content for my patrons. 
                         By supporting me, you'll get access to behind-the-scenes content, exclusive artwork, and early access to all my projects.
                     </p>
-                    <p class="text-gray-600">
+                    <p class="text-gray-600 mb-6">
                         Your support helps me continue creating art full-time and sharing my knowledge with the community. 
                         Thank you for being part of this journey! ❤️
                     </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-purple-50 rounded-lg">
+                            <div class="text-3xl font-bold text-purple-600">500+</div>
+                            <div class="text-sm text-gray-600">Artworks</div>
+                        </div>
+                        <div class="text-center p-4 bg-pink-50 rounded-lg">
+                            <div class="text-3xl font-bold text-pink-600">50+</div>
+                            <div class="text-sm text-gray-600">Tutorials</div>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-3xl font-bold text-blue-600">1.2K</div>
+                            <div class="text-sm text-gray-600">Patrons</div>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-3xl font-bold text-green-600">3</div>
+                            <div class="text-sm text-gray-600">Years</div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Recent Posts -->
-                <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold mb-6">Recent Posts</h2>
-                    <div class="space-y-6">
+                <!-- Community Tab Content -->
+                <div id="community-content" class="tab-content hidden bg-white rounded-b-2xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Community</h2>
+                    <p class="text-gray-600 mb-6">Join our amazing community of artists and supporters!</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                            <i class="fab fa-discord text-4xl text-indigo-500"></i>
+                            <div class="flex-1">
+                                <h3 class="font-bold">Discord Server</h3>
+                                <p class="text-sm text-gray-600">Chat with other patrons and get exclusive updates</p>
+                            </div>
+                            <button class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Join</button>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                            <i class="fas fa-calendar text-4xl text-purple-500"></i>
+                            <div class="flex-1">
+                                <h3 class="font-bold">Monthly Q&A</h3>
+                                <p class="text-sm text-gray-600">Live sessions every first Friday</p>
+                            </div>
+                            <button class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">RSVP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Posts Tab Content -->
+                <div id="posts-content" class="tab-content bg-white rounded-b-2xl shadow-sm p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold">Recent Posts</h2>
+                        <select id="postFilter" class="px-4 py-2 border rounded-lg">
+                            <option value="all">All Posts</option>
+                            <option value="public">Public</option>
+                            <option value="patron">Patron Only</option>
+                        </select>
+                    </div>
+                    <div class="space-y-6" id="postsContainer">
                         <div class="border-b pb-6">
                             <div class="flex items-center gap-3 mb-3">
                                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" 
@@ -95,32 +185,39 @@
                             <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=400&fit=crop" 
                                  class="w-full rounded-lg mb-3">
                             <div class="flex items-center gap-4 text-gray-500">
-                                <button class="flex items-center gap-2 hover:text-red-500">
-                                    <i class="far fa-heart"></i> 234
+                                <button class="like-btn flex items-center gap-2 hover:text-red-500" data-likes="234">
+                                    <i class="far fa-heart"></i> <span class="like-count">234</span>
                                 </button>
                                 <button class="flex items-center gap-2 hover:text-blue-500">
                                     <i class="far fa-comment"></i> 45
                                 </button>
+                                <button class="flex items-center gap-2 hover:text-green-500">
+                                    <i class="fas fa-share"></i> Share
+                                </button>
                             </div>
                         </div>
 
-                        <div class="border-b pb-6">
+                        <div class="border-b pb-6 post-card" data-type="patron">
                             <div class="flex items-center gap-3 mb-3">
                                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" 
                                      class="w-10 h-10 rounded-full">
-                                <div>
+                                <div class="flex-1">
                                     <p class="font-semibold">Sarah Johnson</p>
                                     <p class="text-sm text-gray-500">5 days ago</p>
                                 </div>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs rounded-full">Patron Only</span>
                             </div>
                             <h3 class="font-bold text-lg mb-2">Behind the Scenes: My Creative Process</h3>
                             <p class="text-gray-600 mb-3">Here's a look at how I approach creating new artwork from concept to final piece...</p>
                             <div class="flex items-center gap-4 text-gray-500">
-                                <button class="flex items-center gap-2 hover:text-red-500">
-                                    <i class="far fa-heart"></i> 189
+                                <button class="like-btn flex items-center gap-2 hover:text-red-500" data-likes="189">
+                                    <i class="far fa-heart"></i> <span class="like-count">189</span>
                                 </button>
                                 <button class="flex items-center gap-2 hover:text-blue-500">
                                     <i class="far fa-comment"></i> 32
+                                </button>
+                                <button class="flex items-center gap-2 hover:text-green-500">
+                                    <i class="fas fa-share"></i> Share
                                 </button>
                             </div>
                         </div>
@@ -228,13 +325,217 @@
     </div>
 
     <script>
+        // Tab Switching
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.dataset.tab;
+                
+                // Remove active class from all buttons
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.add('text-gray-600');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                button.classList.remove('text-gray-600');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected tab content with animation
+                const selectedContent = document.getElementById(`${tabName}-content`);
+                selectedContent.classList.remove('hidden');
+                selectedContent.classList.add('animate-slide-in');
+            });
+        });
+
+        // Like Button Functionality
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                const countSpan = this.querySelector('.like-count');
+                let count = parseInt(this.dataset.likes);
+                
+                if (this.classList.contains('liked')) {
+                    // Unlike
+                    this.classList.remove('liked');
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    count--;
+                } else {
+                    // Like
+                    this.classList.add('liked');
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    count++;
+                }
+                
+                this.dataset.likes = count;
+                countSpan.textContent = count;
+            });
+        });
+
+        // Post Filter
+        document.getElementById('postFilter').addEventListener('change', function() {
+            const filterValue = this.value;
+            const posts = document.querySelectorAll('.post-card');
+            
+            posts.forEach(post => {
+                if (filterValue === 'all') {
+                    post.style.display = 'block';
+                } else if (filterValue === 'patron' && post.dataset.type === 'patron') {
+                    post.style.display = 'block';
+                } else if (filterValue === 'public' && !post.dataset.type) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+
+        // Tier Selection and Comparison
+        let selectedTiers = [];
+        const tierCards = document.querySelectorAll('.tier-card');
+        
+        tierCards.forEach(card => {
+            const joinBtn = card.querySelector('button');
+            
+            // Join Tier Button
+            joinBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tierName = card.querySelector('h3').textContent;
+                const tierPrice = card.querySelector('.text-3xl').textContent;
+                showToast(`Joining ${tierName} tier for ${tierPrice}/month!`);
+                
+                // Highlight selected tier
+                tierCards.forEach(c => c.classList.remove('tier-selected'));
+                card.classList.add('tier-selected');
+            });
+            
+            // Tier Card Click for Details
+            card.addEventListener('click', () => {
+                const tierName = card.querySelector('h3').textContent;
+                const tierPrice = card.querySelector('.text-3xl').textContent;
+                const benefits = Array.from(card.querySelectorAll('li span')).map(span => span.textContent);
+                
+                showTierDetails(tierName, tierPrice, benefits);
+            });
+        });
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: rgba(0,0,0,0.9);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                font-size: 14px;
+                z-index: 1000;
+                transition: transform 0.3s ease;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Tier Details Modal
+        function showTierDetails(name, price, benefits) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 100%; animation: slideIn 0.3s ease;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="font-size: 24px; font-weight: bold; color: #333;">${name} Tier</h2>
+                        <button onclick="this.closest('div').parentElement.remove()" style="font-size: 24px; color: #999; cursor: pointer; background: none; border: none;">&times;</button>
+                    </div>
+                    <div style="font-size: 32px; font-weight: bold; color: #a855f7; margin-bottom: 20px;">${price}<span style="font-size: 16px; color: #999;">/month</span></div>
+                    <h3 style="font-weight: bold; margin-bottom: 10px;">Benefits:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        ${benefits.map(b => `<li style="padding: 8px 0; border-bottom: 1px solid #eee;"><i class="fas fa-check" style="color: #10b981; margin-right: 10px;"></i>${b}</li>`).join('')}
+                    </ul>
+                    <button onclick="this.closest('div').parentElement.remove(); showToast('Redirecting to payment...')" style="width: 100%; margin-top: 20px; padding: 15px; background: linear-gradient(to right, #a855f7, #ec4899); color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px;">
+                        Join ${name} Tier
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+
+        // Community Buttons
+        document.querySelectorAll('#community-content button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.textContent.trim();
+                showToast(`${action} clicked! Opening in new window...`);
+            });
+        });
+
+        // Share Buttons
         document.querySelectorAll('button').forEach(btn => {
-            if (btn.textContent.includes('Join Tier')) {
+            if (btn.textContent.includes('Share')) {
                 btn.addEventListener('click', () => {
-                    const tier = btn.closest('.tier-card').querySelector('h3').textContent;
-                    alert(`Joining ${tier} tier!\n\nIn a real application, this would redirect to the payment page.`);
+                    showToast('Share link copied to clipboard!');
                 });
             }
+        });
+
+        // Animate patron count
+        let patronCount = 1234;
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                patronCount++;
+                const patronElement = document.querySelector('.text-2xl.font-bold');
+                if (patronElement && patronElement.textContent.includes('1,')) {
+                    patronElement.textContent = patronCount.toLocaleString();
+                }
+            }
+        }, 5000);
+
+        // Add hover effect to tier cards
+        tierCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
         });
     </script>
 </body>
