@@ -50,8 +50,10 @@ app.use(helmet({
 
 // CORS configuration
 const allowedOrigins = [
+  'http://localhost:8080',
   'http://localhost:5173',
   'http://localhost:3000',
+  'https://dev-agency-website.vercel.app',
   'https://dev-agency-frontend-huyiw93h3-bonfaces-projects.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
