@@ -1,4 +1,55 @@
-node_modules
+# .vercelignore
+
+# Environment files (Vercel uses its own env vars)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# Editor files
+.vscode
+.idea
+
+# Documentation (except README)
+*.md
+!README.md
+
+# Git files
+.git
+.gitignore
+
+# Lock files (Vercel generates its own)
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Development scripts (keep if needed for builds)
+# scripts/
+
+# Database migrations (KEEP THESE - you need them!)
+# migrations/
+
+# Batch files (usually not needed)
+*.bat
+
+# Don't ignore node_modules - let Vercel handle it
+# node_modules
+```
+
+## Key Changes:
+
+1. **Removed `node_modules`** - Vercel installs dependencies automatically, you shouldn't ignore this in `.vercelignore`
+2. **Commented out `scripts/`** - You need these if they contain setup or build scripts
+3. **Commented out `migrations/`** - Your database migrations are essential for your app to work
+
+## Better approach - Minimal `.vercelignore`:
+```
+# .vercelignore
 .env
 .env.local
 .env.*.local
@@ -6,13 +57,4 @@ node_modules
 .DS_Store
 .vscode
 .idea
-*.md
-!README.md
-*.bat
-scripts/
-migrations/
 .git
-.gitignore
-pnpm-lock.yaml
-package-lock.json
-yarn.lock
