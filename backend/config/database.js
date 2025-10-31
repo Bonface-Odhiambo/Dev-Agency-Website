@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import pg from 'pg';
 
 // Load dotenv only in development (not needed in Vercel)
 if (process.env.NODE_ENV !== 'production') {
@@ -9,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Create Sequelize instance with connection string
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
+  dialectModule: pg, // Explicitly pass pg module to avoid dynamic require issues
   logging: process.env.NODE_ENV === 'development' ? console.log : false,
   pool: {
     max: 5,
