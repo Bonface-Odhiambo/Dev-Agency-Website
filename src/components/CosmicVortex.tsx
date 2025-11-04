@@ -1,386 +1,386 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import React, { useEffect, useRef, useState } from 'react';
 
-const CosmicVortex = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+export default function CelestialSymphony() {
+  const canvasRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [harmony, setHarmony] = useState(0);
+  const [activeNotes, setActiveNotes] = useState([]);
+  const starsRef = useRef([]);
+  const orbitsRef = useRef([]);
+  const cometsRef = useRef([]);
+  const timeRef = useRef(0);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationId;
 
-    let scene: THREE.Scene;
-    let camera: THREE.PerspectiveCamera;
-    let renderer: THREE.WebGLRenderer;
-    let rings: THREE.Points[] = [];
-    let centerSphere: THREE.Mesh;
-    let time = 0;
-    let isHovering = false;
-    let hoverIntensity = 0;
-    let targetHoverIntensity = 0;
-    let animationFrameId: number;
-
-    const ringColors = [
-      { r: 1.0, g: 0.2, b: 0.8 },  // Magenta
-      { r: 0.5, g: 0.2, b: 1.0 },  // Purple
-      { r: 0.2, g: 0.8, b: 1.0 },  // Cyan
-      { r: 1.0, g: 0.6, b: 0.1 },  // Orange
-      { r: 0.2, g: 1.0, b: 0.5 },  // Green
-      { r: 1.0, g: 1.0, b: 0.2 },  // Yellow
-      { r: 1.0, g: 0.3, b: 0.3 },  // Red
-      { r: 0.3, g: 0.5, b: 1.0 },  // Blue
-    ];
-
-    const init = () => {
-      scene = new THREE.Scene();
-      scene.fog = new THREE.Fog(0x000000, 5, 15);
-
-      camera = new THREE.PerspectiveCamera(
-        75,
-        containerRef.current!.clientWidth / containerRef.current!.clientHeight,
-        0.1,
-        1000
-      );
-      camera.position.z = 7;
-      camera.position.y = 2;
-      (camera as any).userData = { mouseInfluenceX: 0, mouseInfluenceY: 0 };
-
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(containerRef.current!.clientWidth, containerRef.current!.clientHeight);
-      renderer.setClearColor(0x000000, 0);
-      containerRef.current!.appendChild(renderer.domElement);
-
-      const ambientLight = new THREE.AmbientLight(0x222244, 0.5);
-      scene.add(ambientLight);
-
-      createCenterSphere();
-      createRings();
-      createStarField();
-
-      renderer.domElement.addEventListener('mouseenter', onMouseEnter);
-      renderer.domElement.addEventListener('mouseleave', onMouseLeave);
-      renderer.domElement.addEventListener('mousemove', onMouseMove);
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initCelestialBodies();
     };
 
-    const onMouseEnter = () => {
-      isHovering = true;
-      targetHoverIntensity = 1;
-    };
-
-    const onMouseLeave = () => {
-      isHovering = false;
-      targetHoverIntensity = 0;
-    };
-
-    const onMouseMove = (event: MouseEvent) => {
-      if (!isHovering) return;
-
-      const rect = renderer.domElement.getBoundingClientRect();
-      const mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      const mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-      (camera as any).userData.mouseInfluenceX = mouseX * 2;
-      (camera as any).userData.mouseInfluenceY = mouseY * 2;
-    };
-
-    const createCenterSphere = () => {
-      const geometry = new THREE.SphereGeometry(0.3, 32, 32);
-      const material = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.9,
-      });
-      centerSphere = new THREE.Mesh(geometry, material);
-      scene.add(centerSphere);
-
-      // Add glow layers
-      for (let i = 1; i <= 3; i++) {
-        const glowGeometry = new THREE.SphereGeometry(0.3 + i * 0.15, 16, 16);
-        const glowMaterial = new THREE.MeshBasicMaterial({
-          color: new THREE.Color().setHSL(Math.random(), 1, 0.5),
-          transparent: true,
-          opacity: 0.3 / i,
-          blending: THREE.AdditiveBlending,
-          side: THREE.BackSide,
+    const initCelestialBodies = () => {
+      starsRef.current = [];
+      orbitsRef.current = [];
+      cometsRef.current = [];
+      
+      // Create star field
+      for (let i = 0; i < 800; i++) {
+        starsRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random() * 1000,
+          size: Math.random() * 2,
+          twinkleSpeed: Math.random() * 0.05 + 0.01,
+          twinkleOffset: Math.random() * Math.PI * 2,
+          color: Math.random() * 60 + 180 // Blue to cyan range
         });
-        const glow = new THREE.Mesh(glowGeometry, glowMaterial);
-        centerSphere.add(glow);
       }
-
-      const centerLight = new THREE.PointLight(0xffffff, 2, 10);
-      centerSphere.add(centerLight);
-    };
-
-    const createRings = () => {
-      const ringCount = 8;
-
-      for (let r = 0; r < ringCount; r++) {
-        const radius = 1.2 + r * 0.5;
-        const particleCount = 60 + r * 15;
-        const color = ringColors[r % ringColors.length];
-
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const colors = new Float32Array(particleCount * 3);
-
-        for (let i = 0; i < particleCount; i++) {
-          const angle = (i / particleCount) * Math.PI * 2;
-
-          positions[i * 3] = Math.cos(angle) * radius;
-          positions[i * 3 + 1] = 0;
-          positions[i * 3 + 2] = Math.sin(angle) * radius;
-
-          const brightness = 0.7 + Math.random() * 0.3;
-          colors[i * 3] = color.r * brightness;
-          colors[i * 3 + 1] = color.g * brightness;
-          colors[i * 3 + 2] = color.b * brightness;
+      
+      // Create orbital systems
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      
+      for (let i = 0; i < 8; i++) {
+        const radius = 100 + i * 60;
+        const orbitals = 3 + i;
+        
+        for (let j = 0; j < orbitals; j++) {
+          orbitsRef.current.push({
+            centerX,
+            centerY,
+            radius,
+            angle: (j / orbitals) * Math.PI * 2,
+            speed: 0.0005 * (9 - i),
+            size: 4 + Math.random() * 3,
+            color: (i * 45) % 360,
+            trail: [],
+            maxTrail: 30,
+            pulse: Math.random() * Math.PI * 2,
+            note: i
+          });
         }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        const material = new THREE.PointsMaterial({
-          size: 0.15,
-          vertexColors: true,
-          transparent: true,
-          opacity: 0.95,
-          blending: THREE.AdditiveBlending,
-          sizeAttenuation: true,
+      }
+      
+      // Create comets
+      for (let i = 0; i < 3; i++) {
+        cometsRef.current.push({
+          x: Math.random() * canvas.width,
+          y: -100,
+          vx: (Math.random() - 0.5) * 3,
+          vy: Math.random() * 2 + 2,
+          size: Math.random() * 4 + 3,
+          tail: [],
+          maxTail: 50,
+          color: Math.random() * 360,
+          glow: Math.random() * 20 + 20
         });
-
-        const ring = new THREE.Points(geometry, material);
-
-        (ring as any).userData = {
-          speedY: (0.2 + r * 0.08) * (r % 2 === 0 ? 1 : -1),
-          speedX: (0.06 + r * 0.03) * (r % 3 === 0 ? 1 : -1),
-          speedZ: (0.03 + r * 0.015) * (r % 2 === 1 ? 1 : -1),
-          tiltX: (r / ringCount - 0.5) * Math.PI * 0.6,
-          tiltZ: Math.sin(r) * 0.5,
-          radius: radius,
-          baseColor: color,
-          particleCount: particleCount,
-          waveOffset: r * 0.5,
-        };
-
-        ring.rotation.x = (ring as any).userData.tiltX;
-        ring.rotation.z = (ring as any).userData.tiltZ;
-
-        scene.add(ring);
-        rings.push(ring);
-
-        // Connection lines between rings
-        if (r > 0) {
-          createConnectionLines(rings[r - 1], ring, color);
-        }
-
-        const ringLight = new THREE.PointLight(
-          new THREE.Color(color.r, color.g, color.b),
-          1.5,
-          radius * 2
-        );
-        ring.add(ringLight);
       }
     };
 
-    const createConnectionLines = (ring1: any, ring2: any, color: any) => {
-      const lineGeometry = new THREE.BufferGeometry();
-      const linePositions = new Float32Array(20 * 6);
-      const lineColors = new Float32Array(20 * 6);
+    const drawStar = (star, time) => {
+      const z = star.z + time * 50;
+      const depth = 1000 / (z % 1000 + 1);
+      
+      const screenX = star.x + (star.x - canvas.width / 2) * depth * 0.5;
+      const screenY = star.y + (star.y - canvas.height / 2) * depth * 0.5;
+      
+      const twinkle = Math.sin(time * star.twinkleSpeed + star.twinkleOffset) * 0.5 + 0.5;
+      const alpha = depth * twinkle;
+      const size = star.size * depth;
+      
+      const gradient = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, size * 3);
+      gradient.addColorStop(0, `hsla(${star.color}, 100%, 90%, ${alpha})`);
+      gradient.addColorStop(0.5, `hsla(${star.color}, 100%, 70%, ${alpha * 0.5})`);
+      gradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(screenX, screenY, size * 3, 0, Math.PI * 2);
+      ctx.fill();
+    };
 
-      lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-      lineGeometry.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
-
-      const lineMaterial = new THREE.LineBasicMaterial({
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.2,
-        blending: THREE.AdditiveBlending,
+    const drawOrbital = (orbital, time) => {
+      const x = orbital.centerX + Math.cos(orbital.angle) * orbital.radius;
+      const y = orbital.centerY + Math.sin(orbital.angle) * orbital.radius;
+      
+      orbital.trail.unshift({ x, y });
+      if (orbital.trail.length > orbital.maxTrail) orbital.trail.pop();
+      
+      // Draw trail
+      orbital.trail.forEach((pos, i) => {
+        const alpha = (1 - i / orbital.maxTrail) * 0.3;
+        const size = orbital.size * (1 - i / orbital.maxTrail) * 0.5;
+        
+        const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, size * 4);
+        gradient.addColorStop(0, `hsla(${orbital.color}, 100%, 70%, ${alpha})`);
+        gradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, size * 4, 0, Math.PI * 2);
+        ctx.fill();
       });
-
-      const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
-
-      (lines as any).userData = {
-        ring1: ring1,
-        ring2: ring2,
-        color: color,
-      };
-
-      scene.add(lines);
-      ring2.userData.connectionLines = lines;
+      
+      // Draw orbital body
+      const pulse = Math.sin(time * 2 + orbital.pulse) * 0.3 + 1;
+      const size = orbital.size * pulse;
+      
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, size * 5);
+      gradient.addColorStop(0, `hsla(${orbital.color}, 100%, 90%, 1)`);
+      gradient.addColorStop(0.3, `hsla(${orbital.color + 30}, 100%, 80%, 0.8)`);
+      gradient.addColorStop(0.6, `hsla(${orbital.color + 60}, 100%, 70%, 0.4)`);
+      gradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x, y, size * 5, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Core
+      ctx.fillStyle = `hsla(${orbital.color}, 100%, 95%, 1)`;
+      ctx.beginPath();
+      ctx.arc(x, y, size * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      return { x, y };
     };
 
-    const updateConnectionLines = (ring: any) => {
-      if (!ring.userData.connectionLines) return;
-
-      const lines = ring.userData.connectionLines;
-      const ring1 = (lines as any).userData.ring1;
-      const ring2 = (lines as any).userData.ring2;
-
-      const positions1 = ring1.geometry.attributes.position.array;
-      const positions2 = ring2.geometry.attributes.position.array;
-      const linePositions = lines.geometry.attributes.position.array;
-      const lineColors = lines.geometry.attributes.color.array;
-
-      const step = Math.floor(ring1.userData.particleCount / 10);
-
-      for (let i = 0; i < 10; i++) {
-        const idx1 = i * step * 3;
-        const idx2 = i * step * 3;
-
-        // Transform positions
-        const pos1 = new THREE.Vector3(positions1[idx1], positions1[idx1 + 1], positions1[idx1 + 2]);
-        const pos2 = new THREE.Vector3(positions2[idx2], positions2[idx2 + 1], positions2[idx2 + 2]);
-
-        pos1.applyMatrix4(ring1.matrixWorld);
-        pos2.applyMatrix4(ring2.matrixWorld);
-
-        linePositions[i * 6] = pos1.x;
-        linePositions[i * 6 + 1] = pos1.y;
-        linePositions[i * 6 + 2] = pos1.z;
-        linePositions[i * 6 + 3] = pos2.x;
-        linePositions[i * 6 + 4] = pos2.y;
-        linePositions[i * 6 + 5] = pos2.z;
-
-        const color = (lines as any).userData.color;
-        lineColors[i * 6] = color.r;
-        lineColors[i * 6 + 1] = color.g;
-        lineColors[i * 6 + 2] = color.b;
-        lineColors[i * 6 + 3] = color.r;
-        lineColors[i * 6 + 4] = color.g;
-        lineColors[i * 6 + 5] = color.b;
-      }
-
-      lines.geometry.attributes.position.needsUpdate = true;
-      lines.geometry.attributes.color.needsUpdate = true;
+    const drawOrbitPath = (orbital, opacity) => {
+      ctx.strokeStyle = `hsla(${orbital.color}, 70%, 60%, ${opacity * 0.1})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(orbital.centerX, orbital.centerY, orbital.radius, 0, Math.PI * 2);
+      ctx.stroke();
     };
 
-    const createStarField = () => {
-      const starGeometry = new THREE.BufferGeometry();
-      const starCount = 500;
-      const starPositions = new Float32Array(starCount * 3);
-      const starColors = new Float32Array(starCount * 3);
-
-      for (let i = 0; i < starCount; i++) {
-        starPositions[i * 3] = (Math.random() - 0.5) * 50;
-        starPositions[i * 3 + 1] = (Math.random() - 0.5) * 50;
-        starPositions[i * 3 + 2] = (Math.random() - 0.5) * 50;
-
-        const brightness = Math.random();
-        starColors[i * 3] = brightness;
-        starColors[i * 3 + 1] = brightness;
-        starColors[i * 3 + 2] = brightness;
-      }
-
-      starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-      starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
-
-      const starMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.6,
-        blending: THREE.AdditiveBlending,
+    const drawComet = (comet) => {
+      comet.tail.unshift({ x: comet.x, y: comet.y });
+      if (comet.tail.length > comet.maxTail) comet.tail.pop();
+      
+      // Draw tail
+      comet.tail.forEach((pos, i) => {
+        const alpha = (1 - i / comet.maxTail) * 0.5;
+        const size = comet.size * (1 - i / comet.maxTail);
+        
+        const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, size * 8);
+        gradient.addColorStop(0, `hsla(${comet.color}, 100%, 80%, ${alpha})`);
+        gradient.addColorStop(0.5, `hsla(${comet.color + 40}, 100%, 70%, ${alpha * 0.5})`);
+        gradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, size * 8, 0, Math.PI * 2);
+        ctx.fill();
       });
-
-      const stars = new THREE.Points(starGeometry, starMaterial);
-      scene.add(stars);
+      
+      // Draw comet head
+      const gradient = ctx.createRadialGradient(comet.x, comet.y, 0, comet.x, comet.y, comet.glow);
+      gradient.addColorStop(0, `hsla(${comet.color}, 100%, 95%, 1)`);
+      gradient.addColorStop(0.3, `hsla(${comet.color + 20}, 100%, 85%, 0.8)`);
+      gradient.addColorStop(0.7, `hsla(${comet.color + 40}, 100%, 75%, 0.4)`);
+      gradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(comet.x, comet.y, comet.glow, 0, Math.PI * 2);
+      ctx.fill();
     };
 
-    const onWindowResize = () => {
-      if (!containerRef.current) return;
-      camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    const drawNebula = (centerX, centerY, radius, hue, alpha) => {
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+      gradient.addColorStop(0, `hsla(${hue}, 80%, 60%, ${alpha * 0.05})`);
+      gradient.addColorStop(0.4, `hsla(${hue + 30}, 70%, 55%, ${alpha * 0.03})`);
+      gradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fill();
     };
 
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      time += 0.016;
-
-      hoverIntensity += (targetHoverIntensity - hoverIntensity) * 0.1;
-
-      const centerScale = 1 + Math.sin(time * 3) * 0.1 + hoverIntensity * 0.3;
-      centerSphere.scale.setScalar(centerScale);
-      centerSphere.rotation.y += 0.02 + hoverIntensity * 0.03;
-
-      centerSphere.children.forEach((glow, i) => {
-        if ((glow as THREE.Mesh).material) {
-          const hue = (time * 0.1 + i * 0.1 + hoverIntensity * 0.5) % 1;
-          ((glow as THREE.Mesh).material as THREE.MeshBasicMaterial).color.setHSL(hue, 1, 0.5);
-          ((glow as THREE.Mesh).material as THREE.MeshBasicMaterial).opacity =
-            (0.3 / (i + 1)) * (1 + hoverIntensity * 0.5);
+      timeRef.current += 0.016;
+      
+      // Deep space background
+      const bgGradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, canvas.width / 2
+      );
+      bgGradient.addColorStop(0, '#0a0520');
+      bgGradient.addColorStop(1, '#000000');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw nebulae
+      const nebulaHue = (timeRef.current * 10) % 360;
+      drawNebula(canvas.width * 0.3, canvas.height * 0.3, 400, nebulaHue, 1);
+      drawNebula(canvas.width * 0.7, canvas.height * 0.7, 350, nebulaHue + 120, 0.8);
+      drawNebula(canvas.width * 0.5, canvas.height * 0.5, 500, nebulaHue + 240, 0.6);
+      
+      // Draw stars
+      starsRef.current.forEach(star => drawStar(star, timeRef.current));
+      
+      // Draw orbit paths
+      orbitsRef.current.forEach(orbital => {
+        const dx = mousePos.x - orbital.centerX;
+        const dy = mousePos.y - orbital.centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const proximity = Math.max(0, 1 - dist / 400);
+        
+        drawOrbitPath(orbital, proximity);
+      });
+      
+      // Calculate harmony
+      let totalHarmony = 0;
+      const notes = [];
+      
+      // Update and draw orbitals
+      orbitsRef.current.forEach(orbital => {
+        orbital.angle += orbital.speed;
+        const pos = drawOrbital(orbital, timeRef.current);
+        
+        const dx = mousePos.x - pos.x;
+        const dy = mousePos.y - pos.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 100) {
+          totalHarmony += (100 - dist) / 100;
+          notes.push(orbital.note);
+          
+          // Draw resonance wave
+          for (let i = 0; i < 3; i++) {
+            const waveRadius = ((timeRef.current * 100 + i * 30) % 100);
+            const waveAlpha = (1 - waveRadius / 100) * 0.3;
+            
+            ctx.strokeStyle = `hsla(${orbital.color}, 100%, 70%, ${waveAlpha})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, waveRadius, 0, Math.PI * 2);
+            ctx.stroke();
+          }
         }
       });
-
-      rings.forEach((ring, index) => {
-        const userData = (ring as any).userData;
-        const speedMultiplier = 1 + hoverIntensity * 1.5;
-        ring.rotation.y += userData.speedY * 0.015 * speedMultiplier;
-        ring.rotation.x += userData.speedX * 0.012 * speedMultiplier;
-        ring.rotation.z += userData.speedZ * 0.01 * speedMultiplier;
-
-        const positions = ring.geometry.attributes.position.array as Float32Array;
-        const colors = ring.geometry.attributes.color.array as Float32Array;
-        const particleCount = userData.particleCount;
-
-        for (let i = 0; i < particleCount; i++) {
-          const angle = (i / particleCount) * Math.PI * 2;
-
-          const waveAmplitude = 1 + hoverIntensity * 0.8;
-          const wave1 = Math.sin(time * 2 + angle * 4 + userData.waveOffset) * 0.15 * waveAmplitude;
-          const wave2 = Math.cos(time * 3 + angle * 2) * 0.1 * waveAmplitude;
-          const pulse = Math.sin(time * 1.5 + index * 0.5) * 0.08 * waveAmplitude;
-
-          const baseRadius = userData.radius;
-          const radius = baseRadius + wave1 + wave2 + pulse;
-
-          positions[i * 3] = Math.cos(angle) * radius;
-          positions[i * 3 + 1] = wave1 * 0.5;
-          positions[i * 3 + 2] = Math.sin(angle) * radius;
-
-          const colorPulse = 0.7 + Math.sin(time * 3 + i * 0.1) * 0.3;
-          const brightness = colorPulse * (1 + hoverIntensity * 0.5);
-          colors[i * 3] = userData.baseColor.r * brightness;
-          colors[i * 3 + 1] = userData.baseColor.g * brightness;
-          colors[i * 3 + 2] = userData.baseColor.b * brightness;
+      
+      setHarmony(Math.min(1, totalHarmony / 5));
+      setActiveNotes([...new Set(notes)]);
+      
+      // Update and draw comets
+      cometsRef.current.forEach(comet => {
+        comet.x += comet.vx;
+        comet.y += comet.vy;
+        comet.vy += 0.05; // Gravity
+        
+        drawComet(comet);
+        
+        // Reset comet if off screen
+        if (comet.y > canvas.height + 100) {
+          comet.x = Math.random() * canvas.width;
+          comet.y = -100;
+          comet.vx = (Math.random() - 0.5) * 3;
+          comet.vy = Math.random() * 2 + 2;
+          comet.color = Math.random() * 360;
+          comet.tail = [];
         }
-
-        ring.geometry.attributes.position.needsUpdate = true;
-        ring.geometry.attributes.color.needsUpdate = true;
-
-        ring.updateMatrixWorld();
-        updateConnectionLines(ring);
       });
+      
+      // Draw central star
+      const centralPulse = Math.sin(timeRef.current * 0.5) * 0.2 + 1;
+      drawNebula(canvas.width / 2, canvas.height / 2, 80 * centralPulse, nebulaHue, 2);
+      
+      const centerGradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, 30 * centralPulse
+      );
+      centerGradient.addColorStop(0, `hsla(${nebulaHue}, 100%, 95%, 1)`);
+      centerGradient.addColorStop(0.5, `hsla(${nebulaHue + 40}, 100%, 85%, 0.8)`);
+      centerGradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = centerGradient;
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, 30 * centralPulse, 0, Math.PI * 2);
+      ctx.fill();
 
-      const cameraRadius = 7 + Math.sin(time * 0.3) * 1 - hoverIntensity * 1.5;
-      const baseX = Math.sin(time * 0.25) * cameraRadius;
-      const baseZ = Math.cos(time * 0.25) * cameraRadius;
-      const baseY = 2 + Math.sin(time * 0.2) * 1.5;
-
-      camera.position.x = baseX + (camera as any).userData.mouseInfluenceX * hoverIntensity;
-      camera.position.z = baseZ;
-      camera.position.y = baseY + (camera as any).userData.mouseInfluenceY * hoverIntensity;
-      camera.lookAt(0, 0, 0);
-
-      renderer.render(scene, camera);
+      animationId = requestAnimationFrame(animate);
     };
 
-    init();
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
     animate();
-    window.addEventListener('resize', onWindowResize);
 
     return () => {
-      window.removeEventListener('resize', onWindowResize);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      if (renderer.domElement) {
-        renderer.domElement.removeEventListener('mouseenter', onMouseEnter);
-        renderer.domElement.removeEventListener('mouseleave', onMouseLeave);
-        renderer.domElement.removeEventListener('mousemove', onMouseMove);
-        containerRef.current?.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [mousePos]);
 
-  return <div ref={containerRef} className="w-full h-full" />;
-};
+  return (
+    <div className="relative w-full h-screen overflow-hidden bg-black">
+      <canvas
+        ref={canvasRef}
+        onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
+        className="absolute inset-0"
+      />
+      
 
-export default CosmicVortex;
+      
+      <div className="absolute top-8 left-8 space-y-3">
+        <div 
+          className="backdrop-blur-3xl bg-gradient-to-br from-indigo-900/10 to-purple-900/10 rounded-3xl border px-8 py-5 transition-all duration-500"
+          style={{
+            borderColor: `hsla(${220 + harmony * 100}, 80%, 60%, ${0.2 + harmony * 0.5})`,
+            boxShadow: `0 0 ${30 + harmony * 50}px hsla(${220 + harmony * 100}, 80%, 60%, ${harmony * 0.4}),
+                        inset 0 0 ${20 + harmony * 30}px hsla(${220 + harmony * 100}, 80%, 60%, ${harmony * 0.2})`
+          }}
+        >
+          <div className="text-xs text-white/30 font-mono mb-3 tracking-wider">COSMIC HARMONY</div>
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-3 bg-black/60 rounded-full overflow-hidden backdrop-blur-sm">
+              <div 
+                className="h-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 rounded-full transition-all duration-300"
+                style={{ 
+                  width: `${harmony * 100}%`,
+                  boxShadow: `0 0 ${15 + harmony * 20}px hsla(${200 + harmony * 100}, 100%, 60%, ${harmony})`
+                }}
+              />
+            </div>
+            <span className="text-lg font-bold text-white/90 font-mono w-14">
+              {Math.round(harmony * 100)}%
+            </span>
+          </div>
+        </div>
+        
+        {activeNotes.length > 0 && (
+          <div className="backdrop-blur-3xl bg-black/20 rounded-2xl border border-purple-400/30 px-6 py-3">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+              <span className="text-sm text-purple-300/80 font-mono">
+                NOTES: {activeNotes.sort().join(', ')}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 pointer-events-none">
+        <p className="text-white/20 text-sm tracking-[0.4em] font-light animate-pulse">
+          TOUCH THE STARS TO HEAR THEIR SONG
+        </p>
+      </div>
+      
+      <div className="absolute top-8 right-8 space-y-2 text-right">
+        <div className="backdrop-blur-3xl bg-black/20 rounded-2xl border border-cyan-400/20 px-5 py-2">
+          <p className="text-cyan-300/60 text-xs font-mono">STARS: 800</p>
+        </div>
+        <div className="backdrop-blur-3xl bg-black/20 rounded-2xl border border-blue-400/20 px-5 py-2">
+          <p className="text-blue-300/60 text-xs font-mono">ORBITALS: 44</p>
+        </div>
+        <div className="backdrop-blur-3xl bg-black/20 rounded-2xl border border-purple-400/20 px-5 py-2">
+          <p className="text-purple-300/60 text-xs font-mono">COMETS: 3</p>
+        </div>
+      </div>
+    </div>
+  );
+}
