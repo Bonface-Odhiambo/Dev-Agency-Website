@@ -28,7 +28,7 @@ const Footer = () => {
             </a>
           </div>
           
-          <div className="flex gap-6">
+          <div className="flex gap-8">
             <a 
               href="https://www.instagram.com/kalocode"
               target="_blank"
