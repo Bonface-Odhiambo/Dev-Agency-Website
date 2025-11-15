@@ -81,7 +81,7 @@ export const sendContactNotification = async (contactData) => {
               </div>
             </div>
             <div class="footer">
-              <p>This is an automated notification from your Dev Agency website contact form.</p>
+              <p>This is an automated notification from your Kalocode website contact form.</p>
             </div>
           </div>
         </body>
@@ -106,7 +106,7 @@ export const sendAutoReply = async (contactData) => {
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to: contactData.email,
-      subject: 'Thank you for contacting Dev Agency',
+      subject: 'Thank you for contacting Kalocode',
       html: `
         <!DOCTYPE html>
         <html>
@@ -124,13 +124,13 @@ export const sendAutoReply = async (contactData) => {
         <body>
           <div class="container">
             <div class="header">
-              <h1>Dev Agency</h1>
+              <h1>Kalocode</h1>
               <p>Thank you for reaching out!</p>
             </div>
             <div class="content">
               <p>Hi ${contactData.name},</p>
               
-              <p>Thank you for contacting Dev Agency. We've received your message and will get back to you within 24 hours.</p>
+              <p>Thank you for contacting Kalocode. We've received your message and will get back to you within 24 hours.</p>
               
               <div class="message">
                 <strong>Your message:</strong>
@@ -150,10 +150,10 @@ export const sendAutoReply = async (contactData) => {
                 <li>💬 WhatsApp: +1 (754) 242-7030</li>
               </ul>
               
-              <p>Best regards,<br><strong>The Dev Agency Team</strong></p>
+              <p>Best regards,<br><strong>The Kalocode Team</strong></p>
             </div>
             <div class="footer">
-              <p>© ${new Date().getFullYear()} Dev Agency. All rights reserved.</p>
+              <p>© ${new Date().getFullYear()} Kalocode. All rights reserved.</p>
             </div>
           </div>
         </body>
@@ -263,10 +263,10 @@ export const sendTeamAssignmentEmail = async (clientData, teamMemberData, projec
               
               <p>If you have any questions or concerns, don't hesitate to reach out to us.</p>
               
-              <p>Best regards,<br><strong>The Dev Agency Team</strong></p>
+              <p>Best regards,<br><strong>The Kalocode Team</strong></p>
             </div>
             <div class="footer">
-              <p>© ${new Date().getFullYear()} Dev Agency. All rights reserved.</p>
+              <p>© ${new Date().getFullYear()} Kalocode. All rights reserved.</p>
               <p>📞 +1 (754) 242-7030 | 💬 WhatsApp: +1 (754) 242-7030</p>
             </div>
           </div>

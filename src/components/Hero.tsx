@@ -24,7 +24,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="inline-block px-4 py-1 bg-gradient-to-r from-neon-purple/30 to-neon-pink/30 border border-neon-purple/50 rounded-full mb-6 backdrop-blur-sm">
           <span className="text-sm font-medium text-white">
-            Function Call - Software Development Agency
+            Kalocode - Software Development Agency
           </span>
         </div>
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-white animate-fade-in">

@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
               <h2 className="text-2xl font-bold text-white mb-4">1. Information We Collect</h2>
               <div className="text-gray-300 space-y-3">
                 <p>
-                  At Function Call, we collect information that you provide directly to us when you:
+                  At Kalocode, we collect information that you provide directly to us when you:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Create an account or register for our services</li>
@@ -148,9 +148,9 @@ const PrivacyPolicy = () => {
               <div className="text-gray-300 space-y-3">
                 <p>If you have any questions about this Privacy Policy, please contact us:</p>
                 <ul className="list-none space-y-2 ml-4">
-                  <li><strong>Email:</strong> privacy@functioncall.com</li>
+                  <li><strong>Email:</strong> privacy@kalocode.com</li>
                   <li><strong>Phone:</strong> +1 (754) 242-7030</li>
-                  <li><strong>Address:</strong> Function Call Development Agency</li>
+                  <li><strong>Address:</strong> Kalocode Development Agency</li>
                 </ul>
               </div>
             </section>

@@ -1,7 +1,7 @@
 {
-  "name": "dev-agency-backend",
+  "name": "kalocode-backend",
   "version": "1.0.0",
-  "description": "Backend API for Dev Agency Website",
+  "description": "Backend API for Kalocode Website",
   "main": "server.js",
   "type": "module",
   "scripts": {

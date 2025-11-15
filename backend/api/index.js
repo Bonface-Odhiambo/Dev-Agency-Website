@@ -117,7 +117,7 @@ app.use('/api/notifications', notificationRoutes);
 // Root route
 app.get('/', (req, res) => {
   res.json({
-    message: 'Dev Agency API',
+    message: 'Kalocode API',
     version: '1.0.0',
     status: 'running',
     endpoints: {

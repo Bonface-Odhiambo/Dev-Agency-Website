@@ -72,7 +72,7 @@ const About = () => {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="inline-block px-4 py-1 bg-gradient-to-r from-neon-purple/20 to-neon-pink/20 border border-neon-purple/30 rounded-full mb-4">
               <span className="text-sm font-medium bg-gradient-to-r from-neon-purple to-neon-pink bg-clip-text text-transparent">
-                About Function Call
+                About Kalocode
               </span>
             </div>
             
@@ -119,7 +119,7 @@ const About = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Founded in 2018, <span className="text-neon-pink font-semibold">Function Call</span> emerged from a simple yet powerful idea: 
+                Founded in 2018, <span className="text-neon-pink font-semibold">Kalocode</span> emerged from a simple yet powerful idea: 
                 every great software solution begins with a single function call. We started as a small team of passionate developers 
                 who believed that technology should be elegant, efficient, and transformative.
               </p>
@@ -185,7 +185,7 @@ const About = () => {
               Meet Our Leadership
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              The visionaries driving Function Call forward
+              The visionaries driving Kalocode forward
             </p>
           </div>
 
@@ -225,7 +225,7 @@ const About = () => {
                 Ready to Build Something Amazing?
               </h2>
               <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-                Let's turn your vision into reality. Get in touch with our team and discover how Function Call can elevate your business.
+                Let's turn your vision into reality. Get in touch with our team and discover how Kalocode can elevate your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 

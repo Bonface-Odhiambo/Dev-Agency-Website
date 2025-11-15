@@ -1,5 +1,5 @@
 import { Twitter, Facebook, Linkedin } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.jpg";
 
 const Footer = () => {
   return (
@@ -7,9 +7,9 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="Function Call Logo" className="h-8 w-8 rounded-lg" />
+            <img src={logo} alt="Kalocode Logo" className="h-10 w-10 rounded-full object-cover" />
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-neon-purple to-neon-pink bg-clip-text text-transparent">
-              Function Call
+              Kalocode
             </span>
           </div>
           

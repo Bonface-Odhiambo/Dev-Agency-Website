@@ -16,7 +16,7 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-bold text-white mb-4">1. Acceptance of Terms</h2>
               <div className="text-gray-300 space-y-3">
                 <p>
-                  By accessing and using Function Call's services, you accept and agree to be bound by the 
+                  By accessing and using Kalocode's services, you accept and agree to be bound by the 
                   terms and provision of this agreement. If you do not agree to these Terms of Service, 
                   please do not use our services.
                 </p>
@@ -30,7 +30,7 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-bold text-white mb-4">2. Description of Services</h2>
               <div className="text-gray-300 space-y-3">
                 <p>
-                  Function Call provides web development, mobile app development, custom software solutions, 
+                  Kalocode provides web development, mobile app development, custom software solutions, 
                   and related technology services. Our services include but are not limited to:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
@@ -98,7 +98,7 @@ const TermsOfService = () => {
                   for their project. This includes designs, source code, and documentation.
                 </p>
 
-                <p className="mt-4"><strong>5.2 Function Call Ownership:</strong></p>
+                <p className="mt-4"><strong>5.2 Kalocode Ownership:</strong></p>
                 <p>We retain ownership of:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Pre-existing code, frameworks, and libraries</li>
@@ -152,7 +152,7 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-bold text-white mb-4">8. Limitation of Liability</h2>
               <div className="text-gray-300 space-y-3">
                 <p>
-                  To the maximum extent permitted by law, Function Call shall not be liable for any indirect, 
+                  To the maximum extent permitted by law, Kalocode shall not be liable for any indirect, 
                   incidental, special, consequential, or punitive damages, or any loss of profits or revenues, 
                   whether incurred directly or indirectly.
                 </p>
@@ -204,7 +204,7 @@ const TermsOfService = () => {
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Client must pay for all work completed to date</li>
-                  <li>Function Call will deliver all completed work</li>
+                  <li>Kalocode will deliver all completed work</li>
                   <li>Confidentiality obligations continue</li>
                   <li>Intellectual property rights transfer only for paid work</li>
                 </ul>
@@ -241,9 +241,9 @@ const TermsOfService = () => {
               <div className="text-gray-300 space-y-3">
                 <p>For questions about these Terms of Service, please contact us:</p>
                 <ul className="list-none space-y-2 ml-4">
-                  <li><strong>Email:</strong> legal@functioncall.com</li>
+                  <li><strong>Email:</strong> legal@kalocode.com</li>
                   <li><strong>Phone:</strong> +1 (754) 242-7030</li>
-                  <li><strong>Address:</strong> Function Call Development Agency</li>
+                  <li><strong>Address:</strong> Kalocode Development Agency</li>
                 </ul>
               </div>
             </section>

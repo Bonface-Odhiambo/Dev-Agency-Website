@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Code2, Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import logo from "@/assets/logo.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -54,11 +55,18 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-darker-bg via-dark-bg to-darker-bg p-4">
       <div className="absolute inset-0 bg-gradient-to-tr from-neon-purple/10 via-transparent to-neon-pink/10"></div>
       
+      <Link to="/" className="absolute top-6 left-6 z-20">
+        <Button variant="outline" size="sm" className="gap-2">
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Button>
+      </Link>
+      
       <Card className="w-full max-w-lg relative z-10 bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Code2 className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">Function Call</span>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <img src={logo} alt="Kalocode Logo" className="h-12 w-12 rounded-full object-cover" />
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary via-neon-purple to-neon-pink bg-clip-text text-transparent">Kalocode</span>
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
           <CardDescription className="text-center">
